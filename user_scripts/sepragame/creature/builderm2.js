@@ -3,7 +3,6 @@ let attack2 = require("../vtools/removeBox.js")
 let attack3 = require("../vtools/smooth.js")
 let attack4 = require("../vtools/forceTerrain.js")
 
-
 var morphData = {
 	creatureName: "Builder",
 	discordEmoji: ":tools:",
@@ -37,8 +36,8 @@ var morphData = {
 		animDead: -50,
 		mouth: {
 			x: 0,
-			y: 0
-		} 
+			y: 0,
+		},
 	},
 	finished: false,
 	usableAttacks: 5,
@@ -50,7 +49,7 @@ var morphData = {
 	//webFileUrl: "guna.glb",
 	webModelRotationOffset: 1.565, // For the visual model
 	webLogicRotationOffset: 0, // For converting BH rotation
-	webNetworkRotationOffset: 1.565 // for other player's model
+	webNetworkRotationOffset: 1.565, // for other player's model
 	//webModelRotationOffset: 3.13, // For the visual model
 	//webLogicRotationOffset: 1.5, // For converting BH rotation
 	//webNetworkRotationOffset: 0 // for other player's model

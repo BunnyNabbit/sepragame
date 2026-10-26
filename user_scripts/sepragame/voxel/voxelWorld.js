@@ -5,13 +5,13 @@ var VoxWorld = require("./voxel-world/index.js")
 const dataCache = {
 	playerData: {},
 	chunkData: {},
-	cacheData: {}
+	cacheData: {},
 }
 const saveQueue = {
 	playerData: {},
 	chunkData: {},
 	cacheData: {},
-	saveGlobal: false
+	saveGlobal: false,
 }
 
 let blockLogAdd = 0
@@ -28,7 +28,7 @@ function generateSection(sectionPos) {
 	for (var x = 0; x < 32; x++) {
 		for (var z = 0; z < 32; z++) {
 			for (var y = 0; y < 32; y++) {
-				if ((sectionPos.z * 32) + z <= 63) {
+				if (sectionPos.z * 32 + z <= 63) {
 					voxelworld.setBlockType(new Vector3(blockPos.x + x, blockPos.y + y, blockPos.z + z), 16) // Black
 				}
 			}
@@ -36,14 +36,14 @@ function generateSection(sectionPos) {
 	}
 }
 
-
 const voxelworld = new VoxWorld({ saveLocation: `./voxelStorage/${Game.serverSettings.sepraType}/voxelWorld/` }, generateSection)
 const brickMesher = require("./brickMesher.js")
 const WorldReader = require("./voxelReaders/WorldReader.js")
 const CulledWorldReader = require("./voxelReaders/CulledWorldReader.js")
 const VoxReader = require("./voxelReaders/VoxReader.js")
 const WorldmapReader = require("./voxelReaders/ImagemapReader.js")
-async function render(sectionX, sectionY, sectionZ, player, reload) { // Get a world section meshed wih brircks
+async function render(sectionX, sectionY, sectionZ, player, reload) {
+	// Get a world section meshed wih brircks
 	// if (section < 0) return
 	// if (section > 7) return
 	let brickArray = []
@@ -60,15 +60,15 @@ async function render(sectionX, sectionY, sectionZ, player, reload) { // Get a w
 	// TODO: figure out what above todo even meant
 	let confirmed = true
 	if (reload == true) {
-		var verify = player.loadedchunks.some(i => i.x == clusterData.x && i.y == clusterData.y && i.z == clusterData.z && i.loaded == true)
+		var verify = player.loadedchunks.some((i) => i.x == clusterData.x && i.y == clusterData.y && i.z == clusterData.z && i.loaded == true)
 		if (verify == true) {
-			toDelete = player.loadedchunks.find(i => i.x == clusterData.x && i.y == clusterData.y && i.z == clusterData.z && i.loaded == true)
+			toDelete = player.loadedchunks.find((i) => i.x == clusterData.x && i.y == clusterData.y && i.z == clusterData.z && i.loaded == true)
 			confirmed = false
 		} else {
 			confirmed = true
 		}
 	} else {
-		var verify = player.loadedchunks.some(i => i.x == clusterData.x && i.y == clusterData.y && i.z == clusterData.z)
+		var verify = player.loadedchunks.some((i) => i.x == clusterData.x && i.y == clusterData.y && i.z == clusterData.z)
 		if (verify == false) confirmed = false
 	}
 	if (confirmed == true) return
@@ -79,13 +79,15 @@ async function render(sectionX, sectionY, sectionZ, player, reload) { // Get a w
 	let loadfromcache = false
 	if (reload == false) {
 		// Read cache
-		if (dataCache.cacheData[`${Math.floor(sectionX / 32)} ${Math.floor(sectionY / 32)} ${Math.floor(sectionZ / 32)}`] !== undefined) { // Is the region in memory?
-			if (dataCache.cacheData[`${Math.floor(sectionX / 32)} ${Math.floor(sectionY / 32)} ${Math.floor(sectionZ / 32)}`][`${sectionX} ${sectionY} ${sectionZ}`] !== undefined) { // Does the section exist?
+		if (dataCache.cacheData[`${Math.floor(sectionX / 32)} ${Math.floor(sectionY / 32)} ${Math.floor(sectionZ / 32)}`] !== undefined) {
+			// Is the region in memory?
+			if (dataCache.cacheData[`${Math.floor(sectionX / 32)} ${Math.floor(sectionY / 32)} ${Math.floor(sectionZ / 32)}`][`${sectionX} ${sectionY} ${sectionZ}`] !== undefined) {
+				// Does the section exist?
 				loadfromcache = true
 
 				var data = dataCache.cacheData[`${Math.floor(sectionX / 32)} ${Math.floor(sectionY / 32)} ${Math.floor(sectionZ / 32)}`][`${sectionX} ${sectionY} ${sectionZ}`]
 				var bricks = []
-				data.forEach(element => {
+				data.forEach((element) => {
 					var brick = new Brick(element.position, element.scale, element.color)
 					if (element.visibility == 0.5) {
 						brickArray.push(brick)
@@ -94,7 +96,7 @@ async function render(sectionX, sectionY, sectionZ, player, reload) { // Get a w
 					}
 					brick.collision = element.collision
 					bricks.push(brick)
-				});
+				})
 				clusterData.loaded = true
 				if (bricks.length !== 0) {
 					if (player.clientType === "Brick Hill") {
@@ -103,24 +105,28 @@ async function render(sectionX, sectionY, sectionZ, player, reload) { // Get a w
 						let cluster = {
 							p: `${sectionX} ${sectionY} ${sectionZ}`,
 							position: { x: sectionX, y: sectionY, z: sectionZ },
-							b: lightenBricks(bricks)
+							b: lightenBricks(bricks),
 						}
 						return cluster
 					}
 				}
 				return
-			} else { // Section wasn't in region. Mesh a section from the world.
+			} else {
+				// Section wasn't in region. Mesh a section from the world.
 				loadfromcache = false
 			}
-		} else { // Region wasn't in memory. Read from disk
+		} else {
+			// Region wasn't in memory. Read from disk
 			if (fs.existsSync(`./voxelStorage/${Game.serverSettings.sepraType}/cache/${Math.floor(sectionX / 32)} ${Math.floor(sectionY / 32)} ${Math.floor(sectionZ / 32)}.json`) == true) {
 				try {
 					var json = fs.readFileSync(`./voxelStorage/${Game.serverSettings.sepraType}/cache/${Math.floor(sectionX / 32)} ${Math.floor(sectionY / 32)} ${Math.floor(sectionZ / 32)}.json`).toString()
 
 					var data = JSON.parse(json)
 					dataCache.cacheData[`${Math.floor(sectionX / 32)} ${Math.floor(sectionY / 32)} ${Math.floor(sectionZ / 32)}`] = data
-					if (data[`${sectionX} ${sectionY} ${sectionZ}`] !== undefined) { // Is a section in region?
-						data[`${sectionX} ${sectionY} ${sectionZ}`].forEach(element => { // Send all the bricks!
+					if (data[`${sectionX} ${sectionY} ${sectionZ}`] !== undefined) {
+						// Is a section in region?
+						data[`${sectionX} ${sectionY} ${sectionZ}`].forEach((element) => {
+							// Send all the bricks!
 							var brick = new Brick(element.position, element.scale, element.color)
 							if (element.visibility == 0.5) {
 								brickArray.push(brick)
@@ -134,11 +140,12 @@ async function render(sectionX, sectionY, sectionZ, player, reload) { // Get a w
 						if (brickArray.length !== 0) {
 							if (player.clientType === "Brick Hill") {
 								return player.loadBricks(brickArray)
-							} else { // Web client
+							} else {
+								// Web client
 								let cluster = {
 									p: `${sectionX} ${sectionY} ${sectionZ}`,
 									position: { x: sectionX, y: sectionY, z: sectionZ },
-									b: lightenBricks(brickArray)
+									b: lightenBricks(brickArray),
 								}
 								return cluster
 							}
@@ -172,11 +179,11 @@ async function render(sectionX, sectionY, sectionZ, player, reload) { // Get a w
 		brickArray = normalBricks
 	}
 
-	brickArray.forEach(brick => {
+	brickArray.forEach((brick) => {
 		brick.position.x += sectionX * 128
 		brick.position.y += sectionY * 128
 		brick.position.z += sectionZ * 128
-	});
+	})
 	//brickarray = await brickMesher(new WorldmapReader(chunkx * 16, section * 16, chunky * 16, 16, 16, ctx))
 	clusterData.bricks = brickArray
 
@@ -191,7 +198,6 @@ async function render(sectionX, sectionY, sectionZ, player, reload) { // Get a w
 		} else {
 			// Remove cluster
 			//player.socketio.emit("dt", `${chunkx} ${section} ${chunky}`)
-
 			//Game.players.forEach((client) => {
 			//	if (client.clientType === "Web") {
 			//		if (client.loadedchunks.some(i => i.x == chunkx && i.y == section && i.z == chunky && i.loaded == true)) {
@@ -200,15 +206,15 @@ async function render(sectionX, sectionY, sectionZ, player, reload) { // Get a w
 			//	}
 			//});
 		}
-		player.loadedchunks.splice(player.loadedchunks.indexOf(toDelete), 1);
+		player.loadedchunks.splice(player.loadedchunks.indexOf(toDelete), 1)
 	}
 
 	// Save meshed bricks to cache
 	if (loadfromcache == false) {
 		let brickdata = []
-		brickArray.forEach(element => {
+		brickArray.forEach((element) => {
 			brickdata.push({ scale: element.scale, position: element.position, color: element.color, visibility: element.visibility, collision: element.collision })
-		});
+		})
 
 		if (dataCache.cacheData[`${Math.floor(sectionX / 32)} ${Math.floor(sectionY / 32)} ${Math.floor(sectionZ / 32)}`] !== undefined) {
 			dataCache.cacheData[`${Math.floor(sectionX / 32)} ${Math.floor(sectionY / 32)} ${Math.floor(sectionZ / 32)}`][`${sectionX} ${sectionY} ${sectionZ}`] = brickdata
@@ -238,35 +244,49 @@ async function render(sectionX, sectionY, sectionZ, player, reload) { // Get a w
 		if (player.clientType === "Brick Hill") {
 			player.loadBricks(brickArray)
 		} else {
-			player.socketio.emit("t", clusterSerialize([{ // Clusters
-				p: `${sectionX} ${sectionY} ${sectionZ}`,
-				position: { x: sectionX, y: sectionY, z: sectionZ },
-				b: lightenBricks(brickArray)
-			}]))
-			if (reload === true) { // Send reload to web clients
+			player.socketio.emit(
+				"t",
+				clusterSerialize([
+					{
+						// Clusters
+						p: `${sectionX} ${sectionY} ${sectionZ}`,
+						position: { x: sectionX, y: sectionY, z: sectionZ },
+						b: lightenBricks(brickArray),
+					},
+				])
+			)
+			if (reload === true) {
+				// Send reload to web clients
 				Game.players.forEach((client) => {
 					if (client.clientType === "Web") {
-						if (client.loadedchunks.some(i => i.x == sectionX && i.y == sectionY && i.z == sectionZ && i.loaded == true)) {
-							client.socketio.emit("t", clusterSerialize([{ // Clusters
-								p: `${sectionX} ${sectionY} ${sectionZ}`,
-								position: { x: sectionX, y: sectionY, z: sectionZ },
-								b: lightenBricks(brickArray)
-							}]))
+						if (client.loadedchunks.some((i) => i.x == sectionX && i.y == sectionY && i.z == sectionZ && i.loaded == true)) {
+							client.socketio.emit(
+								"t",
+								clusterSerialize([
+									{
+										// Clusters
+										p: `${sectionX} ${sectionY} ${sectionZ}`,
+										position: { x: sectionX, y: sectionY, z: sectionZ },
+										b: lightenBricks(brickArray),
+									},
+								])
+							)
 						}
 					}
 				})
 			}
 		}
 	} else {
-		if (reload === true) { // Send reload to web clients
+		if (reload === true) {
+			// Send reload to web clients
 			player.socketio.emit("dt", `${sectionX} ${sectionY} ${sectionZ}`)
 			Game.players.forEach((client) => {
 				if (client.clientType === "Web") {
-					if (client.loadedchunks.some(i => i.x == sectionX && i.y == sectionY && i.z == sectionZ && i.loaded == true)) {
+					if (client.loadedchunks.some((i) => i.x == sectionX && i.y == sectionY && i.z == sectionZ && i.loaded == true)) {
 						client.socketio.emit("dt", `${sectionX} ${sectionY} ${sectionZ}`)
 					}
 				}
-			});
+			})
 		}
 	}
 
@@ -274,20 +294,20 @@ async function render(sectionX, sectionY, sectionZ, player, reload) { // Get a w
 }
 function lightenBricks(bricks) {
 	let lightBricks = []
-	bricks.forEach(brick => {
+	bricks.forEach((brick) => {
 		lightBricks.push({
 			collision: brick.collision,
 			position: { x: brick.position.x, y: brick.position.y, z: brick.position.z },
 			scale: { x: brick.scale.x, y: brick.scale.y, z: brick.scale.z },
 			color: brick.color,
 			outline: false,
-			netId: ""
+			netId: "",
 		})
-	});
+	})
 	return lightBricks
 }
 
-playerchangecolor = function () { }
+playerchangecolor = function () {}
 
 Game.on("playerJoin", async (player) => {
 	player.userData = await getPlayerData(player.userId)
@@ -301,8 +321,8 @@ Game.on("playerJoin", async (player) => {
 	player.lastVaildPosition = new Vector3(0, 0, 500)
 	player.loadTool = false
 
-	player.viewDistanceN = -1  // 3x3x3
-	player.viewDistanceP = 2   // | | |
+	player.viewDistanceN = -1 // 3x3x3
+	player.viewDistanceP = 2 // | | |
 	player.viewDistanceToggle = 3
 	if (player.clientType === "Web") {
 		player.viewDistanceN = -2
@@ -317,7 +337,6 @@ Game.on("playerJoin", async (player) => {
 	player.symmetryEnabled = false
 	player.symmetryAxis = "x"
 	player.symmetryOrigin = new Vector3(0, 80, 0)
-
 
 	player.toolModeIndex = 0
 	//player.toolHolding = "none"
@@ -370,13 +389,16 @@ Game.on("playerJoin", async (player) => {
 					const chunkY = Math.floor(position.y / 32)
 					const chunkZ = Math.floor(position.z / 32)
 					addSectionToQueue(chunkX, chunkY, chunkZ, player)
-					soundbrick({
-						url: `1dN1jCFb8MXtsyLxa7Jfste2dagnHtpMT5GuyQSimHhuzoZFsszqXKPYPSAWR2kS9akYPBagpCJihtX56HKU2keNeqpWaPtgEwHK8GBz3kkUuD7iN1S7SfonL`, // [Required]
-						sfxr: true,
-						isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-					}, player)
+					soundbrick(
+						{
+							url: `1dN1jCFb8MXtsyLxa7Jfste2dagnHtpMT5GuyQSimHhuzoZFsszqXKPYPSAWR2kS9akYPBagpCJihtX56HKU2keNeqpWaPtgEwHK8GBz3kkUuD7iN1S7SfonL`, // [Required]
+							sfxr: true,
+							isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+						},
+						player
+					)
 					player.centerPrint(`${player.undoBuffer.undo.length}/25000`, 2)
-				} else break;
+				} else break
 			}
 		},
 		applyRedo: async function (count) {
@@ -397,15 +419,18 @@ Game.on("playerJoin", async (player) => {
 					const chunkY = Math.floor(position.y / 32)
 					const chunkZ = Math.floor(position.z / 32)
 					addSectionToQueue(chunkX, chunkY, chunkZ, player)
-					soundbrick({
-						url: `1dN1jCFb8MXtsyLxa7JfsteZKyXpDD3mwChBXWbJZuuX14mpaaRuXPLrAZA6CmqnR9cAejopjoSPAARYccfkZJkuZfdXPHCakdPy36GYcc86Y3KvxHrPsB32C`, // [Required]
-						sfxr: true,
-						isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-					}, player)
+					soundbrick(
+						{
+							url: `1dN1jCFb8MXtsyLxa7JfsteZKyXpDD3mwChBXWbJZuuX14mpaaRuXPLrAZA6CmqnR9cAejopjoSPAARYccfkZJkuZfdXPHCakdPy36GYcc86Y3KvxHrPsB32C`, // [Required]
+							sfxr: true,
+							isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+						},
+						player
+					)
 					player.centerPrint(`${player.undoBuffer.redo.length}`, 2)
-				} else break;
+				} else break
 			}
-		}
+		},
 	}
 
 	player.updateSelectionBox = function () {
@@ -444,11 +469,13 @@ Game.on("playerJoin", async (player) => {
 		player.socketio.emit("bs", { netId: player.selectionBox.netId, x: scale.x, y: scale.y, z: scale.z })
 		player.socketio.emit("bpos", { netId: player.selectionBox.netId, x: position.x, y: position.y, z: position.z })
 
-
-		soundbrick({
-			url: "/sounds/ready.flac", // [Required]
-			isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-		}, player)
+		soundbrick(
+			{
+				url: "/sounds/ready.flac", // [Required]
+				isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+			},
+			player
+		)
 	}
 	player.loadBricks([player.selectorBrick])
 	player.loadBricks([player.selectorBrickMirrored])
@@ -466,12 +493,15 @@ Game.on("playerJoin", async (player) => {
 
 		//var chunkmeta = await getChunkMeta(player.plchunkx, player.plchunky)
 		if (player.currentCreature.class === "builder") player.bottomPrint(`Player Position: \\c6${Math.floor(player.position.x / 4)} \\c5${Math.floor(player.position.y / 4)} \\c4${Math.floor(player.position.z / 4)} \\c0Chunk Position: \\c6${player.plchunkx} \\c5${player.plchunky} \\c4${player.plchunkz}`, 5)
-	}, 275);
+	}, 275)
 
 	var timeK = 0
-	player.keypress(async (key) => { // input
+	player.keypress(async (key) => {
+		// input
 		if (player.currentCreature.class !== "builder") return
-		switch (key) { // TODO this
+		switch (
+			key // TODO this
+		) {
 			case "z": // Undo
 				if (player.currentCreature.class === "builder") {
 					player.undoBuffer.applyUndo(1)
@@ -533,7 +563,6 @@ Game.on("playerJoin", async (player) => {
 			default:
 				break
 		}
-
 	})
 
 	//render(0,0,4,player)
@@ -589,7 +618,6 @@ Game.on("playerJoin", async (player) => {
 		})
 	}
 
-
 	player.rendering = false
 
 	player.setInterval(async () => {
@@ -608,54 +636,65 @@ Game.on("playerJoin", async (player) => {
 
 			switch (player.clientType) {
 				case "Web":
-					if ((!block1Col && !block2Col) || player.position.z < 4) { // Strict
+					if ((!block1Col && !block2Col) || player.position.z < 4) {
+						// Strict
 						player.lastVaildPosition = new Vector3(player.position.x, player.position.y, player.position.z)
 					} else {
-						if (!block1Col && block2Col) { // Step\
+						if (!block1Col && block2Col) {
+							// Step\
 							player.setPosition(new Vector3(player.position.x, player.position.y, player.position.z + 4), false)
-						} else { // push
+						} else {
+							// push
 							player.setPosition(new Vector3(Math.floor(player.lastVaildPosition.x / 4) * 4 + 2.5, Math.floor(player.lastVaildPosition.y / 4) * 4 + 2.5, player.lastVaildPosition.z), true)
 						}
 					}
-					break;
+					break
 				case "Brick Hill":
 					if (block1Col && block2Col) {
 						player.setPosition(player.lastVaildPosition)
 					} else {
 						player.lastVaildPosition = new Vector3(player.position.x, player.position.y, player.position.z)
 					}
-					break;
+					break
 			}
-
 
 			switch (block3) {
 				case 2:
 					if (player.currentCreature.saveID !== "magmeer") {
 						player.setHealth(player.health - 0.1)
-						soundbrick({
-							url: `12pD3tFhtN33JVvAbwbZyTyCXrwCzGv4SrY979EV1DBqwhuZdFqppU8hs2BcCt1rwM4rnY7PB55hE6JHeQ9nnzqZkPikp3Tp43PATT8fPSDYScMjcMrLhCpKAf`, // [Required]
-							sfxr: true,
-							isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-						}, player)
+						soundbrick(
+							{
+								url: `12pD3tFhtN33JVvAbwbZyTyCXrwCzGv4SrY979EV1DBqwhuZdFqppU8hs2BcCt1rwM4rnY7PB55hE6JHeQ9nnzqZkPikp3Tp43PATT8fPSDYScMjcMrLhCpKAf`, // [Required]
+								sfxr: true,
+								isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+							},
+							player
+						)
 					}
-					break;
+					break
 				case 3:
 					player.setHealth(player.health - 5)
-					soundbrick({
-						url: `97AzDcJitE2DNxTEXq5a3FXGyNaSvwnAQ8sqRUgV1xFs5BGsHwWBBgTFCXHUoneGuQvqigFXJ6pd8CHiFU9Jtnh3gPCvecbN8BNvXRgSbsfuaVuJenBmkQtgw`, // [Required]
-						sfxr: true,
-						isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-					}, player)
-					break;
+					soundbrick(
+						{
+							url: `97AzDcJitE2DNxTEXq5a3FXGyNaSvwnAQ8sqRUgV1xFs5BGsHwWBBgTFCXHUoneGuQvqigFXJ6pd8CHiFU9Jtnh3gPCvecbN8BNvXRgSbsfuaVuJenBmkQtgw`, // [Required]
+							sfxr: true,
+							isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+						},
+						player
+					)
+					break
 				case 4:
 					player.setSpeed(1)
 					player.changeStamina(-1)
-					soundbrick({
-						url: `8fG5BqJ8QzGaTJunZaRv3Mo55kPhe6CFT4sjMcSp9YWRibAe5RUNQ7CimcoKiMUk93Y9wxEtifXVeo5Z489ru8EPrzvA4Qw7DdHgXrY3zLxq82ZSj5UH4RGYo`, // [Required]
-						sfxr: true,
-						isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-					}, player)
-					break;
+					soundbrick(
+						{
+							url: `8fG5BqJ8QzGaTJunZaRv3Mo55kPhe6CFT4sjMcSp9YWRibAe5RUNQ7CimcoKiMUk93Y9wxEtifXVeo5Z489ru8EPrzvA4Qw7DdHgXrY3zLxq82ZSj5UH4RGYo`, // [Required]
+							sfxr: true,
+							isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+						},
+						player
+					)
+					break
 				case 5:
 					if (player.alive && player.currentCreature.class == "creature") {
 						soundbrick({
@@ -676,9 +715,9 @@ Game.on("playerJoin", async (player) => {
 						})
 						player.setHealth(0)
 					}
-					break;
+					break
 				default:
-					break;
+					break
 			}
 			player.boosterTime--
 			if (player.boosterType !== "none") {
@@ -687,15 +726,15 @@ Game.on("playerJoin", async (player) => {
 					player.setSpeed(4)
 					player.boosterType = "none"
 				}
-
 			}
 		}
-
-	}, 100);
+	}, 100)
 
 	let markOnce = false
-	player.updateBlockCursors = function updateBlockCursors() { // Update the block cursor. The block cursor's position is used for tools to operate on and is important to update it.
-		if (player.currentCreature.class === "builder") { // Check if player is a builder creature
+	player.updateBlockCursors = function updateBlockCursors() {
+		// Update the block cursor. The block cursor's position is used for tools to operate on and is important to update it.
+		if (player.currentCreature.class === "builder") {
+			// Check if player is a builder creature
 			// Cursor block position
 			if (!markOnce) {
 				markOnce = true
@@ -722,7 +761,8 @@ Game.on("playerJoin", async (player) => {
 				if (player.symmetryEnabled === true) {
 					if (player.symmetryAxis === "x") {
 						player.selectorBrickMirrored.setPosition(new Vector3(player.symmetryOrigin.x - (player.selectorBrick.position.x - player.symmetryOrigin.x), player.selectorBrick.position.y, player.selectorBrick.position.z))
-					} else { // z
+					} else {
+						// z
 						player.selectorBrickMirrored.setPosition(new Vector3(player.selectorBrick.position.x, player.symmetryOrigin.y - (player.selectorBrick.position.y - player.symmetryOrigin.y), player.selectorBrick.position.z))
 					}
 					player.socketio.emit("bpos", { netId: player.selectorBrickMirrored.netId, x: player.selectorBrickMirrored.position.x, y: player.selectorBrickMirrored.position.y, z: player.selectorBrickMirrored.position.z })
@@ -731,13 +771,14 @@ Game.on("playerJoin", async (player) => {
 		}
 	}
 
-	player.setInterval(() => { // Main loop of block placement overlay (selectorBrick) and important for where blocks will be placed
+	player.setInterval(() => {
+		// Main loop of block placement overlay (selectorBrick) and important for where blocks will be placed
 		player.updateBlockCursors()
-	}, 90);
+	}, 90)
 
 	player.setInterval(async () => {
 		unloadSections(player)
-	}, 10000);
+	}, 10000)
 })
 
 Game.command("colorhex", (p, msg) => {
@@ -749,7 +790,7 @@ Game.command("colorhex", (p, msg) => {
 
 	var mName = "None"
 	var mHexC = "#000001"
-	colorbyid.forEach(element => {
+	colorbyid.forEach((element) => {
 		let value = deltaE(msg, hexToRgb(element.hexString))
 		//console.log(value)
 		if (value < colorComp) {
@@ -763,7 +804,7 @@ Game.command("colorhex", (p, msg) => {
 	})
 	p.selectedColor = topColor
 	p.message(`New color is [${mHexC}]${mName}`)
-});
+})
 
 Game.command("viewdistance", (p, msg) => {
 	switch (msg) {
@@ -771,49 +812,49 @@ Game.command("viewdistance", (p, msg) => {
 			p.viewDistanceN = -1
 			p.viewDistanceP = 2
 			p.message("\\c5View distanced toggled to 3x3x3")
-			break;
+			break
 		case "2":
 			p.viewDistanceN = -2
 			p.viewDistanceP = 3
 			p.message("\\c5View distanced toggled to 5x5x5")
-			break;
+			break
 		case "3":
 			p.viewDistanceN = -3
 			p.viewDistanceP = 4
 			p.message("\\c5View distanced toggled to 7x7x7")
-			break;
+			break
 		case "4":
 			p.viewDistanceN = -4
 			p.viewDistanceP = 5
 			p.message("\\c5View distanced toggled to 9x9x9")
-			break;
+			break
 		case "5":
 			p.viewDistanceN = -5
 			p.viewDistanceP = 6
 			p.message("\\c5View distanced toggled to 11x11x11")
-			break;
+			break
 		case "6":
 			p.viewDistanceN = -6
 			p.viewDistanceP = 7
 			p.message("\\c5View distanced toggled to 13x13x13")
-			break;
+			break
 		case "7":
 			p.viewDistanceN = -7
 			p.viewDistanceP = 8
 			p.message("\\c5View distanced toggled to 15x15x15")
-			break;
+			break
 		case "8":
 			p.viewDistanceN = -8
 			p.viewDistanceP = 9
 			p.message("\\c5View distanced toggled to 17x17x17")
-			break;
+			break
 		case "screenshot":
 			p.viewDistanceN = -15
 			p.viewDistanceP = 16
-			break;
+			break
 		default:
 			p.message("Params are: 1 = Lowest | 2 | 3 | 5 = Far | 5 | 6 | 7 | 8 = Extreme")
-			break;
+			break
 	}
 })
 meshMode = true
@@ -835,12 +876,15 @@ Game.command("rtp", async (p, msg) => {
 	p.message("Teleported!")
 	p.setPosition(new Vector3(randomIntFromInterval(-3500, 3500), randomIntFromInterval(-3500, 3500), 500))
 	p.lastVaildPosition = p.position
-	soundbrick({
-		url: "/sounds/roll.mp3", // [Required]
-		isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-	}, p)
+	soundbrick(
+		{
+			url: "/sounds/roll.mp3", // [Required]
+			isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+		},
+		p
+	)
 })
-const spiral = require('spiralloop');
+const spiral = require("spiralloop")
 
 async function renderAround(player) {
 	if (player.lastChunk.x !== Math.floor(player.plchunkx / 2) || player.lastChunk.y !== Math.floor(player.plchunky / 2) || Math.floor(player.lastChunk.z / 2) !== player.plchunkz) {
@@ -856,7 +900,8 @@ async function renderAround(player) {
 		} else var verticalSectionP = player.viewDistanceP
 
 		if (player.clientType === "Brick Hill") {
-			for (var x = player.viewDistanceN; x < player.viewDistanceP; x++) { // was -1 2
+			for (var x = player.viewDistanceN; x < player.viewDistanceP; x++) {
+				// was -1 2
 				for (var y = player.viewDistanceN; z < player.viewDistanceP; z++) {
 					for (var z = verticalSectionN; y < verticalSectionP; y++) {
 						await render(renderSectionPos.x + x, renderSectionPos.y + y, renderSectionPos.z + z, player, false)
@@ -884,14 +929,13 @@ async function renderAround(player) {
 			if (clusters) player.socketio.emit("t", clusters)
 			player.rendering = false
 		}
-
 	}
 }
 
 // example : x,y,z,x,y,z,x,y,z,ff0000,x,y,z,x,y,z,ff0000,x,y,z,x,y,z,ff0000,x,y,z,x,y,z,ff0000\x,y,z,x,y,z,x,y,z,ff0000
 clusterSerialize = function (clusters) {
 	let str = ""
-	clusters.forEach(cluster => {
+	clusters.forEach((cluster) => {
 		if (str) str = str + "/" // Cluster divider
 		str = str + cluster.position.x
 		str = str + "," // Cluster divider
@@ -899,7 +943,7 @@ clusterSerialize = function (clusters) {
 		str = str + "," // Cluster divider
 		str = str + cluster.position.z
 		str = str + "," // Cluster divider
-		cluster.b.forEach(brick => {
+		cluster.b.forEach((brick) => {
 			try {
 				str = str + mdd(brick.position.x).toString(36)
 				str = str + mdd(brick.position.y).toString(36)
@@ -913,8 +957,8 @@ clusterSerialize = function (clusters) {
 			} catch (e) {
 				console.log(e)
 			}
-		});
-	});
+		})
+	})
 	return str
 }
 
@@ -923,7 +967,8 @@ serializeBool = function (bol) {
 	return "0"
 }
 
-mdd = function (n, s) { // Moudlus debangler detraction (Why?)
+mdd = function (n, s) {
+	// Moudlus debangler detraction (Why?)
 	n = n / 4
 	n = n % 32
 	if (n < 0) {
@@ -937,7 +982,7 @@ mdd = function (n, s) { // Moudlus debangler detraction (Why?)
 let chunkQueue = []
 
 async function addSectionToQueue(cx, cy, cz, player) {
-	if (chunkQueue.some(i => i.x == cx && i.y == cy && i.z == cz) == false) {
+	if (chunkQueue.some((i) => i.x == cx && i.y == cy && i.z == cz) == false) {
 		chunkQueue.push({ x: cx, y: cy, z: cz, player: player })
 	}
 }
@@ -946,7 +991,7 @@ async function startRegularIntervals() {
 	setInterval(() => {
 		var sections = chunkQueue
 		chunkQueue = []
-		sections.forEach(element => {
+		sections.forEach((element) => {
 			render(element.x, element.y, element.z, element.player, true)
 		})
 	}, 300)
@@ -968,19 +1013,20 @@ async function startRegularIntervals() {
 			postBlocks()
 		})
 
-		setInterval(() => { // Block log channel
+		setInterval(() => {
+			// Block log channel
 			postBlocks()
-		}, 1800000);
+		}, 1800000)
 	}
 
 	setInterval(() => {
 		var keys = Object.keys(saveQueue.chunkData)
 		if (keys.length > 0) {
-			keys.forEach(element => {
+			keys.forEach((element) => {
 				if (dataCache.chunkData[element] !== undefined) {
 					fs.writeFile(`./voxelStorage/${Game.serverSettings.sepraType}/savedata/chunkmeta/${element}.json`, JSON.stringify(dataCache.chunkData[element]), function (err) {
-						if (err) throw err;
-						console.log(`Saved ${element}.json chunk meta`);
+						if (err) throw err
+						console.log(`Saved ${element}.json chunk meta`)
 					})
 				} else {
 					console.error(`Attempted to write undefined in chunk data region ${element}.json`)
@@ -989,7 +1035,6 @@ async function startRegularIntervals() {
 						isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
 					})
 				}
-
 			})
 			saveQueue.chunkData = {}
 		}
@@ -1002,10 +1047,10 @@ async function startRegularIntervals() {
 
 		var keys = Object.keys(saveQueue.cacheData)
 		if (keys.length > 0) {
-			keys.forEach(element => {
+			keys.forEach((element) => {
 				if (dataCache.cacheData[element] !== undefined) {
 					fs.writeFile(`./voxelStorage/${Game.serverSettings.sepraType}/cache/${element}.json`, JSON.stringify(dataCache.cacheData[element]), function (err) {
-						if (err) throw err;
+						if (err) throw err
 						console.log(`Saved ${element}.json cache region`)
 					})
 				} else {
@@ -1021,13 +1066,12 @@ async function startRegularIntervals() {
 
 		if (saveQueue.saveGlobal == true) {
 			fs.writeFile(`./voxelStorage/${Game.serverSettings.sepraType}/savedata/global.json`, JSON.stringify(globalData), function (err) {
-				if (err) throw err;
+				if (err) throw err
 				console.log(`Saved global game data`)
 			})
 			saveQueue.saveGlobal = false
 		}
 	}, 30000)
-
 }
 
 startRegularIntervals()
@@ -1041,14 +1085,17 @@ function unloadSections(player) {
 		var verticalSectionP = 4
 	} else var verticalSectionP = player.viewDistanceP
 
-	player.loadedchunks.filter(section => (section.x > player.viewDistanceP + renderChunkPos.x - 1 || section.x < player.viewDistanceN + renderChunkPos.x) || (section.z > verticalSectionP + renderChunkPos.z - 1 || section.z < verticalSectionN + renderChunkPos.z) || (section.y > player.viewDistanceP + renderChunkPos.y - 1 || section.y < player.viewDistanceN + renderChunkPos.y)).forEach((toDelete) => {
-		if (player.clientType === "Web") {
-			player.socketio.emit("dt", `${toDelete.x} ${toDelete.y} ${toDelete.z}`)
-		} else { // Brick Hill
-			player.deleteBricks(toDelete.bricks)
-		}
-		player.loadedchunks.splice(player.loadedchunks.indexOf(toDelete), 1)
-	})
+	player.loadedchunks
+		.filter((section) => section.x > player.viewDistanceP + renderChunkPos.x - 1 || section.x < player.viewDistanceN + renderChunkPos.x || section.z > verticalSectionP + renderChunkPos.z - 1 || section.z < verticalSectionN + renderChunkPos.z || section.y > player.viewDistanceP + renderChunkPos.y - 1 || section.y < player.viewDistanceN + renderChunkPos.y)
+		.forEach((toDelete) => {
+			if (player.clientType === "Web") {
+				player.socketio.emit("dt", `${toDelete.x} ${toDelete.y} ${toDelete.z}`)
+			} else {
+				// Brick Hill
+				player.deleteBricks(toDelete.bricks)
+			}
+			player.loadedchunks.splice(player.loadedchunks.indexOf(toDelete), 1)
+		})
 }
 
 async function placeblock(blockPos, blockType, player, soundEnabled, showGhostBlock, useSymmetry) {
@@ -1068,63 +1115,88 @@ async function placeblock(blockPos, blockType, player, soundEnabled, showGhostBl
 		playInvaild = false
 	}
 	if (soundEnabled && playInvaild) {
-		if (originalBlockType == blockType && placedBlockData == originalBlockData) soundbrick({
-			url: `11111GvZH7jwT4FjsvL4Kt7D9TBj81nTkcvBs3VbcAfsTdCKdtFu6AmMN5iKGM55Y4cPxiz6SG7etbWKP2QkiVwBfo54smV8s9t7v37V7MT1vDs7CEjwSjSf`, // [Required]
-			sfxr: true,
-			isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-		}, player)
+		if (originalBlockType == blockType && placedBlockData == originalBlockData)
+			soundbrick(
+				{
+					url: `11111GvZH7jwT4FjsvL4Kt7D9TBj81nTkcvBs3VbcAfsTdCKdtFu6AmMN5iKGM55Y4cPxiz6SG7etbWKP2QkiVwBfo54smV8s9t7v37V7MT1vDs7CEjwSjSf`, // [Required]
+					sfxr: true,
+					isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+				},
+				player
+			)
 	}
 	if (originalBlockType == blockType && placedBlockData == originalBlockData) return
 
 	//console.log(chunkx, chunky, chunkz)
 	if (soundEnabled) {
 		if (blockType == 0) {
-			soundbrick({
-				url: `1tGxwj1Ux1oBiUN2ozTJbiuCyaQNPJyhJXPqkxrUkSabLx1ZQZntoD4SWbY257rbbJa1tREesTjMR4xz5C84HjMhJkoNkH5V4FEhGvaQRYDWc4vnwrnGJy5Aq`, // [Required]
-				sfxr: true,
-				isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-			}, player)
+			soundbrick(
+				{
+					url: `1tGxwj1Ux1oBiUN2ozTJbiuCyaQNPJyhJXPqkxrUkSabLx1ZQZntoD4SWbY257rbbJa1tREesTjMR4xz5C84HjMhJkoNkH5V4FEhGvaQRYDWc4vnwrnGJy5Aq`, // [Required]
+					sfxr: true,
+					isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+				},
+				player
+			)
 		} else {
 			switch (placedBlockData) {
 				case 1:
-					soundbrick({
-						url: "/sounds/build-glass.mp3", // [Required]
-						isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-					}, player)
-					break;
+					soundbrick(
+						{
+							url: "/sounds/build-glass.mp3", // [Required]
+							isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+						},
+						player
+					)
+					break
 				case 2:
-					soundbrick({
-						url: "/sounds/fire-projectile.mp3", // [Required]
-						isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-					}, player)
-					break;
+					soundbrick(
+						{
+							url: "/sounds/fire-projectile.mp3", // [Required]
+							isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+						},
+						player
+					)
+					break
 				case 3:
-					soundbrick({
-						url: "/sounds/fire-spew.mp3", // [Required]
-						isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-					}, player)
-					break;
+					soundbrick(
+						{
+							url: "/sounds/fire-spew.mp3", // [Required]
+							isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+						},
+						player
+					)
+					break
 				case 4:
-					soundbrick({
-						url: "7BMHBGP7k45pb8LrQ6DzRP156UzAYdDJ9WZwisGcTjxEtrie2hfJP1FEXXonz5v4mnBfbBqimtDHzuoSm6uw8MWybwFtJAunLmjXsqGF1RvmR1kW6diTiX47x", // [Required]
-						isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-						sfxr: true
-					}, player)
-					break;
+					soundbrick(
+						{
+							url: "7BMHBGP7k45pb8LrQ6DzRP156UzAYdDJ9WZwisGcTjxEtrie2hfJP1FEXXonz5v4mnBfbBqimtDHzuoSm6uw8MWybwFtJAunLmjXsqGF1RvmR1kW6diTiX47x", // [Required]
+							isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+							sfxr: true,
+						},
+						player
+					)
+					break
 				case 5:
-					soundbrick({
-						url: "7BMHBGP7k45pb8LrQ6DzRP156UzAYdDJ9WZwisGcTjxEtrie2hfJP1FEXXonz5v4mnBfbBqimtDHzuoSm6uw8MWybwFtJAunLmjXsqGF1RvmR1kW6diTiX47x", // [Required]
-						isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-						sfxr: true
-					}, player)
-					break;
+					soundbrick(
+						{
+							url: "7BMHBGP7k45pb8LrQ6DzRP156UzAYdDJ9WZwisGcTjxEtrie2hfJP1FEXXonz5v4mnBfbBqimtDHzuoSm6uw8MWybwFtJAunLmjXsqGF1RvmR1kW6diTiX47x", // [Required]
+							isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+							sfxr: true,
+						},
+						player
+					)
+					break
 				default:
-					soundbrick({
-						url: `12DKJfT59AXDmFaGRUZeaJCXCQ5n5m3LiydpWR7aP9yiv2BZ3zMA1YsDp7rNgQAqSz2KBiuzosdSMdJdTH7wYYVLDx9GYMtS8PVxezFxUUx1RgkFAyAxizGUYa`, // [Required]
-						sfxr: true,
-						isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-					}, player)
-					break;
+					soundbrick(
+						{
+							url: `12DKJfT59AXDmFaGRUZeaJCXCQ5n5m3LiydpWR7aP9yiv2BZ3zMA1YsDp7rNgQAqSz2KBiuzosdSMdJdTH7wYYVLDx9GYMtS8PVxezFxUUx1RgkFAyAxizGUYa`, // [Required]
+							sfxr: true,
+							isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+						},
+						player
+					)
+					break
 			}
 		}
 	}
@@ -1135,8 +1207,9 @@ async function placeblock(blockPos, blockType, player, soundEnabled, showGhostBl
 
 	addSectionToQueue(chunkX, chunkY, chunkZ, player)
 	if (showGhostBlock === undefined) showGhostBlock = true
-	if (showGhostBlock === true) { // Ghostly blocks
-		var falsebrick = new Brick(new Vector3((blockPos.x * 4), (blockPos.y * 4), (blockPos.z * 4)), new Vector3(4, 4, 4), colorbyid[blockType].hexString)
+	if (showGhostBlock === true) {
+		// Ghostly blocks
+		var falsebrick = new Brick(new Vector3(blockPos.x * 4, blockPos.y * 4, blockPos.z * 4), new Vector3(4, 4, 4), colorbyid[blockType].hexString)
 
 		player.loadBricks([falsebrick])
 		setTimeout(() => {
@@ -1147,9 +1220,9 @@ async function placeblock(blockPos, blockType, player, soundEnabled, showGhostBl
 			}
 		}, 400)
 		if (!useSymmetry && player.symmetryEnabled) {
-			if (player.symmetryAxis === "x") placeblock(new Vector3((player.symmetryOrigin.x / 4) - (blockPos.x - (player.symmetryOrigin.x / 4)), blockPos.y, blockPos.z), blockType, player, true, true, true)
+			if (player.symmetryAxis === "x") placeblock(new Vector3(player.symmetryOrigin.x / 4 - (blockPos.x - player.symmetryOrigin.x / 4), blockPos.y, blockPos.z), blockType, player, true, true, true)
 
-			if (player.symmetryAxis === "z") placeblock(new Vector3(blockPos.x, blockPos.y, (player.symmetryOrigin.y / 4) - (blockPos.z - (player.symmetryOrigin.y / 4))), blockType, player, true, true, true)
+			if (player.symmetryAxis === "z") placeblock(new Vector3(blockPos.x, blockPos.y, player.symmetryOrigin.y / 4 - (blockPos.z - player.symmetryOrigin.y / 4)), blockType, player, true, true, true)
 		}
 	}
 
@@ -1176,29 +1249,32 @@ async function placeblock(blockPos, blockType, player, soundEnabled, showGhostBl
 }
 
 function hexToRgb(hex) {
-	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	return result ? [
-		parseInt(result[1], 16),
-		parseInt(result[2], 16),
-		parseInt(result[3], 16)
-	] : null;
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+	return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null
 }
 
-async function pickcolor(blockPos, player) { // pickblock, pick block
+async function pickcolor(blockPos, player) {
+	// pickblock, pick block
 	var newColor = await voxelworld.getBlockType(blockPos)
 	if (newColor == 0) {
-		soundbrick({
-			url: `11111GvZH7jwT4FjsvL4Kt7D9TBj81nTkcvBs3VbcAfsTdCKdtFu6AmMN5iKGM55Y4cPxiz6SG7etbWKP2QkiVwBfo54smV8s9t7v37V7MT1vDs7CEjwSjSf`, // [Required]
-			sfxr: true,
-			isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-		}, player)
+		soundbrick(
+			{
+				url: `11111GvZH7jwT4FjsvL4Kt7D9TBj81nTkcvBs3VbcAfsTdCKdtFu6AmMN5iKGM55Y4cPxiz6SG7etbWKP2QkiVwBfo54smV8s9t7v37V7MT1vDs7CEjwSjSf`, // [Required]
+				sfxr: true,
+				isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+			},
+			player
+		)
 	} else {
 		player.selectedColor = newColor
 		player.message(`New color is [${colorbyid[newColor].hexString}]${colorbyid[newColor].name} \\c0[ID: ${newColor}]`)
-		soundbrick({
-			url: "/sounds/tonecraft/sample/corny/10.ogg", // [Required]
-			isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-		}, player)
+		soundbrick(
+			{
+				url: "/sounds/tonecraft/sample/corny/10.ogg", // [Required]
+				isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+			},
+			player
+		)
 	}
 }
 
@@ -1219,7 +1295,8 @@ Game.command("models", (p, msg) => {
 	p.setPosition(new Vector3(-2029, -1666, 285))
 })
 
-function chunkMetaUpdate(data) { // Current version: 2
+function chunkMetaUpdate(data) {
+	// Current version: 2
 	//var oldDataVersion = data.dataVersion
 
 	if (data.dataVersion == 1) {
@@ -1237,34 +1314,37 @@ function chunkMetaUpdate(data) { // Current version: 2
 	return data
 }
 
-function playerDataUpdate(data) { // Current version: 2
+function playerDataUpdate(data) {
+	// Current version: 2
 
 	const oldDataVersion = data.dataVersion
 
 	if (data.dataVersion == 1) {
 		data.dataVersion = 2
 
-		let t = new Date();
+		let t = new Date()
 		t.setDate(t.getDate() + 1)
-		t.setHours(0);
+		t.setHours(0)
 		t.setMinutes(0)
-		t.setSeconds(0);
-		t.setMilliseconds(0);
+		t.setSeconds(0)
+		t.setMilliseconds(0)
 
 		data.dailyRewardDate = t.getTime()
 
 		//data.gemSpawnLastChecked = new Date()
-
 	}
 
 	return data
 }
 
 function getChunkMeta(x, y) {
-	if (dataCache.chunkData[`${Math.floor(x / 32)} ${Math.floor(y / 32)}`] !== undefined) { // Is the region in memory?
-		if (dataCache.chunkData[`${Math.floor(x / 32)} ${Math.floor(y / 32)}`][`${x} ${y}`] !== undefined) { // Region exists but does the chunk exist?
+	if (dataCache.chunkData[`${Math.floor(x / 32)} ${Math.floor(y / 32)}`] !== undefined) {
+		// Is the region in memory?
+		if (dataCache.chunkData[`${Math.floor(x / 32)} ${Math.floor(y / 32)}`][`${x} ${y}`] !== undefined) {
+			// Region exists but does the chunk exist?
 			let chunk = dataCache.chunkData[`${Math.floor(x / 32)} ${Math.floor(y / 32)}`][`${x} ${y}`]
-			if (chunk.dataVersion !== 3) { // Update if outdated
+			if (chunk.dataVersion !== 3) {
+				// Update if outdated
 				chunk = chunkMetaUpdate(chunk)
 				saveQueue.chunkData[`${Math.floor(x / 32)} ${Math.floor(y / 32)}`] = true // Add region to saving queue
 				console.log(`Updated chunk meta ${x} ${y}.json from dataVersion 1 to 2`)
@@ -1276,14 +1356,17 @@ function getChunkMeta(x, y) {
 			saveQueue.chunkData[`${Math.floor(x / 32)} ${Math.floor(y / 32)}`] = true // Add region to saving queue
 			return chunk
 		}
-	} else { // Region wasn't in memory. Read from disk
+	} else {
+		// Region wasn't in memory. Read from disk
 		try {
 			if (fs.existsSync(`./voxelStorage/${Game.serverSettings.sepraType}/savedata/chunkmeta/${Math.floor(x / 32)} ${Math.floor(y / 32)}.json`) == true) {
 				let region = JSON.parse(fs.readFileSync(`./voxelStorage/${Game.serverSettings.sepraType}/savedata/chunkmeta/${Math.floor(x / 32)} ${Math.floor(y / 32)}.json`).toString()) // Read region from disk
 				dataCache.chunkData[`${Math.floor(x / 32)} ${Math.floor(y / 32)}`] = region
-				if (region[`${x} ${y}`] !== undefined) { // Does chunk exists in region?
+				if (region[`${x} ${y}`] !== undefined) {
+					// Does chunk exists in region?
 					var chunk = region[`${x} ${y}`]
-					if (chunk.dataVersion !== 3) { // Update if outdated
+					if (chunk.dataVersion !== 3) {
+						// Update if outdated
 						chunk = chunkMetaUpdate(chunk)
 						saveQueue.chunkData[`${Math.floor(x / 32)} ${Math.floor(y / 32)}`] = true // Add region to saving queue
 						console.log(`Updated chunk meta ${x} ${y}.json from dataVersion 1 to 2`)
@@ -1294,7 +1377,8 @@ function getChunkMeta(x, y) {
 				}
 
 				return chunk
-			} else { // The region didn't exist in disk
+			} else {
+				// The region didn't exist in disk
 				let chunk = createChunkMeta(x, y)
 				dataCache.chunkData[`${Math.floor(x / 32)} ${Math.floor(y / 32)}`] = {}
 				dataCache.chunkData[`${Math.floor(x / 32)} ${Math.floor(y / 32)}`][`${x} ${y}`] = chunk
@@ -1334,7 +1418,6 @@ async function getPlayerData(id) {
 			console.error(error)
 			return { error: true }
 		}
-
 	}
 }
 
@@ -1344,7 +1427,6 @@ Game.command("pos", (p, msg) => {
 
 Game.command("paintrow", async (player, msg) => {
 	if (player.clientType === "Brick Hill" && player.userId == 782) {
-
 		let pickX = Math.floor(player.selectorBrick.position.x / 4)
 		let pickY = Math.floor(player.selectorBrick.position.y / 4)
 
@@ -1354,18 +1436,16 @@ Game.command("paintrow", async (player, msg) => {
 
 			switch (block) {
 				case 0:
-
-					break;
+					break
 				default:
 					success = true
 
-					break;
+					break
 			}
 
 			if (success == true) {
 				voxelworld.setBlockType(new Vector3(pickX, pickY, z), player.selectedColor)
 			}
-
 		}
 		//player.setPosition(new Vector3(player.position.x, player.position.y, player.position.z + 8))
 	}
@@ -1483,7 +1563,8 @@ async function saveBlocksInSelectionToFile(player) {
 			for (var z = lz; z < hz + 1; z++) {
 				for (var x = lx; x < hx + 1; x++) {
 					block = await voxelworld.getBlockType(new Vector3(x, y, z))
-					if (block !== 0) { // Is block air?
+					if (block !== 0) {
+						// Is block air?
 						largeVoxelModel.setBlock(-(lx - x), -(ly - y), -(lz - z), block)
 					}
 				}
@@ -1493,19 +1574,21 @@ async function saveBlocksInSelectionToFile(player) {
 		let filename = getRandomFileString()
 		fs.writeFileSync(`./voxels/${filename}.vox`, largeVoxelModel.writeVox(true))
 		player.message(`Saved as \\c6${filename}.vox`)
-		soundbrick({
-			url: "/sounds/random/takephoto.mp3", // [Required]
-			isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-		}, player)
+		soundbrick(
+			{
+				url: "/sounds/random/takephoto.mp3", // [Required]
+				isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+			},
+			player
+		)
 	} catch (error) {
 		player.message("An error occurred when exporting to .vox")
 		console.log(error)
 	}
-
 }
 
 function getRandomFileString() {
-	return [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('')
+	return [...Array(30)].map((i) => (~~(Math.random() * 36)).toString(36)).join("")
 }
 var placeDebug = require("../vtools/placeDebug").use
 
@@ -1520,11 +1603,11 @@ Game.command("loadmesh", async (player, msg) => {
 				player.loadedPrefab = new VoxReader(fs.readFileSync(`./voxels/${msg}.vox`)) // FIXME: It is important to clean input!
 				player.loadedPrefabBricks = await brickMesher(player.loadedPrefab)
 				player.loadedPrefabPosition = new Vector3(player.selectorBrick.position.x / 4, player.selectorBrick.position.y / 4, player.selectorBrick.position.z / 4)
-				player.loadedPrefabBricks.forEach(brick => {
+				player.loadedPrefabBricks.forEach((brick) => {
 					brick.position.x += player.selectorBrick.position.x
 					brick.position.y += player.selectorBrick.position.y
 					brick.position.z += player.selectorBrick.position.z
-				});
+				})
 				player.loadBricks(player.loadedPrefabBricks)
 			} catch (error) {
 				player.message("Error while loading")
@@ -1539,7 +1622,7 @@ Game.command("loadmesh", async (player, msg) => {
 
 						// Reload prefab bricks
 						player.loadedPrefabBricks = await brickMesher(player.loadedPrefab)
-						player.loadedPrefabBricks.forEach(brick => {
+						player.loadedPrefabBricks.forEach((brick) => {
 							brick.position.x += player.selectorBrick.position.x
 							brick.position.y += player.selectorBrick.position.y
 							brick.position.z += player.selectorBrick.position.z
@@ -1549,7 +1632,7 @@ Game.command("loadmesh", async (player, msg) => {
 						player.message("You don't have a prefab loaded!")
 						player.message(`/prefab (Prefab ID) \\c2Loads up a prefab by ID and previews the model in the world. ex: /prefab e6bxoet6zl9p7mx03wd774y7vhck3l`)
 					}
-					break;
+					break
 				case "paste":
 					if (player.loadedPrefab) {
 						const reader = player.loadedPrefab
@@ -1563,14 +1646,14 @@ Game.command("loadmesh", async (player, msg) => {
 						}
 						player.message("Pasted!")
 					}
-					break;
+					break
 
 				default:
 					player.message(`/prefab (Prefab ID) \\c2Loads up a prefab by ID and previews the model in the world. ex: /prefab e6bxoet6zl9p7mx03wd774y7vhck3l`)
 					player.message(`/prefab move \\c2Move the prefab preview to the block cursor`)
 					player.message(`/prefab paste \\c2Pastes all blocks in preview into the world, finalizing all changes.`)
 					player.message(`/prefab cancel \\c2Remove previews and cleans pasting, canceling all changes.`)
-					break;
+					break
 			}
 		}
 	}
@@ -1582,27 +1665,27 @@ Game.command("type", async (player, msg) => {
 			case "basic":
 				player.blockData = 0
 				player.message(`Block type switched to basic`)
-				break;
+				break
 			case "magma":
 				player.blockData = 2
 				player.message(`Block type switched to magma`)
-				break;
+				break
 			case "lava":
 				player.blockData = 3
 				player.message(`Block type switched to lava`)
-				break;
+				break
 			case "mud":
 				player.blockData = 4
 				player.message(`Block type switched to mud`)
-				break;
+				break
 			case "impale":
 				player.blockData = 5
 				player.message(`Block type switched to impale`)
-				break;
+				break
 			case "ghost":
 				player.blockData = 1
 				player.message(`Block type switched to ghost`)
-				break;
+				break
 
 			default:
 				player.message(`/type basic \\c2Normal regular block that does nothing.`)
@@ -1612,14 +1695,14 @@ Game.command("type", async (player, msg) => {
 				player.message(`/type impale \\c2Instant death`)
 				player.message(`/type ghost \\c2Makes a block have no collision.`)
 				player.message(`/type juicer \\c2(wip) Alternative to the juicer world object. Plauers slowly get juiced from standing and attract more danger to them.`)
-				break;
+				break
 		}
 	}
 })
 
 function funnyBoolean(str) {
 	const yes = ["yes", "yay", "true", "1", "ye", "y"]
-	const no = ['no', "nay", "false", "0", "n"]
+	const no = ["no", "nay", "false", "0", "n"]
 	if (yes.includes(str)) return true
 	if (no.includes(str)) return false
 	return null
@@ -1652,7 +1735,6 @@ Game.command("selection", async (player, msg) => {
 			var hz = player.selectionPoint1.z
 		}
 
-
 		console.log(-(lx - hx), -(ly - hy), -(lz - hz))
 		if (-(lx - hx) > 512 || -(ly - hy) > 512 || -(lz - hz) > 512) return player.message("That's too big!")
 
@@ -1661,14 +1743,14 @@ Game.command("selection", async (player, msg) => {
 			case "place":
 				replaceBlocksInSelection(player, player.selectedColor, {
 					type: "place",
-					replaceOnlyAir: funnyBoolean(msg[1]) ?? false
+					replaceOnlyAir: funnyBoolean(msg[1]) ?? false,
 				})
 				break
 			case "noise":
 				replaceBlocksInSelection(player, player.selectedColor, {
 					type: "noise",
 					amount: msg[1] ?? 0.5,
-					avoidAir: funnyBoolean(msg[2]) ?? true
+					avoidAir: funnyBoolean(msg[2]) ?? true,
 				})
 				break
 			case "remove":
@@ -1700,17 +1782,20 @@ Game.command("enabletimetrial", async (player, msg) => {
 	if (player.currentCreature.class === "builder") {
 		if (player.referingWorldObject) {
 			const meta = await voxelWorld.getChunkMeta(player.referingWorldObjectPosition.x, player.referingWorldObjectPosition.y)
-			const trial = meta.objects.find(obj => obj.id === player.referingWorldObject)
+			const trial = meta.objects.find((obj) => obj.id === player.referingWorldObject)
 			if (trial.objectName == "timetrial") {
 				trial.endPosition = { x: player.position.x, y: player.position.y, z: player.position.z }
 				trial.enabled = !trial.enabled
 				saveQueue.chunkData[`${Math.floor(player.referingWorldObjectPosition.x / 32)} ${Math.floor(player.referingWorldObjectPosition.y / 32)}`] = true
 
 				player.message(`Trial state set! ID: ${player.referingWorldObject} at chunk: ${player.referingWorldObjectPosition.x} ${player.referingWorldObjectPosition.y}`)
-				soundbrick({
-					url: "/sounds/random/TMPmajor.ogg", // [Required]
-					isGlobal: true,
-				}, player)
+				soundbrick(
+					{
+						url: "/sounds/random/TMPmajor.ogg", // [Required]
+						isGlobal: true,
+					},
+					player
+				)
 			} else {
 				player.message("This object isn't a time trial!")
 			}
@@ -1724,15 +1809,18 @@ Game.command("nameobject", async (player, msg) => {
 	if (player.currentCreature.class === "builder") {
 		if (player.referingWorldObject) {
 			const meta = await voxelWorld.getChunkMeta(player.referingWorldObjectPosition.x, player.referingWorldObjectPosition.y)
-			const worldObject = meta.objects.find(obj => obj.id === player.referingWorldObject)
+			const worldObject = meta.objects.find((obj) => obj.id === player.referingWorldObject)
 			worldObject.name = msg
 			saveQueue.chunkData[`${Math.floor(player.referingWorldObjectPosition.x / 32)} ${Math.floor(player.referingWorldObjectPosition.y / 32)}`] = true
 
 			player.message(`Object name set! ID: ${player.referingWorldObject} at chunk: ${player.referingWorldObjectPosition.x} ${player.referingWorldObjectPosition.y}`)
-			soundbrick({
-				url: "/sounds/random/TMPmajor.ogg", // [Required]
-				isGlobal: true,
-			}, player)
+			soundbrick(
+				{
+					url: "/sounds/random/TMPmajor.ogg", // [Required]
+					isGlobal: true,
+				},
+				player
+			)
 		} else {
 			player.message("There wasn't a referenced world object beforehand!")
 		}
@@ -1743,16 +1831,19 @@ Game.command("addcheckpoint", async (player, msg) => {
 	if (player.currentCreature.class === "builder") {
 		if (player.referingWorldObject) {
 			const meta = await voxelWorld.getChunkMeta(player.referingWorldObjectPosition.x, player.referingWorldObjectPosition.y)
-			const trial = meta.objects.find(obj => obj.id === player.referingWorldObject)
+			const trial = meta.objects.find((obj) => obj.id === player.referingWorldObject)
 			if (trial.objectName == "timetrial") {
 				trial.checkpoints.push({ x: player.position.x, y: player.position.y, z: player.position.z })
 				trial.version++
 				saveQueue.chunkData[`${Math.floor(player.referingWorldObjectPosition.x / 32)} ${Math.floor(player.referingWorldObjectPosition.y / 32)}`] = true
 				player.message(`Added checkpoint fruit #${trial.checkpoints.length}! ID: ${player.referingWorldObject} at chunk: ${player.referingWorldObjectPosition.x} ${player.referingWorldObjectPosition.y}`)
-				soundbrick({
-					url: "/sounds/random/TMPmajor.ogg", // [Required]
-					isGlobal: true,
-				}, player)
+				soundbrick(
+					{
+						url: "/sounds/random/TMPmajor.ogg", // [Required]
+						isGlobal: true,
+					},
+					player
+				)
 			} else {
 				player.message("This object isn't a time trial!")
 			}
@@ -1766,17 +1857,20 @@ Game.command("endposition", async (player, msg) => {
 	if (player.currentCreature.class === "builder") {
 		if (player.referingWorldObject) {
 			const meta = await voxelWorld.getChunkMeta(player.referingWorldObjectPosition.x, player.referingWorldObjectPosition.y)
-			const portal = meta.objects.find(obj => obj.id === player.referingWorldObject)
+			const portal = meta.objects.find((obj) => obj.id === player.referingWorldObject)
 			if (portal.objectName == "portal") {
 				portal.toPosition = { x: player.position.x, y: player.position.y, z: player.position.z }
 				// trial.checkpoints.push({ x: player.position.x, y: player.position.y, z: player.position.z })
 				// trial.version++
 				saveQueue.chunkData[`${Math.floor(player.referingWorldObjectPosition.x / 32)} ${Math.floor(player.referingWorldObjectPosition.y / 32)}`] = true
 				player.message(`End position set! ID: ${player.referingWorldObject} at chunk: ${player.referingWorldObjectPosition.x} ${player.referingWorldObjectPosition.y}`)
-				soundbrick({
-					url: "/sounds/random/TMPmajor.ogg", // [Required]
-					isGlobal: true,
-				}, player)
+				soundbrick(
+					{
+						url: "/sounds/random/TMPmajor.ogg", // [Required]
+						isGlobal: true,
+					},
+					player
+				)
 			} else {
 				player.message("This object isn't a portal!")
 			}
@@ -1786,21 +1880,23 @@ Game.command("endposition", async (player, msg) => {
 	}
 })
 
-
 Game.command("endtimetrial", async (player, msg) => {
 	if (player.currentCreature.class === "builder") {
 		if (player.referingWorldObject) {
 			const meta = await voxelWorld.getChunkMeta(player.referingWorldObjectPosition.x, player.referingWorldObjectPosition.y)
-			const trial = meta.objects.find(obj => obj.id === player.referingWorldObject)
+			const trial = meta.objects.find((obj) => obj.id === player.referingWorldObject)
 			if (trial.objectName == "timetrial") {
 				trial.endPosition = { x: player.position.x, y: player.position.y, z: player.position.z }
 				trial.version++
 				saveQueue.chunkData[`${Math.floor(player.referingWorldObjectPosition.x / 32)} ${Math.floor(player.referingWorldObjectPosition.y / 32)}`] = true
 				player.message(`trial ending position set! ID: ${player.referingWorldObject} at chunk: ${player.referingWorldObjectPosition.x} ${player.referingWorldObjectPosition.y}`)
-				soundbrick({
-					url: "/sounds/random/TMPmajor.ogg", // [Required]
-					isGlobal: true,
-				}, player)
+				soundbrick(
+					{
+						url: "/sounds/random/TMPmajor.ogg", // [Required]
+						isGlobal: true,
+					},
+					player
+				)
 			} else {
 				player.message("This object isn't a time trial!")
 			}
@@ -1810,19 +1906,22 @@ Game.command("endtimetrial", async (player, msg) => {
 	}
 })
 
-Game.command("objectinfo", async (player, msg) => { // Inspect object
+Game.command("objectinfo", async (player, msg) => {
+	// Inspect object
 	if (player.currentCreature.class === "builder") {
 		if (player.referingWorldObject) {
-			soundbrick({
-				url: "/sounds/random/TMPmajor.ogg", // [Required]
-				isGlobal: true,
-			}, player)
+			soundbrick(
+				{
+					url: "/sounds/random/TMPmajor.ogg", // [Required]
+					isGlobal: true,
+				},
+				player
+			)
 		} else {
 			player.message("There wasn't a referenced world object beforehand!")
 		}
 	}
 })
-
 
 Game.command("createobject", async (player, msg) => {
 	if (player.currentCreature.class === "builder") {
@@ -1844,11 +1943,14 @@ Game.command("createobject", async (player, msg) => {
 				player.referingWorldObject = id
 				player.referingWorldObjectPosition = { x: chunkx, y: chunky }
 
-				soundbrick({
-					url: "/sounds/random/TMPmajor.ogg", // [Required]
-					isGlobal: true,
-				}, player)
-				break;
+				soundbrick(
+					{
+						url: "/sounds/random/TMPmajor.ogg", // [Required]
+						isGlobal: true,
+					},
+					player
+				)
+				break
 			case "landmark":
 				var blockPos = new Vector3(Math.floor(player.selectorBrick.position.x / 4), Math.floor(player.selectorBrick.position.y / 4), Math.floor(player.selectorBrick.position.z / 4))
 
@@ -1865,11 +1967,14 @@ Game.command("createobject", async (player, msg) => {
 				player.referingWorldObject = id
 				player.referingWorldObjectPosition = { x: chunkx, y: chunky }
 
-				soundbrick({
-					url: "/sounds/random/TMPmajor.ogg", // [Required]
-					isGlobal: true,
-				}, player)
-				break;
+				soundbrick(
+					{
+						url: "/sounds/random/TMPmajor.ogg", // [Required]
+						isGlobal: true,
+					},
+					player
+				)
+				break
 			case "portal":
 				var blockPos = new Vector3(Math.floor(player.selectorBrick.position.x / 4), Math.floor(player.selectorBrick.position.y / 4), Math.floor(player.selectorBrick.position.z / 4))
 
@@ -1886,20 +1991,23 @@ Game.command("createobject", async (player, msg) => {
 				player.referingWorldObject = id
 				player.referingWorldObjectPosition = { x: chunkx, y: chunky }
 
-				soundbrick({
-					url: "/sounds/random/TMPmajor.ogg", // [Required]
-					isGlobal: true,
-				}, player)
-				break;
+				soundbrick(
+					{
+						url: "/sounds/random/TMPmajor.ogg", // [Required]
+						isGlobal: true,
+					},
+					player
+				)
+				break
 			case "memo":
-				break;
+				break
 			default:
 				player.message(`Use \\c2/createobject timetrial \\c0to create a time trial object`)
 				player.message(`Use \\c2/createobject landmark \\c0to create a landmark object`)
 				player.message(`Use \\c2/createobject portal \\c0to create a portal object`)
 				// player.message(`\\c3/createobject juicer \\c0Gives a player the ability to mark once`)
 				// player.message(`\\c3/createobject memo \\c0Multi-line message`)
-				break;
+				break
 		}
 	}
 })
@@ -1918,14 +2026,17 @@ Game.command("getobject", async (player, msg) => {
 
 		let meta = await voxelWorld.getChunkMeta(chunkx, chunky)
 
-		let trial = meta.objects.find(obj => obj.id === msg)
+		let trial = meta.objects.find((obj) => obj.id === msg)
 		if (trial) {
 			player.referingWorldObject = trial.id
 			player.referingWorldObjectPosition = { x: chunkx, y: chunky }
-			soundbrick({
-				url: "/sounds/random/TMPmajor.ogg", // [Required]
-				isGlobal: true,
-			}, player)
+			soundbrick(
+				{
+					url: "/sounds/random/TMPmajor.ogg", // [Required]
+					isGlobal: true,
+				},
+				player
+			)
 			player.message(`Now refering to ID: ${trial.id} at chunk: ${chunkx}, ${chunky}`)
 		} else {
 			player.message("Can't find world object! Are you in the correct chunk?")
@@ -1940,8 +2051,6 @@ Game.command("paintchunk", async (player, msg) => {
 		let pickX = Math.floor(player.selectorBrick.position.x / 4 / 16) * 16
 		let pickY = Math.floor(player.selectorBrick.position.y / 4 / 16) * 16
 
-
-
 		for (let x = 0; x < 16; x++) {
 			for (let y = 0; y < 16; y++) {
 				for (let z = 200; z > 1; z--) {
@@ -1950,22 +2059,19 @@ Game.command("paintchunk", async (player, msg) => {
 
 					switch (block) {
 						case 0:
-
-							break;
+							break
 						default:
 							isBlock = true
 
-							break;
+							break
 					}
 
 					if (isBlock == true) {
 						voxelworld.setBlockType(new Vector3(pickX + x, pickY + y, z), player.selectedColor)
 					}
-
 				}
 			}
 		}
-
 	}
 })
 
@@ -1976,14 +2082,13 @@ function createChunkMeta(x, y) {
 		waterLevel: 0,
 		waterEnabled: false,
 		waterColor: 5,
-		drownType: true
+		drownType: true,
 	}
 
 	return data
 }
 
 async function createPlayerData(id) {
-
 	var data = {
 		error: false,
 		username: "Undefined Spaceman",
@@ -2005,19 +2110,17 @@ async function createPlayerData(id) {
 			totalBlocksPlacedByColorID: {},
 			totalBlocksRemoved: 0,
 			totalBlocksGlassifyed: 0,
-
-		}
+		},
 	}
 
-	let t = new Date();
+	let t = new Date()
 	t.setDate(t.getDate() + 1)
-	t.setHours(0);
+	t.setHours(0)
 	t.setMinutes(0)
-	t.setSeconds(0);
-	t.setMilliseconds(0);
+	t.setSeconds(0)
+	t.setMilliseconds(0)
 
 	data.dailyRewardDate = t.getTime()
-
 
 	// await fs.writeFile(`./voxelStorage/${Game.serverSettings.sepraType}/savedata/players/${id}.json`, JSON.stringify(data), function (err) {
 	// 	if (err) throw err;
@@ -2028,37 +2131,42 @@ async function createPlayerData(id) {
 }
 
 function deltaE(rgbA, rgbB) {
-	let labA = rgb2lab(rgbA);
-	let labB = rgb2lab(rgbB);
-	let deltaL = labA[0] - labB[0];
-	let deltaA = labA[1] - labB[1];
-	let deltaB = labA[2] - labB[2];
-	let c1 = Math.sqrt(labA[1] * labA[1] + labA[2] * labA[2]);
-	let c2 = Math.sqrt(labB[1] * labB[1] + labB[2] * labB[2]);
-	let deltaC = c1 - c2;
-	let deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
-	deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
-	let sc = 1.0 + 0.045 * c1;
-	let sh = 1.0 + 0.015 * c1;
-	let deltaLKlsl = deltaL / (1.0);
-	let deltaCkcsc = deltaC / (sc);
-	let deltaHkhsh = deltaH / (sh);
-	let i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh;
-	return i < 0 ? 0 : Math.sqrt(i);
+	let labA = rgb2lab(rgbA)
+	let labB = rgb2lab(rgbB)
+	let deltaL = labA[0] - labB[0]
+	let deltaA = labA[1] - labB[1]
+	let deltaB = labA[2] - labB[2]
+	let c1 = Math.sqrt(labA[1] * labA[1] + labA[2] * labA[2])
+	let c2 = Math.sqrt(labB[1] * labB[1] + labB[2] * labB[2])
+	let deltaC = c1 - c2
+	let deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC
+	deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH)
+	let sc = 1.0 + 0.045 * c1
+	let sh = 1.0 + 0.015 * c1
+	let deltaLKlsl = deltaL / 1.0
+	let deltaCkcsc = deltaC / sc
+	let deltaHkhsh = deltaH / sh
+	let i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh
+	return i < 0 ? 0 : Math.sqrt(i)
 }
 
 function rgb2lab(rgb) {
-	let r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255, x, y, z;
-	r = (r > 0.04045) ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
-	g = (g > 0.04045) ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
-	b = (b > 0.04045) ? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
-	x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047;
-	y = (r * 0.2126 + g * 0.7152 + b * 0.0722) / 1.00000;
-	z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883;
-	x = (x > 0.008856) ? Math.pow(x, 1 / 3) : (7.787 * x) + 16 / 116;
-	y = (y > 0.008856) ? Math.pow(y, 1 / 3) : (7.787 * y) + 16 / 116;
-	z = (z > 0.008856) ? Math.pow(z, 1 / 3) : (7.787 * z) + 16 / 116;
-	return [(116 * y) - 16, 500 * (x - y), 200 * (y - z)]
+	let r = rgb[0] / 255,
+		g = rgb[1] / 255,
+		b = rgb[2] / 255,
+		x,
+		y,
+		z
+	r = r > 0.04045 ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92
+	g = g > 0.04045 ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92
+	b = b > 0.04045 ? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92
+	x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047
+	y = (r * 0.2126 + g * 0.7152 + b * 0.0722) / 1.0
+	z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883
+	x = x > 0.008856 ? Math.pow(x, 1 / 3) : 7.787 * x + 16 / 116
+	y = y > 0.008856 ? Math.pow(y, 1 / 3) : 7.787 * y + 16 / 116
+	z = z > 0.008856 ? Math.pow(z, 1 / 3) : 7.787 * z + 16 / 116
+	return [116 * y - 16, 500 * (x - y), 200 * (y - z)]
 }
 
 async function mapRenderByChunks() {
@@ -2094,16 +2202,16 @@ async function mapRenderByChunks() {
 						var blocktype = await voxelworld.getBlockType(new Vector3(x + Bx, y + By, z))
 						if (blocktype !== 0) {
 							var finalBright = 0
-							if (await voxelworld.getBlockType(new Vector3(x + Bx + 1, y + By, z)) == 0) {
+							if ((await voxelworld.getBlockType(new Vector3(x + Bx + 1, y + By, z))) == 0) {
 								finalBright += 16
 							}
-							if (await voxelworld.getBlockType(new Vector3(x + Bx - 1, y + By, z)) == 0) {
+							if ((await voxelworld.getBlockType(new Vector3(x + Bx - 1, y + By, z))) == 0) {
 								finalBright += -16
 							}
-							if (await voxelworld.getBlockType(new Vector3(x + Bx, y + By + 1, z)) == 0) {
+							if ((await voxelworld.getBlockType(new Vector3(x + Bx, y + By + 1, z))) == 0) {
 								finalBright += 16
 							}
-							if (await voxelworld.getBlockType(new Vector3(x + Bx, y + By - 1, z)) == 0) {
+							if ((await voxelworld.getBlockType(new Vector3(x + Bx, y + By - 1, z))) == 0) {
 								finalBright += -16
 							}
 							// ctx.fillStyle = `rgba(${(colorbyid[blocktype].rgb.r) + Math.round((80 / 0.4) * 1.7) - 264 + finalBright},${colorbyid[blocktype].rgb.g + Math.round((80 / 0.4) * 1.7) - 264 + finalBright},${colorbyid[blocktype].rgb.b + Math.round((80 / 0.4) * 1.7) - 264 + finalBright},1)`;
@@ -2118,11 +2226,8 @@ async function mapRenderByChunks() {
 			if (len == chunkArray.length) {
 				save()
 			}
-
-		});
-
+		})
 	}
-
 
 	//
 }
@@ -2155,7 +2260,7 @@ async function idleGameWork() {
 				mapRenderByChunks()
 			}
 		}
-	}, 10000);
+	}, 10000)
 }
 idleGameWork()
 

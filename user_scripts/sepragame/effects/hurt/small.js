@@ -29,7 +29,6 @@ function rgbToDec(r, g, b) {
 const bloods = new Set()
 
 function smallBlood(emitposition) {
-
 	let brick = reuseHandler.reuseBrick()
 	if (brick == -1) return console.warn(brick)
 
@@ -58,36 +57,36 @@ function smallBlood(emitposition) {
 		if (sped < 0) sped = 0
 		if (splatter === false) {
 			brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-			brick.position.y = brick.position.y - + sped * Math.cos(prot / debug)
+			brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
 			brick.position.z = brick.position.z += grav
 
-			if (await inBlock(brick.position) === true) { // Check if blood can splatter on the ground
+			if ((await inBlock(brick.position)) === true) {
+				// Check if blood can splatter on the ground
 				splatter = true
 
 				brick.gracefulRemovalMode = 0
-				if (bloods.has(`${(Math.floor(brick.position.x / 2)*2) - 0.05} ${(Math.floor(brick.position.y / 2)*2) - 0.05} ${(Math.floor(brick.position.z / 2)*2) - 0.05}`)) {
+				if (bloods.has(`${Math.floor(brick.position.x / 2) * 2 - 0.05} ${Math.floor(brick.position.y / 2) * 2 - 0.05} ${Math.floor(brick.position.z / 2) * 2 - 0.05}`)) {
 					while (true) {
-						brick.position.x += randomIntFromInterval(-1,1) * 2
-						brick.position.y += randomIntFromInterval(-1,1) * 2
-						if (await inBlock(brick.position) === false) {
+						brick.position.x += randomIntFromInterval(-1, 1) * 2
+						brick.position.y += randomIntFromInterval(-1, 1) * 2
+						if ((await inBlock(brick.position)) === false) {
 							brick.position.z += -2
 						} else {
-							if (!bloods.has(`${(Math.floor(brick.position.x / 2)*2) - 0.05} ${(Math.floor(brick.position.y / 2)*2) - 0.05} ${(Math.floor(brick.position.z / 2)*2) - 0.05}`)) {
-								brick.position.z = (Math.floor(brick.position.z / 2)*2) - 0.05
-								brick.position.x = (Math.floor(brick.position.x / 2)*2) - 0.05
-								brick.position.y = (Math.floor(brick.position.y / 2)*2) - 0.05
+							if (!bloods.has(`${Math.floor(brick.position.x / 2) * 2 - 0.05} ${Math.floor(brick.position.y / 2) * 2 - 0.05} ${Math.floor(brick.position.z / 2) * 2 - 0.05}`)) {
+								brick.position.z = Math.floor(brick.position.z / 2) * 2 - 0.05
+								brick.position.x = Math.floor(brick.position.x / 2) * 2 - 0.05
+								brick.position.y = Math.floor(brick.position.y / 2) * 2 - 0.05
 								bloods.add(`${brick.position.x} ${brick.position.y} ${brick.position.z}`)
 								break
 							}
 						}
 					}
 				} else {
-					brick.position.z = (Math.floor(brick.position.z / 2)*2) - 0.05
-					brick.position.x = (Math.floor(brick.position.x / 2)*2) - 0.05
-					brick.position.y = (Math.floor(brick.position.y / 2)*2) - 0.05
+					brick.position.z = Math.floor(brick.position.z / 2) * 2 - 0.05
+					brick.position.x = Math.floor(brick.position.x / 2) * 2 - 0.05
+					brick.position.y = Math.floor(brick.position.y / 2) * 2 - 0.05
 					bloods.add(`${brick.position.x} ${brick.position.y} ${brick.position.z}`)
 				}
-
 
 				brick.setScale(new Vector3(2.2, 2.2, 2.2))
 				brick.setPosition(brick.position)
@@ -102,7 +101,6 @@ function smallBlood(emitposition) {
 
 			brick.setPosition(brick.position)
 
-
 			if (time > 3) {
 				spin += randomrot
 				brick.setRotation(spin)
@@ -113,8 +111,7 @@ function smallBlood(emitposition) {
 			reuseHandler.deleteBrick(brick)
 			clearInterval(loop)
 		}
-
-	}, 25);
+	}, 25)
 }
 
 module.exports = smallBlood

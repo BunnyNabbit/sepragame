@@ -4,7 +4,7 @@ function damageHandler(vit, attacker, attack, damage) {
 	if (vit.alive == true) {
 		particleManager.emitParticle("bloodsmall", vit.position)
 		if (vit.isBot == false) {
-			vit.setHealth(vit.health += damage)
+			vit.setHealth((vit.health += damage))
 		} else {
 			botManager.botController.damage(vit, damage)
 		}
@@ -30,7 +30,6 @@ function damageHandler(vit, attacker, attack, damage) {
 				Game.messageAll(`\\c6${attack.killmessage.replace("(killer)", attacker.username).replace("(victim)", vit.username)}`)
 				if (constants.discordEnabled) bot.channels.get(channel).send(`${attacker.currentCreature.discordEmoji} ${attacker.username} ${attack.discordEmoji} ${vit.currentCreature.discordEmoji} ${vit.username}`)
 			}
-
 		}
 	}
 }
@@ -38,6 +37,5 @@ function damageHandler(vit, attacker, attack, damage) {
 function randomIntFromInterval(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
-
 
 module.exports = damageHandler

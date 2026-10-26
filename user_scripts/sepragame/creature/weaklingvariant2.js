@@ -21,10 +21,11 @@ let attack2 = new Attack("crystal")
 attack2.attackDescription = { name: "Cyando Crystal", description: "Summon a turret to shoot at nearby creatures | Cooldown 40 seconds", killmessage: "(killer) killed (victim)", discordEmoji: "<:bluecube:596827012962713611>" }
 attack2.energyCost = 0
 attack2.cooldown = 400
-attack2.colors = { // FIXME: this object is being used as an array?
-	"0": "#00ffff",
-	"1": "#80ffff",
-	"2": "#ccffff",
+attack2.colors = {
+	// FIXME: this object is being used as an array?
+	0: "#00ffff",
+	1: "#80ffff",
+	2: "#ccffff",
 }
 let attack3 = new Attack("blastJump")
 attack3.color = "#00FFFF"
@@ -60,12 +61,12 @@ var morphData = {
 		animDead: -90,
 		mouth: {
 			x: 4,
-			y: 2
+			y: 2,
 		},
 		bottom: {
 			x: -0.3,
-			y: 1.4
-		} 
+			y: 1.4,
+		},
 	},
 	finished: false,
 	usableAttacks: 1,
@@ -77,7 +78,7 @@ var morphData = {
 	webFileUrl: "weakling2.glb",
 	webModelRotationOffset: 1.565, // For the visual model
 	webLogicRotationOffset: 0, // For converting BH rotation
-	webNetworkRotationOffset: 1.565 // for other player's model
+	webNetworkRotationOffset: 1.565, // for other player's model
 }
 
 module.exports = morphData

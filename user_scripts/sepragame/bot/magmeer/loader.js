@@ -53,8 +53,8 @@ var data = {
 		animDead: -50,
 		mouth: {
 			x: 5,
-			y: 4
-		}
+			y: 4,
+		},
 	},
 	finished: false,
 	showInSelector: true,
@@ -73,13 +73,13 @@ var data = {
 	wonderIdleTimeMax: 9,
 
 	wonderMoveTimeMin: 3,
-	wonderMoveTimeMax: 20
+	wonderMoveTimeMax: 20,
 }
 
 function lookAtPoint(position, bot) {
-	let angle = Math.atan2(position.y - bot.position.y, position.x - bot.position.x);
-	angle = -(angle * (180 / Math.PI)) + 270;
-	return angle;
+	let angle = Math.atan2(position.y - bot.position.y, position.x - bot.position.x)
+	angle = -(angle * (180 / Math.PI)) + 270
+	return angle
 }
 
 function randomIntFromInterval(min, max) {
@@ -91,8 +91,6 @@ async function findTopSurfaceOfWorld(position) {
 	let pickY = Math.floor(position.y / 4) - 2
 	let result = 4
 
-
-
 	for (let x = 0; x < 5; x++) {
 		for (let z = 0; z < 5; z++) {
 			for (let y = 200; y > 3; y--) {
@@ -101,25 +99,21 @@ async function findTopSurfaceOfWorld(position) {
 
 				switch (block) {
 					case 0:
-
-						break;
+						break
 					default:
 						success = true
 
-						break;
+						break
 				}
 
 				if (success == true) {
 					result = y * 4
 					break
 				}
-
 			}
 		}
 	}
 	return result + 8
 }
-
-
 
 module.exports = data

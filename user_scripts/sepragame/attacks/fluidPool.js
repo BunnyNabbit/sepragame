@@ -6,13 +6,9 @@ function attack(player, attack) {
 
 	attack.attackCreate(player)
 
-
-
 	for (var y = 0; y < 9; y++) {
 		spit(player, y, attack)
 	}
-
-
 }
 async function spit(player, y, attack) {
 	setTimeout(async () => {
@@ -24,9 +20,9 @@ async function spit(player, y, attack) {
 		brick.setOutline(true)
 		brick.setScale(new Vector3(0.9, 0.9, 0.7))
 		brick.setPosition(new Vector3(player.position.x, player.position.y, player.position.z + 5))
-		let grav = 0.78 + (randomIntFromInterval(-10, 10) / 35)
+		let grav = 0.78 + randomIntFromInterval(-10, 10) / 35
 		let time = 0
-		let sped = 0.8 + (randomIntFromInterval(-10, 10) / 37)
+		let sped = 0.8 + randomIntFromInterval(-10, 10) / 37
 		let spin = 0
 		let splatter = false
 		let prot = player.rotation.z + randomIntFromInterval(-15, 15)
@@ -40,19 +36,19 @@ async function spit(player, y, attack) {
 			if (sped < 0) sped = 0
 			if (splatter == false) {
 				brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-				brick.position.y = brick.position.y - + sped * Math.cos(prot / debug)
+				brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
 				brick.position.z = brick.position.z += grav
 
-				if (inBlock(brick.position) === true) { // Check if spit can splatter on the ground
+				if (inBlock(brick.position) === true) {
+					// Check if spit can splatter on the ground
 					splatter = true
 
-					brick.position.z = (Math.floor(brick.position.z / 4) * 4) + 3.8
+					brick.position.z = Math.floor(brick.position.z / 4) * 4 + 3.8
 
 					brick.setScale(new Vector3(2.5, 2.5, 0.5))
 				}
 
 				brick.setPosition(brick.position)
-
 
 				if (time > 3) {
 					spin += randomrot
@@ -77,11 +73,8 @@ async function spit(player, y, attack) {
 					testfor.debuffParticles = "flames" // Any regisitered particle
 				}
 			}
-
-
-
-		}, 25);
-	}, y * 200);
+		}, 25)
+	}, y * 200)
 }
 
 function randomIntFromInterval(min, max) {

@@ -16,11 +16,7 @@ function initCharModel(p) {
 	let walktimeout = 0
 	let AnimationState = "none"
 
-	let outfit = new Outfit()
-		.body("#0d9436")
-		.torso("#694813")
-		.rightLeg("#694813")
-		.leftLeg("#694813")
+	let outfit = new Outfit().body("#0d9436").torso("#694813").rightLeg("#694813").leftLeg("#694813")
 	p.charbot.setOutfit(outfit)
 
 	Game.newBot(p.charbot)
@@ -38,7 +34,6 @@ function initCharModel(p) {
 		}, 300)
 	}
 
-
 	let AnimationHandler = function (forced) {
 		if (forced || standingstill < 10) {
 			p.charbot.setRotation(new Vector3(0, 0, p.rotation.z + 450))
@@ -54,34 +49,33 @@ function initCharModel(p) {
 						if (webClientState !== "idle") {
 							webClientState = "idle"
 						}
-						break;
+						break
 					case "run1":
 						if (webClientState !== "run") {
 							webClientState = "run"
 						}
-						break;
+						break
 					case "run2":
 						if (webClientState !== "run") {
 							webClientState = "run"
 						}
-						break;
+						break
 					case "idle":
 						if (webClientState !== "sit") {
 							webClientState = "sit"
 							webClient.socketio.emit("pstate", { netId: p.webNetId, state: "sit" })
 						}
-						break;
+						break
 					case "dead":
 						if (webClientState !== "dead") {
 							webClientState = "dead"
 							webClient.socketio.emit("pstate", { netId: p.webNetId, state: "dead" })
 						}
-						break;
+						break
 
 					default:
-						break;
+						break
 				}
-
 			}
 		} else if (standingstill > 15) {
 			standingstill = 9
@@ -121,7 +115,7 @@ function initCharModel(p) {
 							soundbrick({
 								url: stepSoundSets.getStepURL(p.currentCreature.stepSound, await getBlockType(new Vector3(p.position.x, p.position.y, p.position.z - 2)), 1),
 								isGlobal: false,
-								position: p.position
+								position: p.position,
 							})
 						}
 					}
@@ -133,7 +127,7 @@ function initCharModel(p) {
 							soundbrick({
 								url: stepSoundSets.getStepURL(p.currentCreature.stepSound, await getBlockType(new Vector3(p.position.x, p.position.y, p.position.z - 2)), 3),
 								isGlobal: false,
-								position: p.position
+								position: p.position,
 							})
 						}
 
@@ -147,7 +141,7 @@ function initCharModel(p) {
 						soundbrick({
 							url: stepSoundSets.getStepURL(p.currentCreature.stepSound, await getBlockType(new Vector3(p.position.x, p.position.y, p.position.z - 2)), 2),
 							isGlobal: false,
-							position: p.position
+							position: p.position,
 						})
 					}
 					AnimationState = "none"
@@ -163,15 +157,15 @@ function initCharModel(p) {
 
 			if (p.charbot.idletime > 150) {
 				AnimationState = "idle"
-				if (p.charbot.idletime == 151 && p.currentCreature.class === "creature") soundbrick({
-					url: `/sounds/pain/alienlike/murr${randomIntFromInterval(1, 4)}.flac`,
-					minDistance: 70,
-					maxDistance: 10,
-					position: p.position,
-					isGlobal: false,
-				})
+				if (p.charbot.idletime == 151 && p.currentCreature.class === "creature")
+					soundbrick({
+						url: `/sounds/pain/alienlike/murr${randomIntFromInterval(1, 4)}.flac`,
+						minDistance: 70,
+						maxDistance: 10,
+						position: p.position,
+						isGlobal: false,
+					})
 			}
-
 		} else {
 			AnimationState = "dead"
 		}
@@ -181,9 +175,7 @@ function initCharModel(p) {
 		}
 
 		if (p.destroyed == true) clearInterval(Animations)
-
 	}, 200)
-
 
 	p.setInterval(() => {
 		if (walktimeout !== 0) {
@@ -202,7 +194,6 @@ function initCharModel(p) {
 
 		lastposition.x = p.position.x
 		lastposition.y = p.position.y
-
 	}, 100)
 }
 

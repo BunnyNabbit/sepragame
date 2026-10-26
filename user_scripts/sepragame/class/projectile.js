@@ -1,4 +1,5 @@
-class Projectile extends Tickable { // TODO: use tickable stuff
+class Projectile extends Tickable {
+	// TODO: use tickable stuff
 	constructor(position, size, player) {
 		super()
 		this.position = position
@@ -6,8 +7,7 @@ class Projectile extends Tickable { // TODO: use tickable stuff
 		this.player = player
 	}
 
-	destroy = function () {
-	}
+	destroy = function () {}
 }
 
 module.exports = Reflector

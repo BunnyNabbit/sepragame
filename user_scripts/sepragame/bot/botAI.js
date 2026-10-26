@@ -34,12 +34,12 @@ async function botAI(position, data) {
 	if (data.attacks.atk4) bot.attacks.push(data.attacks.atk4)
 	if (data.attacks.atk5) bot.attacks.push(data.attacks.atk5)
 
-	bot.attacks.forEach(attack => {
+	bot.attacks.forEach((attack) => {
 		bot.attackStates.push({
 			cooldown: 0,
 			usageA: 0,
 			weight: attack.weight,
-			attack: attack
+			attack: attack,
 		})
 	})
 
@@ -60,12 +60,11 @@ async function botAI(position, data) {
 	let state = "move"
 	let despawnTime = 0
 
-	bot.setPosition(new Vector3(Math.floor((bot.position.x / 4)) * 4 + 1.5, Math.floor((bot.position.y / 4)) * 4 + 1.5, findTopSurfaceOfWorld(bot.position)))
+	bot.setPosition(new Vector3(Math.floor(bot.position.x / 4) * 4 + 1.5, Math.floor(bot.position.y / 4) * 4 + 1.5, findTopSurfaceOfWorld(bot.position)))
 
 	bot.getAttack = () => {
-		let atk1 = bot.attackStates.find(atk => atk.cooldown <= 0)
-		if (!atk1)
-			return null
+		let atk1 = bot.attackStates.find((atk) => atk.cooldown <= 0)
+		if (!atk1) return null
 		for (let i = 0; i < bot.attackStates.length; i++) {
 			const atk2 = bot.attackStates[i]
 			if (atk2.cooldown <= 0 && atk2.weight > atk1.weight) {
@@ -78,7 +77,7 @@ async function botAI(position, data) {
 	bot.setInterval(async () => {
 		if (bot.alive == true) {
 			time--
-			bot.attackStates.forEach(state => {
+			bot.attackStates.forEach((state) => {
 				state.cooldown--
 			})
 			if (time < 0) {
@@ -104,7 +103,6 @@ async function botAI(position, data) {
 						state = "flee"
 						time = 30
 					}
-
 				}
 			}
 			if (state == "attack") {
@@ -127,7 +125,6 @@ async function botAI(position, data) {
 								attackState.attack.use(bot)
 							}
 						} else {
-
 							let x = true
 
 							if (Game.pointDistance3D(bot.position, target.position) < 5) {
@@ -151,7 +148,7 @@ async function botAI(position, data) {
 							}
 						}
 					} else {
-						if (bot.attackFocus === "melee" && !bot.attackStates.some(element => element.cooldown < 20) && Game.pointDistance3D(bot.position, target.position) < 80) {
+						if (bot.attackFocus === "melee" && !bot.attackStates.some((element) => element.cooldown < 20) && Game.pointDistance3D(bot.position, target.position) < 80) {
 							let angle = lookAtPoint(target.position, bot) + 180
 							botManager.botController.walkTowardsAngleAndStepUpOrDownTerrain(bot, bot.speed / 8, angle)
 						} else {
@@ -167,12 +164,14 @@ async function botAI(position, data) {
 							}
 						}
 					}
-				} else { // Lost the target, return to normal.
+				} else {
+					// Lost the target, return to normal.
 					bot.anger = 0
 					state = "idle"
 				}
 
-				if (bot.hp < 20 && bot.saveID === "magmeer") { // Low on HP
+				if (bot.hp < 20 && bot.saveID === "magmeer") {
+					// Low on HP
 					bot.anger = -50
 					state = "flee"
 				}
@@ -184,7 +183,6 @@ async function botAI(position, data) {
 						state = "flee"
 						time = 30
 					}
-
 				}
 			}
 			if (state == "flee") {
@@ -204,7 +202,7 @@ async function botAI(position, data) {
 		} else {
 			var player = bot.findClosestPlayer(5)
 			if (player) {
-				player.centerPrint("\\c4Press \"E\" to eat", 1)
+				player.centerPrint('\\c4Press "E" to eat', 1)
 			}
 			if (bot.persistent) {
 				despawnTime += 0.01
@@ -218,12 +216,10 @@ async function botAI(position, data) {
 	}, 50)
 }
 
-
-
 function lookAtPoint(position, bot) {
-	let angle = Math.atan2(position.y - bot.position.y, position.x - bot.position.x);
-	angle = -(angle * (180 / Math.PI)) + 270;
-	return angle;
+	let angle = Math.atan2(position.y - bot.position.y, position.x - bot.position.x)
+	angle = -(angle * (180 / Math.PI)) + 270
+	return angle
 }
 
 function randomIntFromInterval(min, max) {

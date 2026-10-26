@@ -10,7 +10,6 @@ let weakling2 = require("./weaklingvariant2/loader.js")
 let guna = require("./guna/loader.js")
 let magmeer = require("./magmeer/loader.js")
 
-
 function spawnBot(creatureData, position) {
 	botAI(position, creatureData)
 }
@@ -22,13 +21,8 @@ function init() {
 	bots.push(magmeer)
 }
 
-function refreshAllBots() {
-
-}
-
-
+function refreshAllBots() {}
 
 init()
 
 module.exports = { ingameBots, botController, bots, spawnBot, botController }
-

@@ -19,7 +19,6 @@ function pulse(player, attack) {
 	let reflector = new Reflector(new Vector3(brick.position.x + 8, brick.position.y + 8, brick.position.z + 8), 18, player)
 	addReflector(reflector)
 
-
 	let time = 0
 	var loop = setInterval(() => {
 		time++
@@ -43,9 +42,8 @@ function pulse(player, attack) {
 			reuseHandler.deleteBrick(brick)
 			clearInterval(loop)
 		}
-	}, 25);
+	}, 25)
 }
-
 
 //clearInterval(loop);
 /*

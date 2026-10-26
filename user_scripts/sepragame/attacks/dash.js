@@ -2,18 +2,18 @@ function attack(player, attack) {
 	if (player.energy < attack.energyCost) return
 	player.energy -= attack.energyCost
 	player[`atk${player.selectedattack}Cooldown`] = attack.cooldown
-	
+
 	attack.attackCreate(player)
 
 	let time = 0
 	let prot = player.rotation.z
 	let dasherPosition = new Vector3(player.position.x, player.position.y, player.position.z)
 
-	var loop = setInterval(async() => {
+	var loop = setInterval(async () => {
 		if (!player.alive) return clearInterval(loop)
 		time++
 		dasherPosition.x = dasherPosition.x += 2 * Math.sin(prot / debug)
-		dasherPosition.y = dasherPosition.y - + 2 * Math.cos(prot / debug)
+		dasherPosition.y = dasherPosition.y - +2 * Math.cos(prot / debug)
 		dasherPosition.z = dasherPosition.z
 		if (inBlock(dasherPosition) === false) {
 			player.setPosition(dasherPosition)
@@ -37,9 +37,8 @@ function attack(player, attack) {
 		if (time > 30) {
 			clearInterval(loop)
 		}
-	}, 25);
+	}, 25)
 }
-
 
 //clearInterval(loop);
 /*

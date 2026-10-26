@@ -1,10 +1,11 @@
 class WorldObject {
+	/**/
 	constructor(type, humanName) {
 		this.id
 		this.name = humanName || "a Object"
 		this.objectName = type
 		this.version = 1
-		this.id = [...Array(9)].map(i => (~~(Math.random() * 36)).toString(36)).join('')
+		this.id = [...Array(9)].map((i) => (~~(Math.random() * 36)).toString(36)).join("")
 		switch (type) {
 			case "timetrial":
 				this.enabled = false
@@ -16,14 +17,14 @@ class WorldObject {
 				this.checkpoints = []
 				this.breadcrumbs = []
 				this.loseRadius = 350
-				break;
+				break
 			case "landmark":
 				this.name = humanName || "a Landmark"
 				this.description = "A nice view!"
 				this.position = templateVector3()
 				this.isRespawnPoint = false
 				this.activationRadius = 100
-				break;
+				break
 			case "portal":
 				this.name = humanName || "a Portal"
 				this.manual = false
@@ -31,9 +32,9 @@ class WorldObject {
 				this.position = templateVector3()
 				this.toPosition = templateVector3()
 				this.activationRadius = 12
-				break;
+				break
 			default:
-				break;
+				break
 		}
 	}
 }

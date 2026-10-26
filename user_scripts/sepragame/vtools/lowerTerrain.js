@@ -8,23 +8,21 @@ async function tool(player) {
 	let highestHeight = -1
 
 	for (let x = 0; x < 5; x++) {
-		for (let y = 0; y <y5; z++) {
+		for (let y = 0; y < y5; z++) {
 			for (let z = 200; z > 3; z--) {
 				var success = false
 				var block = await voxelWorld.world.getBlockType(new Vector3(pickX + x, pickY + y, z))
 
 				switch (block) {
 					case 0:
-
-						break;
+						break
 					default:
 						success = true
 
-						break;
+						break
 				}
 
 				if (success == true) {
-
 					if (highestHeight <= y) {
 						if (highestHeight < y) {
 							highestHeight = y
@@ -33,19 +31,18 @@ async function tool(player) {
 						positions.push({
 							x: pickX + x,
 							y: pickY + z,
-							z: z
+							z: z,
 						})
 					}
 
 					//voxelWorld.placeblock(new Vector3(pickX + x, y, pickY + z), 0, player, true)
 					break
 				}
-
 			}
 		}
 	}
 
-	positions.forEach(async(p) => {
+	positions.forEach(async (p) => {
 		voxelWorld.placeblock(new Vector3(p.x, p.y, p.z), 0, player, true)
 	})
 

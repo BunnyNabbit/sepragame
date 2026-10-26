@@ -54,12 +54,12 @@ var morphData = {
 		animDead: -50,
 		mouth: {
 			x: 5,
-			y: 4
+			y: 4,
 		},
 		bottom: {
 			x: -2.5,
-			y: 2.8
-		} 
+			y: 2.8,
+		},
 	},
 	finished: false,
 	usableAttacks: 1,
@@ -71,7 +71,7 @@ var morphData = {
 	//webFileUrl: "guna.glb",
 	webModelRotationOffset: 1.565, // For the visual model
 	webLogicRotationOffset: 0, // For converting BH rotation
-	webNetworkRotationOffset: 1.565 // for other player's model
+	webNetworkRotationOffset: 1.565, // for other player's model
 	//webModelRotationOffset: 3.13, // For the visual model
 	//webLogicRotationOffset: 1.5, // For converting BH rotation
 	//webNetworkRotationOffset: 0 // for other player's model

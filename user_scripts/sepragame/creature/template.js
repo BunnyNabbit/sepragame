@@ -1,7 +1,6 @@
 // Example template of a player creature
 // NOTE: Bots are considered different from players and this may change later on.
 
-
 // Attacks can be first defined here.
 // Example of attack 1: a simple projectile attack with some properties changed to make it blue and be slower
 let attack1 = new Attack("projectile")
@@ -46,20 +45,20 @@ attack4.attackHit = function (vit, player) {
 		for (let i = 0; i < 6; i++) {
 			setTimeout(() => {
 				vit.setSpeed(2)
-			}, 1000 * i);
+			}, 1000 * i)
 		}
 		setTimeout(() => {
 			vit.setSpeed(vit.currentCreature.speed)
-		}, 7000);
+		}, 7000)
 	} else {
 		for (let i = 0; i < 6; i++) {
 			setTimeout(() => {
 				vit.speed = 2
-			}, 1000 * i);
+			}, 1000 * i)
 		}
 		setTimeout(() => {
 			vit.speed = vit.currentCreature.speed
-		}, 7000);
+		}, 7000)
 	}
 }
 // Blastjumps are required on every creature and may change later on.
@@ -70,7 +69,8 @@ var morphData = {
 	creatureName: "Shrivark", // Name of the creature. Displayed in the selector
 	discordEmoji: "<:experimental1:792571919076687903>", // Displayed in the discord chat killfeed
 	saveID: "shivark", // Used internally for saves
-	attacks: { // All attacks that were defined previously. Attacks can be left out but must not leave any gaps in between the numbers.
+	attacks: {
+		// All attacks that were defined previously. Attacks can be left out but must not leave any gaps in between the numbers.
 		atk1: attack1,
 		atk2: attack2,
 		atk3: attack3,
@@ -97,14 +97,16 @@ var morphData = {
 		animNone: 110,
 		animIdle: 410,
 		animDead: -90,
-		mouth: { // Position offset of the mouth. Mainly used for particles and attacks.
+		mouth: {
+			// Position offset of the mouth. Mainly used for particles and attacks.
 			x: 2,
-			y: 1.3
+			y: 1.3,
 		},
-		bottom: { // Ventral area. Seemingly unused now..?
+		bottom: {
+			// Ventral area. Seemingly unused now..?
 			x: -1,
-			y: 1.4
-		} 
+			y: 1.4,
+		},
 	},
 	finished: false, // unused
 	usableAttacks: 1, // unused
@@ -117,7 +119,7 @@ var morphData = {
 	webFileUrl: "weakling2.glb", // not used
 	webModelRotationOffset: 1.565, // For the visual model
 	webLogicRotationOffset: 0, // For converting BH rotation
-	webNetworkRotationOffset: 1.565 // for other player's model
+	webNetworkRotationOffset: 1.565, // for other player's model
 }
 
 if (Game.serverSettings.sepraType === "chaotic") morphData.showInSelector = true

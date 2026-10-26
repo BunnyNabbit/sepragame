@@ -23,7 +23,7 @@ async function tool(player) {
 						positions.push({
 							x: pickX + x,
 							y: pickY + y,
-							z: z
+							z: z,
 						})
 					}
 					break

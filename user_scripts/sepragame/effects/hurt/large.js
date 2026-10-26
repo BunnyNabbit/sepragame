@@ -1,8 +1,6 @@
-
 function randomIntFromInterval(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
-
 
 function hexToDec(hex, bgr = false) {
 	hex = hex.replace(/^#/, "")
@@ -29,7 +27,6 @@ function rgbToDec(r, g, b) {
 }
 
 function smallBlood(emitposition) {
-
 	let brick = reuseHandler.reuseBrick()
 	if (brick == -1) return console.warn(brick)
 
@@ -59,13 +56,14 @@ function smallBlood(emitposition) {
 		if (sped < 0) sped = 0
 		if (splatter === false) {
 			brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-			brick.position.y = brick.position.y - + sped * Math.cos(prot / debug)
+			brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
 			brick.position.z = brick.position.z += grav
 
-			if (await inBlock(brick.position) === true) { // Check if blood can splatter on the ground
+			if ((await inBlock(brick.position)) === true) {
+				// Check if blood can splatter on the ground
 				splatter = true
 
-				brick.position.z = (Math.floor(brick.position.z / 4)*4) + 3.8
+				brick.position.z = Math.floor(brick.position.z / 4) * 4 + 3.8
 
 				brick.setScale(new Vector3(1.25, 1.25, 0.5))
 				brick.setPosition(brick.position)
@@ -74,7 +72,6 @@ function smallBlood(emitposition) {
 			}
 
 			brick.setPosition(brick.position)
-
 
 			if (time > 3) {
 				spin += randomrot
@@ -86,8 +83,7 @@ function smallBlood(emitposition) {
 			reuseHandler.deleteBrick(brick)
 			clearInterval(loop)
 		}
-
-	}, 25);
+	}, 25)
 }
 
 module.exports = smallBlood

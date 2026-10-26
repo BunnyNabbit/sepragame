@@ -3,7 +3,6 @@ function randomIntFromInterval(min, max) {
 }
 
 function blastJump(player, attack) {
-
 	if (player.blastJumpActive == true) return
 
 	if (player.energy < attack.energyCost) return
@@ -12,7 +11,8 @@ function blastJump(player, attack) {
 
 	attack.attackCreate(player)
 
-	if (player.clientType === "Web") { // Is the player using the web client? If they are then instantly blast them
+	if (player.clientType === "Web") {
+		// Is the player using the web client? If they are then instantly blast them
 		player.socketio.emit("launch", 50)
 		blastBrick(player, attack)
 		attack.onBlast(player)
@@ -26,12 +26,8 @@ function blastJump(player, attack) {
 	player.setJumpPower(player.currentCreature.blastJumpPower)
 	player.centerPrint("\\c6Jump!", 3)
 
-
-
-
 	var overheatTimer = 0
 	var blastLoop = setInterval(() => {
-
 		overheatTimer++
 
 		if (player.destroyed == true) {
@@ -54,8 +50,7 @@ function blastJump(player, attack) {
 			overheat(player)
 			clearInterval(blastLoop)
 		}
-
-	}, 50);
+	}, 50)
 }
 
 async function overheat(player) {
@@ -100,8 +95,6 @@ async function overheat(player) {
 	player.setSpeed(player.currentCreature.speed)
 }
 
-
-
 async function blastBrick(player, attack) {
 	let brick = reuseHandler.reuseBrick()
 	if (brick == -1) return console.log("blastjump got no brick")
@@ -126,13 +119,10 @@ async function blastBrick(player, attack) {
 
 	await sleep(1000)
 
-
-
 	reuseHandler.deleteBrick(brick)
 }
 
 function debris(player, attack) {
-
 	let brick = reuseHandler.reuseBrick()
 	if (brick == -1) return
 
@@ -140,7 +130,6 @@ function debris(player, attack) {
 	brick.setScale(new Vector3(0.7, 0.7, 0.7))
 
 	brick.position = new Vector3(player.position.x, player.position.y, player.position.z + 5)
-
 
 	let grav = 0.78
 	let time = 0
@@ -154,7 +143,7 @@ function debris(player, attack) {
 		sped += -0.03
 		if (sped < 0) sped = 0
 		brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - + sped * Math.cos(prot / debug)
+		brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
 		brick.position.z = brick.position.z += grav
 		brick.setPosition(brick.position)
 
@@ -174,7 +163,7 @@ function debris(player, attack) {
 				clearInterval(loop)
 			}
 		}
-	}, 25);
+	}, 25)
 }
 
 module.exports = blastJump

@@ -19,8 +19,11 @@ module.exports = function evaluateObject(obj, p) {
 	particleManager.emitParticle("ghost", p.position)
 
 	p.lastVaildPosition = new Vector3(p.position.x, p.position.y, p.position.z)
-	soundbrick({
-		url: `/sounds/port.ogg`,
-		isGlobal: true,
-	}, p)
+	soundbrick(
+		{
+			url: `/sounds/port.ogg`,
+			isGlobal: true,
+		},
+		p
+	)
 }

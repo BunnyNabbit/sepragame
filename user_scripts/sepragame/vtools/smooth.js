@@ -14,7 +14,7 @@ async function tool(player) {
 					positions.push({
 						x: pickX + x,
 						y: pickY + y,
-						z: z
+						z: z,
 					})
 					break
 				}
@@ -29,16 +29,17 @@ async function tool(player) {
 		if (blockType) {
 			let points = 0
 
-			if (await voxelWorld.world.getBlockType(new Vector3(p.x, p.y - 1, p.z)) != 0) points++
-			if (await voxelWorld.world.getBlockType(new Vector3(p.x - 1, p.y, p.z)) != 0) points++
-			if (await voxelWorld.world.getBlockType(new Vector3(p.x + 1, p.y, p.z)) != 0) points++
-			if (await voxelWorld.world.getBlockType(new Vector3(p.x, p.y, p.z - 1)) != 0) points++
-			if (await voxelWorld.world.getBlockType(new Vector3(p.x, p.y, p.z + 1)) != 0) points++
-			if (points < 4) blockbuff.push({
-				x: p.x,
-				y: p.y,
-				z: p.z,
-			})
+			if ((await voxelWorld.world.getBlockType(new Vector3(p.x, p.y - 1, p.z))) != 0) points++
+			if ((await voxelWorld.world.getBlockType(new Vector3(p.x - 1, p.y, p.z))) != 0) points++
+			if ((await voxelWorld.world.getBlockType(new Vector3(p.x + 1, p.y, p.z))) != 0) points++
+			if ((await voxelWorld.world.getBlockType(new Vector3(p.x, p.y, p.z - 1))) != 0) points++
+			if ((await voxelWorld.world.getBlockType(new Vector3(p.x, p.y, p.z + 1))) != 0) points++
+			if (points < 4)
+				blockbuff.push({
+					x: p.x,
+					y: p.y,
+					z: p.z,
+				})
 		}
 	})
 
@@ -47,4 +48,4 @@ async function tool(player) {
 	})
 }
 
-module.exports = { use: tool, attackDescription: { name: "Smooth", description: "Removes any blocks that appear \"rough\"" }, blockmode: "out" }
+module.exports = { use: tool, attackDescription: { name: "Smooth", description: 'Removes any blocks that appear "rough"' }, blockmode: "out" }

@@ -1,4 +1,5 @@
-async function inBlockFromWorldPosition(pos) { // Check if a position (that isn't used for voxel world) is inside a block
+async function inBlockFromWorldPosition(pos) {
+	// Check if a position (that isn't used for voxel world) is inside a block
 	// The world is made out of 4x4x4 cubes
 	const worldX = pos.x / 4
 	const worldY = pos.y / 4

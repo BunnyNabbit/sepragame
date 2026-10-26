@@ -33,8 +33,8 @@ var morphData = {
 		animDead: -90,
 		mouth: {
 			x: 4,
-			y: 2
-		} 
+			y: 2,
+		},
 	},
 	finished: false,
 	usableAttacks: 1,
@@ -46,7 +46,7 @@ var morphData = {
 	webFileUrl: "weakling2.glb",
 	webModelRotationOffset: 1.565, // For the visual model
 	webLogicRotationOffset: 0, // For converting BH rotation
-	webNetworkRotationOffset: 1.565 // for other player's model
+	webNetworkRotationOffset: 1.565, // for other player's model
 }
 
 module.exports = morphData

@@ -1,7 +1,7 @@
 worldObjectTypes = {
-	"timetrial": require("./evaluate/timetrialEvaluate.js"),
-	"landmark": require("./evaluate/landmarkEvaluate.js"),
-	"portal": require("./evaluate/portalEvaluate.js"),
+	timetrial: require("./evaluate/timetrialEvaluate.js"),
+	landmark: require("./evaluate/landmarkEvaluate.js"),
+	portal: require("./evaluate/portalEvaluate.js"),
 }
 
 module.exports = async function evaluateWorldObjectsOnPlayer(player) {
@@ -11,8 +11,8 @@ module.exports = async function evaluateWorldObjectsOnPlayer(player) {
 			chunks.push(await voxelWorld.getChunkMeta(Math.floor(player.position.x / 64) + x, Math.floor(player.position.y / 64) + y))
 		}
 	}
-	chunks.forEach(chunk => {
-		chunk.objects.forEach(obj => {
+	chunks.forEach((chunk) => {
+		chunk.objects.forEach((obj) => {
 			// Evaluate
 			worldObjectTypes[obj.objectName](obj, player)
 		})

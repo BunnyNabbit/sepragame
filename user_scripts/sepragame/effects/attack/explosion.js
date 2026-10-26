@@ -15,7 +15,6 @@ function particle(position) {
 }
 
 function heat(position) {
-
 	let brick = reuseHandler.reuseBrick()
 	if (brick == -1) return console.warn(brick)
 
@@ -37,7 +36,7 @@ function heat(position) {
 		time++
 
 		brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - + sped * Math.cos(prot / debug)
+		brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
 		brick.position.z = brick.position.z += grav
 
 		brick.setPosition(brick.position)
@@ -51,12 +50,10 @@ function heat(position) {
 			reuseHandler.deleteBrick(brick)
 			clearInterval(loop)
 		}
-
-	}, 25);
+	}, 25)
 }
 
 function sm(position) {
-
 	let brick = reuseHandler.reuseBrick()
 	if (brick == -1) return console.warn(brick)
 
@@ -78,7 +75,7 @@ function sm(position) {
 		time++
 
 		brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - + sped * Math.cos(prot / debug)
+		brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
 		brick.position.z = brick.position.z += grav
 
 		brick.setPosition(brick.position)
@@ -92,8 +89,7 @@ function sm(position) {
 			reuseHandler.deleteBrick(brick)
 			clearInterval(loop)
 		}
-
-	}, 25);
+	}, 25)
 }
 
 module.exports = particle

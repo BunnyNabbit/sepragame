@@ -33,7 +33,7 @@ Game.on("playerJoin", async (p) => {
 		p.setScale(new Vector3(0, 0, p.currentCreature.charmodel.cameraHeight))
 	})
 
-	p.on('mouseclick', () => {
+	p.on("mouseclick", () => {
 		if (!p.alive) return
 		if (p.godMode === true) {
 			p.atk1Cooldown = -5
@@ -85,7 +85,7 @@ Game.on("playerJoin", async (p) => {
 	p.on("moved", () => {
 		if (p.holdingObject) {
 			p.holdingObject.position.x = p.position.x + p.currentCreature.charmodel.mouth.x * Math.sin(p.rotation.z / debug)
-			p.holdingObject.position.y = p.position.y - + p.currentCreature.charmodel.mouth.x * Math.cos(p.rotation.z / debug)
+			p.holdingObject.position.y = p.position.y - +p.currentCreature.charmodel.mouth.x * Math.cos(p.rotation.z / debug)
 			p.holdingObject.position.z = p.position.z + p.currentCreature.charmodel.mouth.y
 
 			p.holdingObject.position.x += -0.5
@@ -118,47 +118,54 @@ Game.on("playerJoin", async (p) => {
 		soundbrick({
 			url: `/sounds/eat/bodyexplode.flac`,
 			isGlobal: false,
-			position: deathpos
+			position: deathpos,
 		})
 	})
 
-	p.keypress((key) => { // TODO: Switch case
-		if (key == "x") { // Marking
+	p.keypress((key) => {
+		// TODO: Switch case
+		if (key == "x") {
+			// Marking
 			if (p.alive === false) return
 			if (p.canMark) {
-				let obj = world.fruit.find(fruit => Game.pointDistance3D(fruit.position, p.position) < 10 && !fruit.heldBy && !fruit.persistent)
+				let obj = world.fruit.find((fruit) => Game.pointDistance3D(fruit.position, p.position) < 10 && !fruit.heldBy && !fruit.persistent)
 				if (obj) return markPersistent(obj)
-				obj = botManager.ingameBots.find(bot => Game.pointDistance3D(bot.position, p.position) < 10 && !bot.persistent)
+				obj = botManager.ingameBots.find((bot) => Game.pointDistance3D(bot.position, p.position) < 10 && !bot.persistent)
 				if (obj) return markPersistent(obj)
 			}
 			function markPersistent(obj) {
 				obj.persistent = true
 				for (let index = 0; index < 11; index++) {
-					setTimeout(() => {
-						particleManager.emitParticle("drippy", {
-							position: p.position,
-							color: "#a64dff",
-							directionalForce: randomIntFromInterval(1, 7) / 5,
-							direction: randomIntFromInterval(-35, 35) + p.rotation.z,
-							expire: 500,
-						})
-					}, randomIntFromInterval(1, 300));
+					setTimeout(
+						() => {
+							particleManager.emitParticle("drippy", {
+								position: p.position,
+								color: "#a64dff",
+								directionalForce: randomIntFromInterval(1, 7) / 5,
+								direction: randomIntFromInterval(-35, 35) + p.rotation.z,
+								expire: 500,
+							})
+						},
+						randomIntFromInterval(1, 300)
+					)
 				}
 				p.canMark = false
 				setTimeout(() => {
 					p.canMark = true
-				}, 100);
+				}, 100)
 			}
 		}
 
-		if (key == "a") { // Selector left
+		if (key == "a") {
+			// Selector left
 			if (p.inSelector == true) {
 				p.currentindex--
 				p.updateSelector()
 			}
 		}
 
-		if (key == "d") { // Selector right
+		if (key == "d") {
+			// Selector right
 			if (p.inSelector == true) {
 				p.currentindex++
 				p.updateSelector()
@@ -168,13 +175,17 @@ Game.on("playerJoin", async (p) => {
 		if (key == "space") {
 			if (p.inSelector == true) {
 				if (p.selectorData[p.currentindex].trigger) {
-					soundbrick({
-						url: `7cFaAjBrC8sW3L3ijcpkgZqEsqYFY2JQzjZepXLe41QSjfJw8UoWjvuqT6WBPUhVubSkFYRK8iFpQBMzTRxjJfTnwpp2cpcyxV47VtzbWdE23MW2cQTZN9yGj`,
-						sfxr: true,
-						isGlobal: true,
-					}, p)
+					soundbrick(
+						{
+							url: `7cFaAjBrC8sW3L3ijcpkgZqEsqYFY2JQzjZepXLe41QSjfJw8UoWjvuqT6WBPUhVubSkFYRK8iFpQBMzTRxjJfTnwpp2cpcyxV47VtzbWdE23MW2cQTZN9yGj`,
+							sfxr: true,
+							isGlobal: true,
+						},
+						p
+					)
 					p.selectorData[p.currentindex].trigger(p)
-				} else { // It's a creature
+				} else {
+					// It's a creature
 					p.inSelector = false
 					p.switchCreature(p.selectorData[p.currentindex].saveID)
 					p.setPosition(new Vector3(randomIntFromInterval(-500, 500), randomIntFromInterval(-500, 500), 500))
@@ -188,29 +199,29 @@ Game.on("playerJoin", async (p) => {
 					case "builder":
 						p.switchCreature("builderm2")
 						p.centerPrint("Mode 2 / 3", 3)
-						break;
+						break
 					case "builderm2":
 						p.switchCreature("builderm3")
 						p.centerPrint("Mode 3 / 3", 3)
-						break;
+						break
 					case "builderm3":
 						p.switchCreature("builder")
 						p.centerPrint("Mode 1 / 3", 3)
-						break;
+						break
 
 					default:
-						break;
+						break
 				}
 			}
 		}
-
 
 		if (key === "space") {
 			if (p.blastJumpActive == true) {
 				p.blastJumpActive = false
 			}
 		}
-		if (key === "shift") { // Sprinting
+		if (key === "shift") {
+			// Sprinting
 			if (p.currentCreature.class === "none") return
 			if (p.stamina < 45) return
 			if (p.currentCreature.class === "builder") {
@@ -221,7 +232,6 @@ Game.on("playerJoin", async (p) => {
 				p.sprintCoolDown += 3
 				p.socketio.emit("gui", [{ type: "stamina", value: p.stamina }])
 			}
-
 		}
 		if (key == "1") {
 			if (typeof p.currentCreature.attacks.atk1 === "undefined") return
@@ -283,7 +293,8 @@ Game.on("playerJoin", async (p) => {
 				}
 			}
 		}
-		if (key === "e") { // (SLASH) Eat food or enable hovering and "bump" position
+		if (key === "e") {
+			// (SLASH) Eat food or enable hovering and "bump" position
 			if (p.inSelector === true) return
 			if (p.currentCreature.class === "builder") {
 				if (p.clientType === "Web") p.setHover(true)
@@ -326,22 +337,25 @@ Game.on("playerJoin", async (p) => {
 			} else {
 				if (p.holdingObject) {
 					return p.holdingObject.eat(p) // If the creature has a item on it's mouth then eat it
-				} else { // Grab fruit
-					let obj = world.fruit.find(fruit => Game.pointDistance3D(fruit.position, p.position) < 10 && !fruit.heldBy)
+				} else {
+					// Grab fruit
+					let obj = world.fruit.find((fruit) => Game.pointDistance3D(fruit.position, p.position) < 10 && !fruit.heldBy)
 					if (obj) obj.hold(p)
 				}
 				particleManager.emitParticle("slash", p.position)
 			}
 		}
 
-		if (key === "q") { // Drop food or disable hovering
+		if (key === "q") {
+			// Drop food or disable hovering
 			if (p.currentCreature.class === "builder") {
 				if (p.clientType === "Web") p.setHover(false)
 			}
 			if (p.holdingObject) p.holdingObject.drop(p) // Drop any item
 		}
 
-		if (key === "c") { // Toggle sitting / force idle
+		if (key === "c") {
+			// Toggle sitting / force idle
 			if (p.charbot.idletime > 150) {
 				p.charbot.idletime = 0
 			} else {
@@ -350,7 +364,8 @@ Game.on("playerJoin", async (p) => {
 		}
 	})
 
-	p.setInterval(async () => { // Main logic interval (100ms)
+	p.setInterval(async () => {
+		// Main logic interval (100ms)
 
 		p.atk1Cooldown--
 		p.atk2Cooldown--
@@ -361,38 +376,38 @@ Game.on("playerJoin", async (p) => {
 		if (p.clientType === "Brick Hill") {
 			if (typeof webClient.characters[p.webNetId] !== "undefined") {
 				webClient.characters[p.webNetId].position = { x: p.position.x, y: p.position.y, z: p.position.z, r: p.rotation.z }
-				webClient.socketio.emit('pm', { p: { x: p.position.x, y: p.position.y, z: p.position.z, r: p.rotation.z }, netId: p.webNetId }); // Player movement
+				webClient.socketio.emit("pm", { p: { x: p.position.x, y: p.position.y, z: p.position.z, r: p.rotation.z }, netId: p.webNetId }) // Player movement
 			} else console.log("something is wrong!")
 		}
 
 		switch (p.musicBiome) {
 			case 195: // Snow
 				p.skyColor = lerpColor(p.skyColor, "#00e6e6", 0.025)
-				break;
+				break
 			case 16: // Void
 				p.skyColor = lerpColor(p.skyColor, "#000000", 0.025)
-				break;
+				break
 			case 2: // Grass Lands
 				p.skyColor = lerpColor(p.skyColor, "#66ccff", 0.025)
-				break;
+				break
 			case 3: // Desert
 				p.skyColor = lerpColor(p.skyColor, "#FFDB8E", 0.025)
-				break;
+				break
 			case 55: // Weak Lands
 				p.skyColor = lerpColor(p.skyColor, "#cc66ff", 0.025)
-				break;
+				break
 			case 1: // Crimson
 				p.skyColor = lerpColor(p.skyColor, "#b30000", 0.025)
-				break;
+				break
 			case 238: // Stones
 				p.skyColor = lerpColor(p.skyColor, "#800000", 0.025)
-				break;
+				break
 			case 44: // Mushrooms
 				p.skyColor = lerpColor(p.skyColor, "#66ffe0", 0.025)
-				break;
+				break
 			case -3: // Caves
 				p.skyColor = lerpColor(p.skyColor, "#000000", 0.025)
-				break;
+				break
 		}
 		if (p.lastSkyColor !== p.skyColor) p.setEnvironment({ skyColor: p.skyColor })
 		p.lastSkyColor = p.skyColor
@@ -401,7 +416,8 @@ Game.on("playerJoin", async (p) => {
 			p.setCameraRotation(new Vector3(0, 0, 270))
 			p.setPosition(new Vector3(0, 0, -21))
 		} else {
-			if (world.portals.some(portal => Game.pointDistance3D(portal.position, p.position) < portal.size)) { // Portals
+			if (world.portals.some((portal) => Game.pointDistance3D(portal.position, p.position) < portal.size)) {
+				// Portals
 				particleManager.emitParticle("ghost", p.position)
 				particleManager.emitParticle("ghost", p.position)
 				particleManager.emitParticle("ghost", p.position)
@@ -409,7 +425,7 @@ Game.on("playerJoin", async (p) => {
 				particleManager.emitParticle("ghost", p.position)
 				particleManager.emitParticle("ghost", p.position)
 
-				p.setPosition(world.portals.find(portal => Game.pointDistance3D(portal.position, p.position) < portal.size).teleportPosition)
+				p.setPosition(world.portals.find((portal) => Game.pointDistance3D(portal.position, p.position) < portal.size).teleportPosition)
 
 				particleManager.emitParticle("ghost", p.position)
 				particleManager.emitParticle("ghost", p.position)
@@ -419,10 +435,13 @@ Game.on("playerJoin", async (p) => {
 				particleManager.emitParticle("ghost", p.position)
 
 				p.lastVaildPosition = new Vector3(p.position.x, p.position.y, p.position.z)
-				soundbrick({
-					url: `/sounds/port.ogg`,
-					isGlobal: true,
-				}, p)
+				soundbrick(
+					{
+						url: `/sounds/port.ogg`,
+						isGlobal: true,
+					},
+					p
+				)
 			}
 
 			p.ui1 = 1
@@ -439,8 +458,6 @@ Game.on("playerJoin", async (p) => {
 			if (p.atk4Cooldown > 0) p.ui4 = "\\c64\\c0"
 			if (p.atk5Cooldown > 0) p.ui5 = "\\c65\\c0"
 		}
-
-
 
 		if (p.clientType == "Web") var guiChanges = [] // Optimize sending gui changes like energy and stamina
 
@@ -459,67 +476,76 @@ Game.on("playerJoin", async (p) => {
 		}
 
 		if (p.clientType === "Web") {
-			if (p.atk1OldCooldownState !== (p.atk1Cooldown > 0)) {
-				if (p.atk1OldCooldownState === true) { // New state is false
+			if (p.atk1OldCooldownState !== p.atk1Cooldown > 0) {
+				if (p.atk1OldCooldownState === true) {
+					// New state is false
 					if (p.selectedattack === 1) {
 						guiChanges.push({ type: "slot", number: 1, inner: "selection", value: "selected" })
 					} else {
 						guiChanges.push({ type: "slot", number: 1, inner: "selection", value: "unselected" })
 					}
-				} else { // New state is true
+				} else {
+					// New state is true
 					guiChanges.push({ number: 1, type: "slot", inner: "selection", value: "cooldown" })
 				}
 				p.atk1OldCooldownState = p.atk1Cooldown > 0
 			}
-			if (p.atk2OldCooldownState !== (p.atk2Cooldown > 0)) {
-				if (p.atk2OldCooldownState === true) { // New state is false
+			if (p.atk2OldCooldownState !== p.atk2Cooldown > 0) {
+				if (p.atk2OldCooldownState === true) {
+					// New state is false
 					if (p.selectedattack === 2) {
 						guiChanges.push({ type: "slot", number: 2, inner: "selection", value: "selected" })
 					} else {
 						guiChanges.push({ type: "slot", number: 2, inner: "selection", value: "unselected" })
 					}
-				} else { // New state is true
+				} else {
+					// New state is true
 					guiChanges.push({ number: 2, type: "slot", inner: "selection", value: "cooldown" })
 				}
 				p.atk2OldCooldownState = p.atk2Cooldown > 0
 			}
-			if (p.atk3OldCooldownState !== (p.atk3Cooldown > 0)) {
-				if (p.atk3OldCooldownState === true) { // New state is false
+			if (p.atk3OldCooldownState !== p.atk3Cooldown > 0) {
+				if (p.atk3OldCooldownState === true) {
+					// New state is false
 					if (p.selectedattack === 3) {
 						guiChanges.push({ type: "slot", number: 3, inner: "selection", value: "selected" })
 					} else {
 						guiChanges.push({ type: "slot", number: 3, inner: "selection", value: "unselected" })
 					}
-				} else { // New state is true
+				} else {
+					// New state is true
 					guiChanges.push({ number: 3, type: "slot", inner: "selection", value: "cooldown" })
 				}
 				p.atk3OldCooldownState = p.atk3Cooldown > 0
 			}
-			if (p.atk4OldCooldownState !== (p.atk4Cooldown > 0)) {
-				if (p.atk4OldCooldownState === true) { // New state is false
+			if (p.atk4OldCooldownState !== p.atk4Cooldown > 0) {
+				if (p.atk4OldCooldownState === true) {
+					// New state is false
 					if (p.selectedattack === 4) {
 						guiChanges.push({ type: "slot", number: 4, inner: "selection", value: "selected" })
 					} else {
 						guiChanges.push({ type: "slot", number: 4, inner: "selection", value: "unselected" })
 					}
-				} else { // New state is true
+				} else {
+					// New state is true
 					guiChanges.push({ number: 4, type: "slot", inner: "selection", value: "cooldown" })
 				}
 				p.atk4OldCooldownState = p.atk4Cooldown > 0
 			}
-			if (p.atk5OldCooldownState !== (p.atk5Cooldown > 0)) {
-				if (p.atk5OldCooldownState === true) { // New state is false
+			if (p.atk5OldCooldownState !== p.atk5Cooldown > 0) {
+				if (p.atk5OldCooldownState === true) {
+					// New state is false
 					if (p.selectedattack === 5) {
 						guiChanges.push({ type: "slot", number: 5, inner: "selection", value: "selected" })
 					} else {
 						guiChanges.push({ type: "slot", number: 5, inner: "selection", value: "unselected" })
 					}
-				} else { // New state is true
+				} else {
+					// New state is true
 					guiChanges.push({ number: 5, type: "slot", inner: "selection", value: "cooldown" })
 				}
 				p.atk5OldCooldownState = p.atk5Cooldown > 0
 			}
-
 
 			if (guiChanges.length > 0) p.socketio.emit("gui", guiChanges) // Send all the GUI changes to the client
 		}
@@ -540,20 +566,20 @@ Game.on("playerJoin", async (p) => {
 			}
 		}
 
-
 		if (p.clientType === "Brick Hill" && p.inSelector == false) {
 			p.topPrint(`${p.currentAttackName} | ${p.ui1} ${p.ui2} ${p.ui3} ${p.ui4} ${p.ui5}`, 1)
 			p.bottomPrint(`\\c4ENERGY: \\c7[${p.energy}%] ${barGen(7, 4, p.energy, 100)} \\c5STAMINA: ${Math.round((p.stamina / 300) * 100)}% ${barGen(5, 8, p.stamina, 300)}`, 1)
 		}
 		p.bitecooldown--
-		if (p.inSelector === false) { // Ground check for footsteps
+		if (p.inSelector === false) {
+			// Ground check for footsteps
 			p.onGround = await inBlock(new Vector3(p.position.x, p.position.y, p.position.z - 2))
 		}
-
 	}, 100)
 
 	let evaluatingWorldObjects = false
-	p.setInterval(async () => { // World/chunk meta evaluate objects interval (350ms)
+	p.setInterval(async () => {
+		// World/chunk meta evaluate objects interval (350ms)
 		if (!evaluatingWorldObjects) {
 			evaluatingWorldObjects = true
 
@@ -563,7 +589,8 @@ Game.on("playerJoin", async (p) => {
 		}
 	}, 350)
 
-	p.setInterval(async () => { // Long interval (1000ms)
+	p.setInterval(async () => {
+		// Long interval (1000ms)
 		if (p.sprintCoolDown > 0) {
 			p.sprintCoolDown--
 		}
@@ -581,20 +608,25 @@ Game.on("playerJoin", async (p) => {
 		if (!p.inSelector) {
 			if (p.timetrial) {
 				p.musicBiome = -2
-				soundbrick({
-					url: `/audio/voxelborn.mp3`,
-					isGlobal: true,
-					isloop: true
-				}, p)
+				soundbrick(
+					{
+						url: `/audio/voxelborn.mp3`,
+						isGlobal: true,
+						isloop: true,
+					},
+					p
+				)
 			} else {
-				if (p.position.z < 200) { // Caves
-					if (p.position.z < -200) { // Deep caves
+				if (p.position.z < 200) {
+					// Caves
+					if (p.position.z < -200) {
+						// Deep caves
 						let blockType = await voxelWorld.world.getBlockType(new Vector3(Math.floor(p.position.x / 4), Math.floor(p.position.y / 4)), 2)
 						p.musicBiome = -4
 						switch (blockType) {
 							case 195: // Snow
 								// FTODO: sepraThermic replace/add license
-								break;
+								break
 							default:
 								// FTODO: awful replace
 								break
@@ -605,13 +637,16 @@ Game.on("playerJoin", async (p) => {
 						switch (blockType) {
 							case 195: // Snow
 								// FTODO: sepraThermic replace/add license
-								break;
+								break
 							default:
-								soundbrick({
-									url: `/sounds/20201106.mp3`,
-									isGlobal: true,
-									isloop: true
-								}, p)
+								soundbrick(
+									{
+										url: `/sounds/20201106.mp3`,
+										isGlobal: true,
+										isloop: true,
+									},
+									p
+								)
 								break
 						}
 					}
@@ -626,79 +661,103 @@ Game.on("playerJoin", async (p) => {
 								case 195: // Snow
 									p.musicBiome = blockType
 									p.musicBiomeTimer = 10
-									soundbrick({
-										url: `/music/Alpine_Ascents.mp3`,
-										isGlobal: true,
-										isloop: true
-									}, p)
-									break;
+									soundbrick(
+										{
+											url: `/music/Alpine_Ascents.mp3`,
+											isGlobal: true,
+											isloop: true,
+										},
+										p
+									)
+									break
 								case 214: // Orange
 									p.musicBiome = blockType
 									p.musicBiomeTimer = 10
-									break;
+									break
 								case 16: // Void
 									p.musicBiome = blockType
 									p.musicBiomeTimer = 10
-									soundbrick({
-										url: `/music/20210314.mp3`,
-										isGlobal: true,
-										isloop: true
-									}, p)
-									break;
+									soundbrick(
+										{
+											url: `/music/20210314.mp3`,
+											isGlobal: true,
+											isloop: true,
+										},
+										p
+									)
+									break
 								case 2: // Grass Lands
 									p.musicBiome = blockType
 									p.musicBiomeTimer = 10
-									soundbrick({
-										url: `/music/20180121.mp3`,
-										isGlobal: true,
-										isloop: true
-									}, p)
-									break;
+									soundbrick(
+										{
+											url: `/music/20180121.mp3`,
+											isGlobal: true,
+											isloop: true,
+										},
+										p
+									)
+									break
 								case 3: // Desert
 									p.musicBiome = blockType
 									p.musicBiomeTimer = 10
-									soundbrick({
-										url: `/music/20180121.mp3`,
-										isGlobal: true,
-										isloop: true
-									}, p)
-									break;
+									soundbrick(
+										{
+											url: `/music/20180121.mp3`,
+											isGlobal: true,
+											isloop: true,
+										},
+										p
+									)
+									break
 								case 55: // Weak Lands
 									p.musicBiome = blockType
 									p.musicBiomeTimer = 10
-									soundbrick({
-										url: `/music/20200310.ogg`,
-										isGlobal: true,
-										isloop: true
-									}, p)
-									break;
+									soundbrick(
+										{
+											url: `/music/20200310.ogg`,
+											isGlobal: true,
+											isloop: true,
+										},
+										p
+									)
+									break
 								case 1: // Crimson
 									p.musicBiome = blockType
 									p.musicBiomeTimer = 10
-									soundbrick({
-										url: `/music/20180126.mp3`,
-										isGlobal: true,
-										isloop: true
-									}, p)
-									break;
+									soundbrick(
+										{
+											url: `/music/20180126.mp3`,
+											isGlobal: true,
+											isloop: true,
+										},
+										p
+									)
+									break
 								case 238: // Stones
 									p.musicBiome = blockType
 									p.musicBiomeTimer = 10
-									soundbrick({
-										url: `/music/20190112.mp3`,
-										isGlobal: true,
-										isloop: true
-									}, p)
-									break;
+									soundbrick(
+										{
+											url: `/music/20190112.mp3`,
+											isGlobal: true,
+											isloop: true,
+										},
+										p
+									)
+									break
 								case 44: // Mushrooms
 									p.musicBiome = blockType
 									p.musicBiomeTimer = 10
-									soundbrick({
-										url: `/music/20190819.mp3`,
-										isGlobal: true,
-										isloop: true
-									}, p)
-									break;
+									soundbrick(
+										{
+											url: `/music/20190819.mp3`,
+											isGlobal: true,
+											isloop: true,
+										},
+										p
+									)
+									break
 							}
 						}
 					}
@@ -717,18 +776,18 @@ Game.on("playerJoin", async (p) => {
 
 const fs = require("fs")
 const SmartBuffer = require("smart-buffer").SmartBuffer
-Game.on('playerLeave', (p) => {
+Game.on("playerLeave", (p) => {
 	if (p.holdingObject) p.holdingObject.drop(p) // Drop any item
 	p.destroyed = true // p.destory() doesn't appear to set destroyed true for some reason and results in BH character models to remain
 	//p.charbot.destroy() // This is also another solution to the above problem
 
 	//webClient.characters[p.webNetId] = undefined
 	if (p.clientType === "Brick Hill") {
-		Game.players.forEach(player => {
+		Game.players.forEach((player) => {
 			if (player.clientType === "Web") {
 				player.message(`\\c6[SERVER]: \\c0${p.username} has left the server!`)
 			}
-		});
+		})
 		webClient.socketio.emit("deleteplayer", p.webNetId)
 	}
 	delete webClient.characters[p.webNetId]
@@ -736,24 +795,24 @@ Game.on('playerLeave', (p) => {
 		if (p?.undoBuffer?.undo.length) {
 			let buff = new SmartBuffer()
 			buff.writeUInt32LE(p.undoBuffer.undo.length)
-			p.undoBuffer.undo.forEach(element => {
+			p.undoBuffer.undo.forEach((element) => {
 				buff.writeUInt8(element[0])
 				buff.writeUInt8(element[1])
 				buff.writeInt32LE(element[2].x)
 				buff.writeInt32LE(element[2].y)
 				buff.writeInt32LE(element[2].z)
 			})
-			fs.writeFileSync(`./undoHistory/${[...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('')}.bin`, buff.toBuffer())
+			fs.writeFileSync(`./undoHistory/${[...Array(30)].map((i) => (~~(Math.random() * 36)).toString(36)).join("")}.bin`, buff.toBuffer())
 		}
 	} catch (error) {
 		console.log(error)
 	}
 
-	if (constants.discordEnabled) bot.channels.get(channel).send(`${p.username} left ${gameName}`);
+	if (constants.discordEnabled) bot.channels.get(channel).send(`${p.username} left ${gameName}`)
 })
 
 function messageAllExcept(message, player) {
-	Game.players.forEach(other => {
+	Game.players.forEach((other) => {
 		if (player !== other) other.message(message)
 	})
 }
@@ -761,24 +820,26 @@ function messageAllExcept(message, player) {
 const colorcodeRegex = /\\c[0-9]/g
 const hexcodeRegex = /(\[#[0-9a-fA-F]{6}\])/g
 const internalcodeRegex = /<color:[0-9A-F]{6}>/g
-const rateLimit = new Set();
+const rateLimit = new Set()
 
 swearReplacements = ["*utterance*", "*screeches*", "*murrs*", "*caws*", "I am very silly."]
 
-Game.on("chat", (player, message) => { // Brick Hill chats
+Game.on("chat", (player, message) => {
+	// Brick Hill chats
 	message = message.trim()
 	if (message.length > 85) message = message.substring(0, 85) + "..."
 
 	if (rateLimit.has(player.userId)) return player.message("You're chatting too fast!")
 
-	rateLimit.add(player.userId);
+	rateLimit.add(player.userId)
 	setTimeout(() => rateLimit.delete(player.userId), 2000)
 
 	const remark = filter.isSwear(message)
 	if (remark) {
 		const swearReplacement = swearReplacements[randomIntFromInterval(0, 4)]
-		console.log(`[x]: ${player.username}: ${message}`);
-		if (remark === true) { // Boolean = slient
+		console.log(`[x]: ${player.username}: ${message}`)
+		if (remark === true) {
+			// Boolean = slient
 			player.message(`\\c7${removeTextFormatting(player.username)}\\c1:\\c0 ` + message)
 			if (constants.discordEnabled) bot.channels.get(channel).send(`${gameName} | ${player.currentCreature.discordEmoji} ${player.username}: ${swearReplacement}`)
 			messageAllExcept(`\\c7${removeTextFormatting(player.username)}\\c1:\\c0 ` + swearReplacement, player)
@@ -792,7 +853,7 @@ Game.on("chat", (player, message) => { // Brick Hill chats
 		return player.message("Don't swear! Your message has not been sent.")
 	}
 
-	console.log(`${player.username}: ${message}`);
+	console.log(`${player.username}: ${message}`)
 	Game.emit("chatted", player, message)
 	player.emit("chatted", message)
 	Game.messageAll(`\\c7${removeTextFormatting(player.username)}\\c1:\\c0 ` + message)
@@ -805,7 +866,7 @@ function removeTextFormatting(str) {
 	return str
 }
 
-Game.on('chatted', (caller, msg) => {
+Game.on("chatted", (caller, msg) => {
 	if (constants.discordEnabled) bot.channels.get(channel).send(`${gameName} | ${caller.currentCreature.discordEmoji} ${caller.username}: ${msg}`)
 	//if (caller.clientType === "Web") return
 	//Game.players.forEach(player => {
@@ -815,7 +876,8 @@ Game.on('chatted', (caller, msg) => {
 	//});
 })
 
-bot.on("message", async message => { //Sends messages from discord to all connected clients
+bot.on("message", async (message) => {
+	//Sends messages from discord to all connected clients
 	if (message.channel.id === channel) {
 		if (message.author.bot) return
 		if (filter.isSwear(message.content)) {
@@ -831,65 +893,68 @@ bot.on("message", async message => { //Sends messages from discord to all connec
 	}
 })
 
-/**
- * A linear interpolator for hexadecimal colors
+/**A linear interpolator for hexadecimal colors
+ *
+ * @example // returns #7F7F7F lerpColor('#000000', '#ffffff', 0.5)
+ *
  * @param {String} a
  * @param {String} b
  * @param {Number} amount
- * @example
- * // returns #7F7F7F
- * lerpColor('#000000', '#ffffff', 0.5)
  * @returns {String}
  */
 function lerpColor(a, b, amount) {
-
-	var ah = parseInt(a.replace(/#/g, ''), 16),
-		ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
-		bh = parseInt(b.replace(/#/g, ''), 16),
-		br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
+	var ah = parseInt(a.replace(/#/g, ""), 16),
+		ar = ah >> 16,
+		ag = (ah >> 8) & 0xff,
+		ab = ah & 0xff,
+		bh = parseInt(b.replace(/#/g, ""), 16),
+		br = bh >> 16,
+		bg = (bh >> 8) & 0xff,
+		bb = bh & 0xff,
 		rr = ar + amount * (br - ar),
 		rg = ag + amount * (bg - ag),
-		rb = ab + amount * (bb - ab);
+		rb = ab + amount * (bb - ab)
 
-	return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
+	return "#" + (((1 << 24) + (rr << 16) + (rg << 8) + rb) | 0).toString(16).slice(1)
 }
 
-function barGen(BCFull, BCEmpty, var1, var2) { // TODO: stop!!!
+function barGen(BCFull, BCEmpty, var1, var2) {
+	// TODO: stop!!!
 	var dumbBar = ``
 	let bob = var1 / var2
 	if (0.99 < bob) {
 		dumbBar = `\\c${BCFull}////////////////////\\c${BCEmpty}`
 	} else if (0.95 < bob) {
 		dumbBar = `\\c${BCFull}///////////////////\\c${BCEmpty}/`
-	} else if (0.90 < bob) {
+	} else if (0.9 < bob) {
 		dumbBar = `\\c${BCFull}//////////////////\\c${BCEmpty}//`
 	} else if (0.85 < bob) {
 		dumbBar = `\\c${BCFull}/////////////////\\c${BCEmpty}///`
-	} else if (0.80 < bob) {
+	} else if (0.8 < bob) {
 		dumbBar = `\\c${BCFull}////////////////\\c${BCEmpty}////`
 	} else if (0.75 < bob) {
 		dumbBar = `\\c${BCFull}///////////////\\c${BCEmpty}/////`
-	} else if (0.70 < bob) {
+	} else if (0.7 < bob) {
 		dumbBar = `\\c${BCFull}//////////////\\c${BCEmpty}//////`
 	} else if (0.65 < bob) {
 		dumbBar = `\\c${BCFull}/////////////\\c${BCEmpty}///////`
-	} else if (0.60 < bob) {
+	} else if (0.6 < bob) {
 		dumbBar = `\\c${BCFull}////////////\\c${BCEmpty}////////`
 	} else if (0.55 < bob) {
 		dumbBar = `\\c${BCFull}///////////\\c${BCEmpty}/////////`
-	} else if (0.50 < bob) {
+	} else if (0.5 < bob) {
 		dumbBar = `\\c${BCFull}//////////\\c${BCEmpty}//////////`
 	} else if (0.45 < bob) {
 		dumbBar = `\\c${BCFull}/////////\\c${BCEmpty}///////////`
-	} else if (0.40 < bob) {
+	} else if (0.4 < bob) {
 		dumbBar = `\\c${BCFull}////////\\c${BCEmpty}////////////`
 	} else if (0.35 < bob) {
 		dumbBar = `\\c${BCFull}///////\\c${BCEmpty}/////////////`
-	} else if (0.30 < bob) {
+	} else if (0.3 < bob) {
 		dumbBar = `\\c${BCFull}//////\\c${BCEmpty}//////////////`
 	} else if (0.25 < bob) {
 		dumbBar = `\\c${BCFull}/////\\c${BCEmpty}///////////////`
-	} else if (0.20 < bob) {
+	} else if (0.2 < bob) {
 		dumbBar = `\\c${BCFull}////\\c${BCEmpty}////////////////`
 	} else if (0.15 < bob) {
 		dumbBar = `\\c${BCFull}///\\c${BCEmpty}/////////////////`

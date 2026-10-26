@@ -8,22 +8,22 @@ function spikes(player, attack) {
 
 	setTimeout(() => {
 		pos.x = pos.x += 14 * Math.sin(prot / debug)
-		pos.y = pos.y - + 14 * Math.cos(prot / debug)
+		pos.y = pos.y - +14 * Math.cos(prot / debug)
 		spike(player, new Vector3(pos.x, pos.y, pos.z), attack)
 	}, 100)
 	setTimeout(() => {
 		pos.x = pos.x += 14 * Math.sin(prot / debug)
-		pos.y = pos.y - + 14 * Math.cos(prot / debug)
+		pos.y = pos.y - +14 * Math.cos(prot / debug)
 		spike(player, new Vector3(pos.x, pos.y, pos.z), attack)
 	}, 200)
 	setTimeout(() => {
 		pos.x = pos.x += 14 * Math.sin(prot / debug)
-		pos.y = pos.y - + 14 * Math.cos(prot / debug)
+		pos.y = pos.y - +14 * Math.cos(prot / debug)
 		spike(player, new Vector3(pos.x, pos.y, pos.z), attack)
 	}, 300)
 	setTimeout(() => {
 		pos.x = pos.x += 14 * Math.sin(prot / debug)
-		pos.y = pos.y - + 14 * Math.cos(prot / debug)
+		pos.y = pos.y - +14 * Math.cos(prot / debug)
 		spike(player, new Vector3(pos.x, pos.y, pos.z), attack)
 	}, 400)
 }
@@ -43,12 +43,11 @@ function spike(player, position, attack) {
 	brick.setOutline(true)
 	brick.setColor(attack.color)
 	brick.setScale(new Vector3(8, 8, 8))
-	brick.setPosition(new Vector3(position.x-4, position.y-4, position.z-7))
-
+	brick.setPosition(new Vector3(position.x - 4, position.y - 4, position.z - 7))
 
 	setTimeout(() => {
 		brick.setScale(new Vector3(2, 2, 8))
-		brick.setPosition(new Vector3(position.x-1, position.y-1, position.z))
+		brick.setPosition(new Vector3(position.x - 1, position.y - 1, position.z))
 		soundbrick({
 			url: `/sounds/spikes.ogg`,
 			position: brick.position,
@@ -76,8 +75,8 @@ function spike(player, position, attack) {
 				maxDistance: 30,
 			})
 			reuseHandler.deleteBrick(brick)
-		}, 500);
-	}, 500);
+		}, 500)
+	}, 500)
 }
 
 module.exports = spikes

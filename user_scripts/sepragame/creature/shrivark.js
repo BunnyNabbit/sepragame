@@ -39,20 +39,20 @@ attack4.attackHit = function (vit, player) {
 		for (let i = 0; i < 6; i++) {
 			setTimeout(() => {
 				vit.setSpeed(2)
-			}, 1000 * i);
+			}, 1000 * i)
 		}
 		setTimeout(() => {
 			vit.setSpeed(vit.currentCreature.speed)
-		}, 7000);
+		}, 7000)
 	} else {
 		for (let i = 0; i < 6; i++) {
 			setTimeout(() => {
 				vit.speed = 2
-			}, 1000 * i);
+			}, 1000 * i)
 		}
 		setTimeout(() => {
 			vit.speed = vit.currentCreature.speed
-		}, 7000);
+		}, 7000)
 	}
 }
 let attack5 = new Attack("blastJump")
@@ -91,12 +91,12 @@ var morphData = {
 		animDead: -90,
 		mouth: {
 			x: 2,
-			y: 1.3
+			y: 1.3,
 		},
 		bottom: {
 			x: -1,
-			y: 1.4
-		} 
+			y: 1.4,
+		},
 	},
 	finished: false,
 	usableAttacks: 1,
@@ -108,7 +108,7 @@ var morphData = {
 	webFileUrl: "weakling2.glb",
 	webModelRotationOffset: 1.565, // For the visual model
 	webLogicRotationOffset: 0, // For converting BH rotation
-	webNetworkRotationOffset: 1.565 // for other player's model
+	webNetworkRotationOffset: 1.565, // for other player's model
 }
 
 if (Game.serverSettings.sepraType === "chaotic") morphData.showInSelector = true

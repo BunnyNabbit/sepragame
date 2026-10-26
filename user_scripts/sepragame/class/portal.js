@@ -1,4 +1,5 @@
-class Portal extends Tickable { // TODO: use tickable stuff
+class Portal extends Tickable {
+	// TODO: use tickable stuff
 	constructor(portalPosition, teleportPosition, size) {
 		super()
 		this.position = portalPosition
@@ -12,8 +13,7 @@ class Portal extends Tickable { // TODO: use tickable stuff
 		this.removeAllListeners()
 		const index = world.portals.indexOf(this)
 
-		if (index !== -1)
-			world.portals.splice(index, 1)
+		if (index !== -1) world.portals.splice(index, 1)
 	}
 }
 world.portals = [] // why not in class? :(

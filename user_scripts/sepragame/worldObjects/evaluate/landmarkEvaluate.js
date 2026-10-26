@@ -5,8 +5,11 @@ module.exports = function evaluateObject(obj, p) {
 	p.lastLandmark = obj.name
 	//p.message(`Discovered: ${obj.name}`)
 	p.centerPrint(`${obj.name}`, 5)
-	soundbrick({
-		url: "/sounds/skid.ogg", // [Required]
-		isGlobal: true,
-	}, p)
+	soundbrick(
+		{
+			url: "/sounds/skid.ogg", // [Required]
+			isGlobal: true,
+		},
+		p
+	)
 }

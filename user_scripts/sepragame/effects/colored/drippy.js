@@ -3,7 +3,6 @@ function randomIntFromInterval(min, max) {
 }
 
 function particle(settings) {
-
 	let brick = reuseHandler.reuseBrick()
 	if (brick == -1) return
 
@@ -25,13 +24,14 @@ function particle(settings) {
 		grav += -0.06
 		if (splatter === false) {
 			brick.position.x = brick.position.x += settings.directionalForce * Math.sin(settings.direction / debug)
-			brick.position.y = brick.position.y - + settings.directionalForce * Math.cos(settings.direction / debug)
+			brick.position.y = brick.position.y - +settings.directionalForce * Math.cos(settings.direction / debug)
 			brick.position.z = brick.position.z += grav
 
-			if (await inBlock(brick.position) === true) { // Check if blood can splatter on the ground
+			if ((await inBlock(brick.position)) === true) {
+				// Check if blood can splatter on the ground
 				splatter = true
 
-				brick.position.z = (Math.floor(brick.position.z / 4)*4) + 3.8
+				brick.position.z = Math.floor(brick.position.z / 4) * 4 + 3.8
 
 				brick.setScale(new Vector3(0.75, 0.75, 0.5))
 
@@ -39,12 +39,11 @@ function particle(settings) {
 					url: `111113svC4bmtePoKctxw7WEZHwnWHPtUax1T762p74LNgJVZ4LeGRJhBJtiK1TjA143zYuWox3npDpnPDYZg9XUg7usSBwUswAtXkFWL88HKQnSnCAeVGL7`, // [Required]
 					sfxr: true,
 					isGlobal: false,
-					position: brick.position
+					position: brick.position,
 				})
 			}
 
 			brick.setPosition(brick.position)
-
 
 			if (time > 3) {
 				spin += randomrot
@@ -56,8 +55,7 @@ function particle(settings) {
 			reuseHandler.deleteBrick(brick)
 			clearInterval(loop)
 		}
-
-	}, 25);
+	}, 25)
 }
 
 module.exports = particle

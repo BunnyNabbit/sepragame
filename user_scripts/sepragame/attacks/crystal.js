@@ -16,7 +16,8 @@ function crystal(player, attack) {
 	let time = 0
 	let prot = player.rotation.z
 	let animColor = 0
-	var loop = setInterval(() => { // TODO: This could be optimized
+	var loop = setInterval(() => {
+		// TODO: This could be optimized
 		time++
 
 		if (time > 500 || player.alive === false) {
@@ -28,13 +29,12 @@ function crystal(player, attack) {
 			brick.setColor(attack.colors[animColor % 3])
 			bullets(player, brick.position, attack)
 		}
-
-	}, 25);
+	}, 25)
 }
 
 function bullets(player, turrentPosition, attack) {
-	let target = Game.players.find(vit => player !== vit && vit.alive === true && vit.inSelector === false && Game.pointDistance3D(vit.position, turrentPosition) < 70)
-	if (!target) target = botManager.ingameBots.find(vit => player !== vit && vit.alive === true && Game.pointDistance3D(vit.position, turrentPosition) < 70)
+	let target = Game.players.find((vit) => player !== vit && vit.alive === true && vit.inSelector === false && Game.pointDistance3D(vit.position, turrentPosition) < 70)
+	if (!target) target = botManager.ingameBots.find((vit) => player !== vit && vit.alive === true && Game.pointDistance3D(vit.position, turrentPosition) < 70)
 	if (!target) return
 	let brick = reuseHandler.reuseBrick()
 	if (brick == -1) return
@@ -57,12 +57,13 @@ function bullets(player, turrentPosition, attack) {
 	var loop = setInterval(() => {
 		time++
 		brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - + sped * Math.cos(prot / debug)
+		brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
 		brick.position.z = brick.position.z += grav
 		brick.setPosition(brick.position)
 
-		if (world.reflectors.some(reflector => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player)) { // Reflectors
-			player = world.reflectors.find(reflector => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player).player // Change the attacker
+		if (world.reflectors.some((reflector) => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player)) {
+			// Reflectors
+			player = world.reflectors.find((reflector) => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player).player // Change the attacker
 			prot += 180 // Change direction
 		}
 
@@ -87,13 +88,13 @@ function bullets(player, turrentPosition, attack) {
 				clearInterval(loop)
 			}
 		}
-	}, 25);
+	}, 25)
 }
 
 function lookAtPoint(position, position2) {
-	let angle = Math.atan2(position.y - position2.y, position.x - position2.x);
-	angle = -(angle * (180 / Math.PI)) + 270;
-	return angle;
+	let angle = Math.atan2(position.y - position2.y, position.x - position2.x)
+	angle = -(angle * (180 / Math.PI)) + 270
+	return angle
 }
 
 function randomIntFromInterval(min, max) {

@@ -1,7 +1,7 @@
 // Settings \\
 let config = {
-    InterfacePort: 42572, // The port number for the interface website [HTTP TCP] ex1: Port = 80 so website is 123.456.1337 ex2: Port = 81 so website is 123.456.1337:81
-    InterfaceIoPath: "/ssb5", // For advanced users (proxies). If this is changed then change the paths mentioned in the index.html file as well.
+	InterfacePort: 42572, // The port number for the interface website [HTTP TCP] ex1: Port = 80 so website is 123.456.1337 ex2: Port = 81 so website is 123.456.1337:81
+	InterfaceIoPath: "/ssb5", // For advanced users (proxies). If this is changed then change the paths mentioned in the index.html file as well.
 }
 
 // Document \\
@@ -81,6 +81,6 @@ soundbrick({
 
 let express = getModule("express")
 let app = express()
-let http = getModule('http').Server(app);
+let http = getModule("http").Server(app)
 let io = getModule("socket.io")
-require("./sound-brick/index.js")({config, express, app, http, io})
+require("./sound-brick/index.js")({ config, express, app, http, io })

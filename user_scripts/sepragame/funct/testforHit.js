@@ -7,7 +7,8 @@ function checkhit(vit, proj, rad) {
 	}
 }
 
-function testforHit(attacker, proj, rad) { // TODO: rename names and clean
+function testforHit(attacker, proj, rad) {
+	// TODO: rename names and clean
 	var closest = 99999
 	var topbrick = -1 // Misleading, I can't remember what this is actually for... (hint: not a brick)
 	if (!attacker) return console.log("no attacker provided")

@@ -2,7 +2,8 @@ let curCall = init
 function call(data, player) {
 	curCall(data, player)
 }
-function init({ config, express, app, http, io }) { // FTODO: no longer listens HTTP
+function init({ config, express, app, http, io }) {
+	// FTODO: no longer listens HTTP
 	console.log(config)
 
 	if (typeof config.InterfacePort === "undefined") console.log("sound-brick interface port undefined.")
@@ -56,7 +57,8 @@ function init({ config, express, app, http, io }) { // FTODO: no longer listens 
 
 		// Clean and play
 		if (player) {
-			if (player.isLinked == true || player.clientType === "Web") { // Altered
+			if (player.isLinked == true || player.clientType === "Web") {
+				// Altered
 				if (clientData.position !== undefined) {
 					const distance = Game.pointDistance3D(player.position, clientData.position)
 
@@ -70,7 +72,7 @@ function init({ config, express, app, http, io }) { // FTODO: no longer listens 
 			}
 		} else {
 			if (clientData.position !== undefined) {
-				sockets.forEach(socket => {
+				sockets.forEach((socket) => {
 					try {
 						if (!socket.playerobject) return
 						var distance = Game.pointDistance3D(socket.playerobject.position, clientData.position)
@@ -83,7 +85,7 @@ function init({ config, express, app, http, io }) { // FTODO: no longer listens 
 							position: clientData.isGlobal,
 							position: clientData.position,
 							minDistance: clientData.minDistance,
-							maxDistance: clientData.maxDistance
+							maxDistance: clientData.maxDistance,
 						}
 						clearVars(clientData)
 
@@ -97,7 +99,8 @@ function init({ config, express, app, http, io }) { // FTODO: no longer listens 
 					}
 				})
 
-				Game.players.forEach(p => { // copy of above but for web client players
+				Game.players.forEach((p) => {
+					// copy of above but for web client players
 					try {
 						if (p.clientType === "Web") {
 							var distance = Game.pointDistance3D(p.position, clientData.position)
@@ -109,7 +112,7 @@ function init({ config, express, app, http, io }) { // FTODO: no longer listens 
 								if (distance > clientData.minDistance) {
 									// ntohign! LMAO funny
 								} else {
-									var newvolume = 1 - (distance / clientData.minDistance)
+									var newvolume = 1 - distance / clientData.minDistance
 
 									canPlay = true
 									clientData.volume = newvolume
@@ -120,19 +123,17 @@ function init({ config, express, app, http, io }) { // FTODO: no longer listens 
 
 							p.socketio.emit(`playSound`, clientData)
 						}
-					} catch (error) {
-
-					}
+					} catch (error) {}
 				})
 			} else {
 				clearVars(clientData)
 				clientData.volume = 1
 				socketio.emit(`playSound`, clientData) // else just emit the global sound
-				Game.players.forEach(p => {
+				Game.players.forEach((p) => {
 					if (p.clientType === "Web") {
 						p.socketio.emit(`playSound`, clientData)
 					}
-				});
+				})
 			}
 		}
 	}
@@ -151,7 +152,7 @@ function init({ config, express, app, http, io }) { // FTODO: no longer listens 
 			sound.volume = 1
 		} else {
 			if (distance < sound.minDistance) {
-				var newvolume = 1 - (distance / sound.minDistance)
+				var newvolume = 1 - distance / sound.minDistance
 
 				canPlay = true
 				sound.volume = newvolume
@@ -165,7 +166,7 @@ function init({ config, express, app, http, io }) { // FTODO: no longer listens 
 	function getPlayer(name) {
 		for (let player of Game.players) {
 			if (player.username.toLowerCase().indexOf(String(name).toLowerCase()) == 0) {
-				const victim = Array.from(Game.players).find(p => p.username === player.username)
+				const victim = Array.from(Game.players).find((p) => p.username === player.username)
 				return victim
 			}
 		}

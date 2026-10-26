@@ -4,7 +4,7 @@ async function tool(player) {
 
 	const pickX = Math.floor(player.selectorBrick.position.x / 4) - 2
 	const pickY = Math.floor(player.selectorBrick.position.y / 4) - 2
-	let levelZ = (player.selectorBrick.position.z / 4) - 1
+	let levelZ = player.selectorBrick.position.z / 4 - 1
 	if (levelZ > 500) levelZ = 500
 
 	let positions = []

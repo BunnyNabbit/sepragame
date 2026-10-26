@@ -16,5 +16,5 @@ sepragame.init({
 	soundbrick: soundbrick,
 	express: express,
 	util: util,
-	AssetDownloader: AssetDownloader
+	AssetDownloader: AssetDownloader,
 })

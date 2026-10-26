@@ -11,10 +11,10 @@ async function attack(player, attack) {
 
 		let brick = reuseHandler.reuseBrick()
 		if (brick == -1) return
-	
+
 		player.energy -= attack.energyCost
 		player[`atk${selectedAttack}Cooldown`] = attack.cooldown
-	
+
 		attack.attackCreate(player)
 
 		soundbrick({
@@ -34,25 +34,25 @@ async function attack(player, attack) {
 
 		particleManager.emitParticle("debris", {
 			position: new Vector3(player.position.x, player.position.y, player.position.z + 4),
-			color: voxelWorld.colorbyid[blockType].hexString
+			color: voxelWorld.colorbyid[blockType].hexString,
 		})
 		particleManager.emitParticle("debris", {
 			position: new Vector3(player.position.x, player.position.y, player.position.z + 4),
-			color: voxelWorld.colorbyid[blockType].hexString
+			color: voxelWorld.colorbyid[blockType].hexString,
 		})
 		particleManager.emitParticle("debris", {
 			position: new Vector3(player.position.x, player.position.y, player.position.z + 4),
-			color: voxelWorld.colorbyid[blockType].hexString
+			color: voxelWorld.colorbyid[blockType].hexString,
 		})
 		particleManager.emitParticle("debris", {
 			position: new Vector3(player.position.x, player.position.y, player.position.z + 4),
-			color: voxelWorld.colorbyid[blockType].hexString
+			color: voxelWorld.colorbyid[blockType].hexString,
 		})
 		particleManager.emitParticle("debris", {
 			position: new Vector3(player.position.x, player.position.y, player.position.z + 4),
-			color: voxelWorld.colorbyid[blockType].hexString
+			color: voxelWorld.colorbyid[blockType].hexString,
 		})
-	
+
 		brick.setColor(voxelWorld.colorbyid[blockType].hexString)
 		brick.setScale(new Vector3(4, 4, 4))
 		brick.setPosition(new Vector3(player.position.x, player.position.y, player.position.z))
@@ -63,21 +63,22 @@ async function attack(player, attack) {
 		var loop = setInterval(() => {
 			time++
 			if (time < 10) {
-				brick.position.x = (player.position.x + 4 * Math.sin(player.rotation.z / debug)) -2
-				brick.position.y = (player.position.y - + 4 * Math.cos(player.rotation.z / debug)) -2
+				brick.position.x = player.position.x + 4 * Math.sin(player.rotation.z / debug) - 2
+				brick.position.y = player.position.y - +4 * Math.cos(player.rotation.z / debug) - 2
 				brick.position.z = player.position.z + 4 + grav
 				prot = player.rotation.z
 				brick.setPosition(brick.position)
 			} else {
 				brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-				brick.position.y = brick.position.y - + sped * Math.cos(prot / debug)
+				brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
 				brick.position.z = brick.position.z += grav
 				brick.setPosition(brick.position)
-				if (world.reflectors.some(reflector => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player)) { // Reflectors
-					player = world.reflectors.find(reflector => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player).player // Change the attacker
+				if (world.reflectors.some((reflector) => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player)) {
+					// Reflectors
+					player = world.reflectors.find((reflector) => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player).player // Change the attacker
 					prot += 180 // Change direction
 				}
-		
+
 				var testfor = testforHit(player, brick, 10)
 				if (testfor !== -1) {
 					soundbrick({
@@ -89,23 +90,23 @@ async function attack(player, attack) {
 					})
 					particleManager.emitParticle("debris", {
 						position: new Vector3(testfor.position.x, testfor.position.y, testfor.position.z),
-						color: voxelWorld.colorbyid[blockType].hexString
+						color: voxelWorld.colorbyid[blockType].hexString,
 					})
 					particleManager.emitParticle("debris", {
 						position: new Vector3(testfor.position.x, testfor.position.y, testfor.position.z),
-						color: voxelWorld.colorbyid[blockType].hexString
+						color: voxelWorld.colorbyid[blockType].hexString,
 					})
 					particleManager.emitParticle("debris", {
 						position: new Vector3(testfor.position.x, testfor.position.y, testfor.position.z),
-						color: voxelWorld.colorbyid[blockType].hexString
+						color: voxelWorld.colorbyid[blockType].hexString,
 					})
 					particleManager.emitParticle("debris", {
 						position: new Vector3(testfor.position.x, testfor.position.y, testfor.position.z),
-						color: voxelWorld.colorbyid[blockType].hexString
+						color: voxelWorld.colorbyid[blockType].hexString,
 					})
 					particleManager.emitParticle("debris", {
 						position: new Vector3(testfor.position.x, testfor.position.y, testfor.position.z),
-						color: voxelWorld.colorbyid[blockType].hexString
+						color: voxelWorld.colorbyid[blockType].hexString,
 					})
 					damageHandler(testfor, player, attack.attackDescription, attack.damage)
 					reuseHandler.deleteBrick(brick)
@@ -120,14 +121,16 @@ async function attack(player, attack) {
 					}
 				}
 			}
-		}, 25);
+		}, 25)
 	} else {
-		soundbrick({
-			url: "/sounds/voxel/err.mp3", // [Required]
-			isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-		}, player)
+		soundbrick(
+			{
+				url: "/sounds/voxel/err.mp3", // [Required]
+				isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+			},
+			player
+		)
 	}
-
 }
 
 function randomIntFromInterval(min, max) {

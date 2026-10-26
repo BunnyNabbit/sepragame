@@ -52,8 +52,8 @@ var data = {
 		animDead: -90,
 		mouth: {
 			x: 4,
-			y: 2
-		}
+			y: 2,
+		},
 	},
 	finished: false,
 	showInSelector: true,
@@ -61,7 +61,6 @@ var data = {
 	stepSound: "flat",
 	isWeakling: true,
 	voice: "alienlike",
-
 
 	webFileUrl: "weakling2.glb",
 	webModelRotationOffset: 1.565, // For the visual model
@@ -74,8 +73,7 @@ var data = {
 	wonderIdleTimeMax: 9,
 
 	wonderMoveTimeMin: 3,
-	wonderMoveTimeMax: 18
+	wonderMoveTimeMax: 18,
 }
-
 
 module.exports = data

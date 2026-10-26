@@ -2,16 +2,16 @@ function randomIntFromInterval(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-const colors = { // animation
-	"0": "#FF0000",
-	"1": "#FF5900",
-	"2": "#FF8800",
-	"3": "#FF9D00",
-	"4": "#FF6600",
+const colors = {
+	// animation
+	0: "#FF0000",
+	1: "#FF5900",
+	2: "#FF8800",
+	3: "#FF9D00",
+	4: "#FF6600",
 }
 
 function flame(emitposition) {
-
 	let brick = reuseHandler.reuseBrick()
 	if (brick == -1) return console.warn(brick)
 	brick.setOutline(true)
@@ -47,7 +47,7 @@ function flame(emitposition) {
 				}
 			}
 		}
-	}, 25);
+	}, 25)
 }
 
 module.exports = flame

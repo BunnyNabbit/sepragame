@@ -12,7 +12,7 @@ module.exports = [
 		webNetworkRotationOffset: 1.565, // for other player's model
 		class: "icon",
 
-		trigger: enterSettings
+		trigger: enterSettings,
 	},
 	{
 		creatureName: "Creatures",
@@ -27,7 +27,7 @@ module.exports = [
 		webNetworkRotationOffset: 1.565, // for other player's model
 		class: "icon",
 
-		trigger: enterCreatures
+		trigger: enterCreatures,
 	},
 	//{
 	//	creatureName: "Stats",
@@ -75,7 +75,7 @@ const settingDataBH = [
 		webNetworkRotationOffset: 1.565, // for other player's model
 		class: "icon",
 
-		trigger: triggerBackToMain
+		trigger: triggerBackToMain,
 	},
 	{
 		creatureName: "View terrain distance",
@@ -91,7 +91,7 @@ const settingDataBH = [
 		class: "icon",
 
 		trigger: triggerTerrain,
-	}
+	},
 ]
 
 const settingDataWeb = [
@@ -108,7 +108,7 @@ const settingDataWeb = [
 		webNetworkRotationOffset: 1.565, // for other player's model
 		class: "icon",
 
-		trigger: triggerBackToMain
+		trigger: triggerBackToMain,
 	},
 	{
 		creatureName: "Render quality",
@@ -139,7 +139,7 @@ const settingDataWeb = [
 		class: "icon",
 
 		trigger: triggerTerrain,
-	}
+	},
 ]
 function triggerBackToMain(p) {
 	p.selectorData = initalSelectionTree
@@ -153,17 +153,17 @@ function triggerTerrain(p) {
 				p.viewDistanceN = -1
 				p.viewDistanceP = 2
 				p.message("\\c5View distanced toggled to 3x3x3")
-				break;
+				break
 			case -1:
 				p.viewDistanceN = -2
 				p.viewDistanceP = 3
 				p.message("\\c5View distanced toggled to 5x5x5")
-				break;
+				break
 			default:
 				p.viewDistanceN = -1
 				p.viewDistanceP = 2
 				p.message("\\c5View distanced toggled to 3x3x3")
-				break;
+				break
 		}
 	}
 
@@ -173,47 +173,47 @@ function triggerTerrain(p) {
 				p.viewDistanceN = -1
 				p.viewDistanceP = 2
 				p.message("\\c5View distanced toggled to 3x3x3")
-				break;
+				break
 			case -1:
 				p.viewDistanceN = -2
 				p.viewDistanceP = 3
 				p.message("\\c5View distanced toggled to 5x5x5")
-				break;
+				break
 			case -2:
 				p.viewDistanceN = -3
 				p.viewDistanceP = 4
 				p.message("\\c5View distanced toggled to 7x7x7")
-				break;
+				break
 			case -3:
 				p.viewDistanceN = -4
 				p.viewDistanceP = 5
 				p.message("\\c5View distanced toggled to 9x9x9")
-				break;
+				break
 			case -4:
 				p.viewDistanceN = -5
 				p.viewDistanceP = 6
 				p.message("\\c5View distanced toggled to 11x11x11")
-				break;
+				break
 			case -5:
 				p.viewDistanceN = -6
 				p.viewDistanceP = 7
 				p.message("\\c5View distanced toggled to 13x13x13")
-				break;
+				break
 			case -6:
 				p.viewDistanceN = -7
 				p.viewDistanceP = 8
 				p.message("\\c5View distanced toggled to 15x15x15")
-				break;
+				break
 			case -7:
 				p.viewDistanceN = -8
 				p.viewDistanceP = 9
 				p.message("\\c5View distanced toggled to 17x17x17")
-				break;
+				break
 			default:
 				p.viewDistanceN = -1
 				p.viewDistanceP = 2
 				p.message("\\c5View distanced toggled to 3x3x3")
-				break;
+				break
 		}
 	}
 }
@@ -222,21 +222,19 @@ function triggerResolution(p) {
 	p.socketio.emit("resolution")
 }
 
-function bloodInfo(p) {
-
-}
+function bloodInfo(p) {}
 
 function enterSettings(p) {
 	switch (p.clientType) {
 		case "Web":
 			p.selectorData = settingDataWeb
 			p.updateSelector()
-			break;
-	
+			break
+
 		default:
 			p.selectorData = settingDataBH
 			p.updateSelector()
-			break;
+			break
 	}
 }
 

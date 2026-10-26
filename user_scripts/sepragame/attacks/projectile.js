@@ -23,11 +23,11 @@ async function bullet(player, rotation, attack) {
 	}
 
 	brick.position.x = brick.position.x += (player.currentCreature.charmodel.mouth.x + attack.mouthXOffset) * Math.sin(prot / debug)
-	brick.position.y = brick.position.y - + (player.currentCreature.charmodel.mouth.x + attack.mouthXOffset) * Math.cos(prot / debug)
+	brick.position.y = brick.position.y - +(player.currentCreature.charmodel.mouth.x + attack.mouthXOffset) * Math.cos(prot / debug)
 
 	if (attack.duoBlaster) {
 		brick.position.x = brick.position.x += 3 * Math.sin(blasterSelectRot + prot / debug)
-		brick.position.y = brick.position.y - + 3 * Math.cos(blasterSelectRot + prot / debug)
+		brick.position.y = brick.position.y - +3 * Math.cos(blasterSelectRot + prot / debug)
 	}
 
 	brick.setPosition(brick.position)
@@ -42,7 +42,7 @@ async function bullet(player, rotation, attack) {
 
 		time++
 		brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - + sped * Math.cos(prot / debug)
+		brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
 		brick.position.z = brick.position.z += grav
 
 		let col = await inBlock(brick.position)
@@ -60,8 +60,9 @@ async function bullet(player, rotation, attack) {
 
 		brick.setPosition(brick.position)
 
-		if (attack.reflectable && world.reflectors.some(reflector => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player)) { // Reflectors
-			player = world.reflectors.find(reflector => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player).player // Change the attacker
+		if (attack.reflectable && world.reflectors.some((reflector) => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player)) {
+			// Reflectors
+			player = world.reflectors.find((reflector) => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player).player // Change the attacker
 			prot += 180 // Change direction
 		}
 
@@ -87,7 +88,7 @@ async function bullet(player, rotation, attack) {
 			}
 		}
 		tickable = true
-	}, 25);
+	}, 25)
 }
 
 function projectile(player, attack) {
@@ -107,13 +108,11 @@ function projectile(player, attack) {
 	} else {
 		bullet(player, player.rotation.z, attack)
 	}
-
 }
 
 function randomIntFromInterval(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
-
 
 //clearInterval(loop);
 /*

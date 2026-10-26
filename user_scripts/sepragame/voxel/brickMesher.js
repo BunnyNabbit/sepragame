@@ -66,7 +66,6 @@ async function mesh(voxObject) {
 						}
 					}
 
-
 					if (isRowUseable == false) break
 
 					for (var dx = startX; dx < endX + 1; dx++) {
@@ -74,7 +73,6 @@ async function mesh(voxObject) {
 					}
 
 					endZ = newZ
-
 				}
 				while (endY < voxObject.h - 1) {
 					const newY = endY + 1
@@ -122,7 +120,7 @@ async function mesh(voxObject) {
 				endX = endX + 1 - startX
 				endY = endY + 1 - startY
 				endZ = endZ + 1 - startZ
-				var brick = new Brick(new Vector3((startX) * 4, (startY) * 4, (startZ) * 4), new Vector3((endX) * 4, (endY) * 4, (endZ) * 4), blockColors[startType].hexString)//.find(i => (i.colorId == startType)).hexString)
+				var brick = new Brick(new Vector3(startX * 4, startY * 4, startZ * 4), new Vector3(endX * 4, endY * 4, endZ * 4), blockColors[startType].hexString) //.find(i => (i.colorId == startType)).hexString)
 				if (startMeta == 1) {
 					brickArray.push(brick)
 					brick.collision = false

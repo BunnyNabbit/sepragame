@@ -1,14 +1,9 @@
-const cullOffsets = [
-	new Vector3(0, 1, 0),
-	new Vector3(0, -1, 0),
-	new Vector3(1, 0, 0),
-	new Vector3(-1, 0, 0),
-	new Vector3(0, 0, 1),
-	new Vector3(0, 0, -1)
-]
+const cullOffsets = [new Vector3(0, 1, 0), new Vector3(0, -1, 0), new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 0, -1)]
 
 class CulledPrismarineReader {
-	constructor(x, y, z, w, h, d, pWorld) { // MC Coords
+	/**/
+	constructor(x, y, z, w, h, d, pWorld) {
+		// MC Coords
 		this.x = x // Position from corner
 		this.y = y
 		this.z = z
@@ -22,7 +17,7 @@ class CulledPrismarineReader {
 		const block = await this.pWorld.getBlockType(new Vector3(this.x + vec3.x, this.y + vec3.y, this.z + vec3.z))
 		if (block) {
 			// Cull
-			let cull = true;
+			let cull = true
 			for (const co of cullOffsets) {
 				const cullVec = new Vector3(this.x + vec3.x + co.x, this.y + vec3.y + co.y, this.z + vec3.z + co.z)
 				const cullCheckBlock = await this.pWorld.getBlockType(cullVec)
@@ -48,6 +43,5 @@ class CulledPrismarineReader {
 		return block
 	}
 }
-
 
 module.exports = CulledPrismarineReader

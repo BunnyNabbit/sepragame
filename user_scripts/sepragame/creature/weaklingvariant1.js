@@ -9,7 +9,6 @@ attack2.cooldown = 50
 let attack3 = new Attack("blastJump")
 attack3.color = "#0000FF"
 
-
 var morphData = {
 	creatureName: "Cyando Weakling (Variant 1)",
 	discordEmoji: "<:weakling1:802646013759848498>",
@@ -41,12 +40,12 @@ var morphData = {
 		animDead: -90,
 		mouth: {
 			x: 1,
-			y: 1.2
+			y: 1.2,
 		},
 		bottom: {
 			x: -0.5,
-			y: 1.2
-		} 
+			y: 1.2,
+		},
 	},
 	finished: false,
 	usableAttacks: 1,
@@ -58,7 +57,7 @@ var morphData = {
 	webFileUrl: "weakling2.glb",
 	webModelRotationOffset: 1.565, // For the visual model
 	webLogicRotationOffset: 0, // For converting BH rotation
-	webNetworkRotationOffset: 1.565 // for other player's model
+	webNetworkRotationOffset: 1.565, // for other player's model
 }
 
 module.exports = morphData

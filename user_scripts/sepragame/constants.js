@@ -1,4 +1,4 @@
 module.exports = {
-   // FTODO: remove
-   discordEnabled: false
+	// FTODO: remove
+	discordEnabled: false,
 }

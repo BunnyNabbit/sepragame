@@ -10,6 +10,7 @@ function vec3Key(vec3) {
 }
 
 class Section {
+	/**/
 	constructor(size, data) {
 		if (data) {
 			const buff = new SmartBuffer()
@@ -31,7 +32,8 @@ class Section {
 }
 
 class World {
-	constructor(props, newSection = () => { }) {
+	/**/
+	constructor(props, newSection = () => {}) {
 		this.regionSize = props.regionSize ?? 32 // Regions aren't used at the moment
 		this.sectionSize = props.sectionSize ?? 32 // new Vector3(32, 32, 32)
 		this.saveLocation = props.saveLocation ?? null // currently errors if null
@@ -53,14 +55,16 @@ class World {
 		setInterval(async () => {
 			if (this.draining) return
 			const promises = []
-			this.savePending.forEach(element => {
-				promises.push(new Promise(resolve => {
-					voxelCollection.replaceOne({ _id: element.key }, { _id: element.key, blocks: element.serialize() }, { upsert: true }, (err) => {
-						if (err) console.error(err)
-						this.savePending.delete(element)
-						resolve()
+			this.savePending.forEach((element) => {
+				promises.push(
+					new Promise((resolve) => {
+						voxelCollection.replaceOne({ _id: element.key }, { _id: element.key, blocks: element.serialize() }, { upsert: true }, (err) => {
+							if (err) console.error(err)
+							this.savePending.delete(element)
+							resolve()
+						})
 					})
-				}))
+				)
 			})
 			if (promises.length) {
 				this.draining = true
@@ -76,7 +80,7 @@ class World {
 			return await this.cache[key]
 		} else {
 			// const fileLocation = `${this.saveLocation}/${key}.vws`
-			const promise = new Promise(resolve => {
+			const promise = new Promise((resolve) => {
 				voxelCollection.findOne({ _id: key }, (err, doc) => {
 					if (doc) {
 						const section = new Section(this.sectionSize, doc.blocks.buffer)

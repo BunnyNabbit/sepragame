@@ -11,7 +11,7 @@ async function tool(player, blockPos) {
 
 	console.log(JSON.stringify(meta))
 	player.message(`Objects: ${meta.objects.length}`)
-	meta.objects.forEach(worldObject => {
+	meta.objects.forEach((worldObject) => {
 		const name = `${worldObject.name} (${worldObject.objectName}): ${worldObject.id}`
 		player.message(name)
 		switch (worldObject.objectName) {
@@ -20,27 +20,27 @@ async function tool(player, blockPos) {
 				player.debugPos(worldObject.endPosition, 5)
 				const positions = []
 				positions.push(worldObject.startPosition)
-				worldObject.checkpoints.forEach(checkpoint => {
+				worldObject.checkpoints.forEach((checkpoint) => {
 					positions.push(checkpoint)
 				})
 				positions.push(worldObject.endPosition)
 				player.debugLine(positions, 5)
 				player.debugText(`${worldObject.name}`, worldObject.startPosition)
-				break;
+				break
 			case "landmark":
 				player.debugPos(worldObject.position, 5)
 				player.debugText(`${worldObject.name}`, worldObject.position)
-				break;
+				break
 			case "portal":
 				player.debugPos(worldObject.position, 5)
 				player.debugPos(worldObject.toPosition, 5)
 				player.debugLine([worldObject.position, worldObject.toPosition], 5)
 				player.debugText(`${worldObject.name}`, worldObject.position)
-				break;
+				break
 			default:
-				break;
+				break
 		}
-	});
+	})
 }
 
 module.exports = { use: tool, attackDescription: { name: "Debug Chunk", description: "Meta data of chunk" }, blockmode: "in" }

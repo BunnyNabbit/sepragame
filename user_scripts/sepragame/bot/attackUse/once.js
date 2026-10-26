@@ -1,5 +1,5 @@
 function clc(bot, attack) {
-    attack(bot)
+	attack(bot)
 }
 
 module.exports = clc

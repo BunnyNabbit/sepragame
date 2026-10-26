@@ -3,7 +3,7 @@ async function tool(player) {
 
 	let pickX = Math.floor(player.selectorBrick.position.x / 4) - 2
 	let pickY = Math.floor(player.selectorBrick.position.y / 4) - 2
-	let levelZ = (player.selectorBrick.position.z / 4) - 1
+	let levelZ = player.selectorBrick.position.z / 4 - 1
 	if (levelZ > 200) levelZ = 200
 
 	let positions = [] // x, y, z
@@ -22,7 +22,7 @@ async function tool(player) {
 						positions.push({
 							x: pickX + x,
 							y: pickY + y,
-							z: z
+							z: z,
 						})
 					}
 					break

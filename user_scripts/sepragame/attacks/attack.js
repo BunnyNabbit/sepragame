@@ -11,6 +11,7 @@ let fluidPool = require("./fluidPool.js")
 let chargedProjectile = require("./chargedProjectile.js")
 // why??
 class Attack {
+	/**/
 	constructor(template) {
 		// Bot behavior
 		this.useMinRadius = 0
@@ -51,7 +52,7 @@ class Attack {
 					})
 				}
 				this.attackExtra = noop
-				break;
+				break
 			case "blastJump":
 				var that = this
 				this.use = function (player) {
@@ -85,7 +86,7 @@ class Attack {
 				}
 				this.attackHit = noop
 				this.attackExtra = noop
-				break;
+				break
 			case "projectile":
 				var that = this
 				this.use = function (player) {
@@ -119,7 +120,7 @@ class Attack {
 				}
 				this.attackHit = noop
 				this.attackExtra = noop
-				break;
+				break
 			case "homingMissle":
 				var that = this
 				this.use = function (player) {
@@ -162,7 +163,7 @@ class Attack {
 					particleManager.emitParticle("explosion", position)
 				}
 				this.attackExtra = noop
-				break;
+				break
 			case "dash":
 				var that = this
 				this.use = function (player) {
@@ -193,7 +194,7 @@ class Attack {
 					})
 				}
 				this.attackExtra = noop
-				break;
+				break
 			case "spikes":
 				var that = this
 				this.use = function (player) {
@@ -208,7 +209,7 @@ class Attack {
 				this.attackCreate = noop
 				this.attackHit = noop
 				this.attackExtra = noop
-				break;
+				break
 			case "block":
 				var that = this
 				this.use = function (player) {
@@ -230,17 +231,18 @@ class Attack {
 				}
 				this.attackHit = noop
 				this.attackExtra = noop
-				break;
+				break
 			case "crystal":
 				var that = this
 				this.use = function (player) {
 					crystal(player, that)
 				}
 				this.attackClass = "melee"
-				this.colors = { // FIXME: this object is being used as an array?
-					"0": "#0000FF",
-					"1": "#4d4dff",
-					"2": "#9999ff",
+				this.colors = {
+					// FIXME: this object is being used as an array?
+					0: "#0000FF",
+					1: "#4d4dff",
+					2: "#9999ff",
 				}
 				this.projectileColor = "#0000ff"
 				this.damage = -3
@@ -259,7 +261,7 @@ class Attack {
 				}
 				this.attackHit = noop
 				this.attackExtra = noop
-				break;
+				break
 			case "reflect":
 				var that = this
 				this.use = function (player) {
@@ -282,20 +284,22 @@ class Attack {
 				}
 				this.attackHit = noop
 				this.attackExtra = noop
-				break;
+				break
 			case "fluidPool": // TODO: Rework color
 				var that = this
 				this.use = function (player) {
 					fluidPool(player, that)
 				}
 				this.attackClass = "melee"
-				this.colors = [ // animation
+				this.colors = [
+					// animation
 					"#FF0000",
 					"#FF5900",
 					"#FF8800",
 					"#FF9D00",
 					"#FF6600",
 				]
+
 				this.particle = "fire"
 				this.color = "#FF0000"
 				this.totalDamage = 40
@@ -315,7 +319,7 @@ class Attack {
 				}
 				this.attackHit = noop
 				this.attackExtra = noop
-				break;
+				break
 			case "chargedProjectile":
 				var that = this
 				this.use = function (player) {
@@ -345,10 +349,10 @@ class Attack {
 				}
 				this.attackHit = noop
 				this.attackExtra = noop
-				break;
+				break
 
 			default:
-				break;
+				break
 		}
 	}
 }

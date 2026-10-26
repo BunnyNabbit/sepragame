@@ -13,19 +13,16 @@ async function tool(player, mcPos) {
 
 				switch (block) {
 					case 0:
-
-						break;
+						break
 					default:
 						success = true
 
-						break;
+						break
 				}
 
 				if (success == true) {
-
 					await voxelWorld.world.setBlockType(new Vector3(pickX + x, pickY + y, z), player.selectedColor)
 				}
-
 			}
 		}
 	}
@@ -33,10 +30,13 @@ async function tool(player, mcPos) {
 	for (let z = 0; z < 8; z++) {
 		voxelWorld.addSectionToQueue(Math.floor(pickX / 32), Math.floor(pickY / 32), z, player)
 	}
-	soundbrick({
-		url: "/sounds/generalExplosion1.flac", // [Required]
-		isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-	}, player)
+	soundbrick(
+		{
+			url: "/sounds/generalExplosion1.flac", // [Required]
+			isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+		},
+		player
+	)
 }
 
 let placeDebug = require("./placeDebug").use

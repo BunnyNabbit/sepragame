@@ -1,22 +1,26 @@
-let grass = { // Grass/sand sounding.
+let grass = {
+	// Grass/sand sounding.
 	1: "/sounds/step/g-step1.mp3",
 	2: "/sounds/step/g-step2.mp3",
-	3: "/sounds/step/g-step3.mp3"
+	3: "/sounds/step/g-step3.mp3",
 }
-let stone = { // Clawed feet on stone.
+let stone = {
+	// Clawed feet on stone.
 	1: "/sounds/step/s-step-c1.mp3",
 	2: "/sounds/step/s-step-c2.mp3",
-	3: "/sounds/step/s-step-c3.mp3"
+	3: "/sounds/step/s-step-c3.mp3",
 }
-let metal = { // Clawed feet on metal.
+let metal = {
+	// Clawed feet on metal.
 	1: "/sounds/step/m-step-c1.mp3",
 	2: "/sounds/step/m-step-c2.mp3",
-	3: "/sounds/step/m-step-c3.mp3"
+	3: "/sounds/step/m-step-c3.mp3",
 }
-let bits = { // Clawed feet on void.
+let bits = {
+	// Clawed feet on void.
 	1: "/sounds/step/v-step-c1.mp3",
 	2: "/sounds/step/v-step-c2.mp3",
-	3: "/sounds/step/v-step-c3.mp3"
+	3: "/sounds/step/v-step-c3.mp3",
 }
 
 let collection = {
@@ -28,7 +32,7 @@ let collection = {
 	238: stone, // Also grey
 	239: metal, // Grey but darker
 	15: stone, // Bones
-	16: bits
+	16: bits,
 }
 
 module.exports = collection

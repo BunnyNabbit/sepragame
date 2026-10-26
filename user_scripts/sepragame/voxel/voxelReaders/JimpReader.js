@@ -1,4 +1,5 @@
 class CanvasReader {
+	/**/
 	constructor(canvasBuffer) {
 		jimp.read(canvasBuffer, (err, img) => {
 			this.img = img
@@ -22,6 +23,5 @@ class CanvasReader {
 		return 0
 	}
 }
-
 
 module.exports = CanvasReader

@@ -1,36 +1,32 @@
 // A set of dunction patchs for node-hill objects.
 
-function noop() { }
+function noop() {}
 
 function patchBrick(brick) {
 	brick.patcher = {}
 
-
 	brick.forceSetPosition = brick.setPosition
-	brick.setPosition = function (position) { //TODO newbrick colors scales 
-
+	brick.setPosition = function (position) {
+		//TODO newbrick colors scales
 
 		brick.position = position
 
-		let radiusPlayers = Game.players.filter(player => Game.pointDistance3D(player.position, brick.position) < 200)
+		let radiusPlayers = Game.players.filter((player) => Game.pointDistance3D(player.position, brick.position) < 200)
 
-		radiusPlayers.forEach(player => {
+		radiusPlayers.forEach((player) => {
 			if (player.clientType === "Brick Hill") {
-				let brickPacket = new PacketBuilder("Brick")
-				.write("uint32", brick.netId)
-				.write("string", "pos")
+				let brickPacket = new PacketBuilder("Brick").write("uint32", brick.netId).write("string", "pos")
 
-			brickPacket.write("float", brick.position.x)
-			brickPacket.write("float", brick.position.y)
-			brickPacket.write("float", brick.position.z)
+				brickPacket.write("float", brick.position.x)
+				brickPacket.write("float", brick.position.y)
+				brickPacket.write("float", brick.position.z)
 
-			brickPacket.send(player.socket)
+				brickPacket.send(player.socket)
 			} else {
 				socketio.emit("bpos", { netId: brick.netId, x: parseFloat(position.x.toFixed(2)), y: parseFloat(position.y.toFixed(2)), z: parseFloat(position.z.toFixed(2)) })
 			}
-		});
+		})
 
-		
 		return
 		//return Game.brickFunction(brick)
 
@@ -44,11 +40,11 @@ function patchBrick(brick) {
 			socketio.emit("bs", { netId: brick.netId, x: scale.x, y: scale.y, z: scale.z })
 			brick.c(scale)
 		}
-		brick.setOutline = function (bo) { // set outline true or falee
+		brick.setOutline = function (bo) {
+			// set outline true or falee
 			socketio.emit("boutline", { netId: brick.netId, outline: bo })
 			brick.outline = bo
 		}
-
 	}
 
 	brick.disable = function () {
@@ -56,7 +52,6 @@ function patchBrick(brick) {
 	}
 
 	brick.onDelete = noop
-
 }
 
 module.exports = { patchBrick }

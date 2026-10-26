@@ -3,7 +3,6 @@ function randomIntFromInterval(min, max) {
 }
 
 function ghost(emitposition) {
-
 	let brick = reuseHandler.reuseBrick()
 	if (brick == -1) return console.warn(brick)
 	brick.setColor("#ffffff")
@@ -29,7 +28,7 @@ function ghost(emitposition) {
 				}
 			}
 		}
-	}, 25);
+	}, 25)
 }
 
 module.exports = ghost

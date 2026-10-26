@@ -1,32 +1,31 @@
 //const voxelWorld = require("../voxel/voxelWorld")
 
 async function walkTowardsAngleAndStepUpOrDownTerrain(bot, speed, angle) {
-
 	bot.oldposition = new Vector3(bot.position.x, bot.position.y, bot.position.z)
-
 
 	bot.setRotation(new Vector3(0, 0, angle))
 	var x = bot.position.x + speed * Math.sin(angle / debug)
-	var y = bot.position.y - + speed * Math.cos(angle / debug)
+	var y = bot.position.y - +speed * Math.cos(angle / debug)
 
 	var terrainStep = await collisionOutTerrain(new Vector3(x, y, bot.position.z))
 
 	switch (terrainStep) {
 		case 0: // Stay on ground
 			bot.setPosition(new Vector3(x, y, bot.position.z))
-			break;
+			break
 		case 1: // Fall down 1 block
 			bot.setPosition(new Vector3(x, y, bot.position.z - 4))
-			break;
+			break
 		case 2: // Step up
 			bot.setPosition(new Vector3(x, y, bot.position.z + 4))
-			break;
+			break
 		case 3: // Can't enter position
 			bot.setPosition(bot.oldposition)
-			break;
+			break
 	}
 }
-function damage(bot, damage) { // Add damage to a bot
+function damage(bot, damage) {
+	// Add damage to a bot
 	bot.health += damage
 	bot.damaged = true
 	bot.anger = 400
@@ -50,7 +49,6 @@ async function kill(bot) {
 	await sleep(500)
 	particleManager.emitParticle("bloodsmall", deathpos)
 	particleManager.emitParticle("bloodsmall", deathpos)
-
 }
 
 function destroy(bot) {
@@ -58,12 +56,13 @@ function destroy(bot) {
 	bot.destroyed = true // bot.destory() doesn't appear to set true for some reason and results in BH character models to remain
 	//bot.charbot.destroy() // This is also another solution to the above problem
 	webClient.socketio.emit("deleteplayer", bot.webNetId)
-	botManager.ingameBots.splice(botManager.ingameBots.indexOf(bot), 1);
+	botManager.ingameBots.splice(botManager.ingameBots.indexOf(bot), 1)
 	//webClient.characters[bot.webNetId] = undefined
 	delete webClient.characters[bot.webNetId]
 }
 
-function bite(bot, player) { // when player bites dead bot
+function bite(bot, player) {
+	// when player bites dead bot
 	particleManager.emitParticle("bloodsmall", bot.position)
 	particleManager.emitParticle("bloodsmall", bot.position)
 	bot.totalBites++
@@ -77,7 +76,7 @@ function bite(bot, player) { // when player bites dead bot
 		soundbrick({
 			url: `/sounds/eat/bodyexplode.flac`,
 			isGlobal: false,
-			position: bot.position
+			position: bot.position,
 		})
 		particleManager.emitParticle("bloodsmall", bot.position)
 		particleManager.emitParticle("bloodsmall", bot.position)
@@ -90,21 +89,17 @@ function bite(bot, player) { // when player bites dead bot
 	soundbrick({
 		url: `/sounds/eat/${randomIntFromInterval(1, 4)}.flac`,
 		isGlobal: false,
-		position: bot.position
+		position: bot.position,
 	})
 }
 
-function init(position, meta) { // Use an animation controller on the bot and set helth and that stuff
+function init(position, meta) {
+	// Use an animation controller on the bot and set helth and that stuff
 	let bot = new Bot("AI Bot")
-
 
 	bot.setPosition(position)
 
-	let outfit = new Outfit(bot)
-		.body("#0d9436")
-		.torso("#694813")
-		.rightLeg("#694813")
-		.leftLeg("#694813")
+	let outfit = new Outfit(bot).body("#0d9436").torso("#694813").rightLeg("#694813").leftLeg("#694813")
 	bot.setOutfit(outfit)
 	Game.newBot(bot)
 
@@ -120,10 +115,7 @@ function init(position, meta) { // Use an animation controller on the bot and se
 	bot.webNetId = `${webClient.nextNetId.id}`
 	charAnimate(bot)
 	bot.charbot.changeSize(1)
-	let outfit2 = new Outfit(bot.charbot)
-		.hat1(meta.charmodel.hat1)
-		.hat2(meta.charmodel.hat2)
-		.hat3(meta.charmodel.hat3)
+	let outfit2 = new Outfit(bot.charbot).hat1(meta.charmodel.hat1).hat2(meta.charmodel.hat2).hat3(meta.charmodel.hat3)
 	bot.charbot.setOutfit(outfit2)
 
 	webClient.characters[bot.webNetId] = {
@@ -133,16 +125,17 @@ function init(position, meta) { // Use an animation controller on the bot and se
 		morph: bot.currentCreature.saveID,
 		modelRotationOffset: bot.currentCreature.webModelRotationOffset,
 		logicRotationOffset: bot.currentCreature.webLogicRotationOffset,
-		networkRotationOffset: bot.currentCreature.webNetworkRotationOffset
+		networkRotationOffset: bot.currentCreature.webNetworkRotationOffset,
 	}
-	webClient.socketio.emit('createplayer', { // Create player
+	webClient.socketio.emit("createplayer", {
+		// Create player
 		netId: `${bot.webNetId}`,
 		model: bot.currentCreature.saveID,
 		name: "",
 		modelRotationOffset: bot.currentCreature.webModelRotationOffset,
 		logicRotationOffset: bot.currentCreature.webLogicRotationOffset,
-		networkRotationOffset: bot.currentCreature.webNetworkRotationOffset
-	});
+		networkRotationOffset: bot.currentCreature.webNetworkRotationOffset,
+	})
 
 	bot.oldSetPosition = bot.setPosition
 	bot.sendPosLimit = null
@@ -153,7 +146,7 @@ function init(position, meta) { // Use an animation controller on the bot and se
 		bot.sendPosLimit = true
 		setTimeout(() => {
 			bot.sendPosLimit = null
-		}, 90);
+		}, 90)
 	}
 
 	bot.animateReady = true
@@ -176,10 +169,11 @@ function init(position, meta) { // Use an animation controller on the bot and se
 				particleManager.emitParticle(bot.debuffParticles, bot.position)
 			}
 		}
-	}, 1000);
+	}, 1000)
 
-	bot.setInterval(() => { // Check if players are around bot, if not then destroy the bot.
-		if (Game.players.some(player => Game.pointDistance3D(player.position, bot.position) < 360) === false) {
+	bot.setInterval(() => {
+		// Check if players are around bot, if not then destroy the bot.
+		if (Game.players.some((player) => Game.pointDistance3D(player.position, bot.position) < 360) === false) {
 			if (bot.persistent) {
 				//voxelWorld.getChunkMeta()
 				//destroy(bot)
@@ -187,7 +181,7 @@ function init(position, meta) { // Use an animation controller on the bot and se
 				destroy(bot)
 			}
 		}
-	}, 10000);
+	}, 10000)
 
 	botManager.ingameBots.push(bot)
 

@@ -37,8 +37,8 @@ var data = {
 		animDead: -90,
 		mouth: {
 			x: 1,
-			y: 1.2
-		}
+			y: 1.2,
+		},
 	},
 	finished: false,
 	showInSelector: true,
@@ -57,7 +57,7 @@ var data = {
 	wonderIdleTimeMax: 5,
 
 	wonderMoveTimeMin: 1,
-	wonderMoveTimeMax: 8
+	wonderMoveTimeMax: 8,
 }
 
 module.exports = data

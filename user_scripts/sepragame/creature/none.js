@@ -3,7 +3,7 @@ var morphData = {
 	discordEmoji: ":grey_question:",
 	saveID: "none", // Used internally for saves and lookup
 	attacks: {
-		atk1: { use: noop, attackDescription: {} } // or its undefined and thats no good!
+		atk1: { use: noop, attackDescription: {} }, // or its undefined and thats no good!
 	},
 	hp: 100,
 	speed: 0,
@@ -25,8 +25,8 @@ var morphData = {
 		animDead: -90,
 		mouth: {
 			x: 4,
-			y: 3
-		}
+			y: 3,
+		},
 	},
 	finished: false,
 	usableAttacks: 0,
@@ -38,7 +38,7 @@ var morphData = {
 
 	webModelRotationOffset: 0, // For the visual model
 	webLogicRotationOffset: 0, // For converting BH rotation
-	webNetworkRotationOffset: 0 // for other player's model
+	webNetworkRotationOffset: 0, // for other player's model
 }
 
 module.exports = morphData

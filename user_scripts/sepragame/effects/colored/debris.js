@@ -3,10 +3,8 @@ function randomIntFromInterval(min, max) {
 }
 
 function particle(settings) {
-
 	let brick = reuseHandler.reuseBrick()
 	if (brick == -1) return console.warn(brick)
-
 
 	brick.setColor(settings.color)
 	brick.setScale(new Vector3(0.5, 0.5, 0.5))
@@ -30,11 +28,10 @@ function particle(settings) {
 		if (sped < 0) sped = 0
 
 		brick.position.x = brick.position.x += sped * Math.sin(settings.direction / debug)
-		brick.position.y = brick.position.y - + sped * Math.cos(settings.direction / debug)
+		brick.position.y = brick.position.y - +sped * Math.cos(settings.direction / debug)
 		brick.position.z = brick.position.z += grav
 
 		brick.setPosition(brick.position)
-
 
 		if (time > 3) {
 			spin += randomrot
@@ -45,8 +42,7 @@ function particle(settings) {
 			reuseHandler.deleteBrick(brick)
 			clearInterval(loop)
 		}
-
-	}, 25);
+	}, 25)
 }
 
 module.exports = particle

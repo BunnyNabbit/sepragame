@@ -10,10 +10,13 @@ async function tool(player, mcPos) {
 					if (data) {
 						voxelWorld.world.setBlockData(blockPos, 0)
 						placeDebug(player, blockPos)
-						soundbrick({
-							url: "/sounds/soundbrickcore-disconnect.mp3", // [Required]
-							isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
-						}, player)
+						soundbrick(
+							{
+								url: "/sounds/soundbrickcore-disconnect.mp3", // [Required]
+								isGlobal: true, // [Required] If enabled then position, minDistance, minDecay and maxDistance will be ignored
+							},
+							player
+						)
 					}
 				}
 			}

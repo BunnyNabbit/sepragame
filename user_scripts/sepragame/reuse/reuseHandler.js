@@ -7,7 +7,8 @@ const queueSize = 50
 
 function initqueue() {
 	let i = 0
-	for (i = 0; i < queueSize; i++) { // Create the bricks and queue
+	for (i = 0; i < queueSize; i++) {
+		// Create the bricks and queue
 		let brick = new Brick(new Vector3(-99999999, -99999999, -99999999), new Vector3(1, 1, 1), "#f54242")
 		Game.newBrick(brick)
 		brick.queueID = i
@@ -29,21 +30,28 @@ function initqueue() {
 let gracefulID = 0
 
 function reuseBrick() {
-	let id = queue.findIndex(object => object.canReuse === true)
-	if (id === -1) { // Gracefully remove unimportant stuff like particles
-		let x = queue.sort(function (a, b) { return a.gracefulID - b.gracefulID }).find(object => object.gracefulRemovalMode === 2)
+	let id = queue.findIndex((object) => object.canReuse === true)
+	if (id === -1) {
+		// Gracefully remove unimportant stuff like particles
+		let x = queue
+			.sort(function (a, b) {
+				return a.gracefulID - b.gracefulID
+			})
+			.find((object) => object.gracefulRemovalMode === 2)
 
 		if (x !== undefined) {
 			deleteBrick(x) // Remove mode 2
 		} else {
-			let x = queue.sort(function (a, b) { return a.gracefulID - b.gracefulID }).queue
-			if (x !== undefined) x = x.find(object => object.gracefulRemovalMode === 1)
+			let x = queue.sort(function (a, b) {
+				return a.gracefulID - b.gracefulID
+			}).queue
+			if (x !== undefined) x = x.find((object) => object.gracefulRemovalMode === 1)
 
 			if (x !== undefined) {
 				deleteBrick(x) // Remove mode 1
 			}
 		}
-		id = queue.findIndex(object => object.canReuse === true)
+		id = queue.findIndex((object) => object.canReuse === true)
 	}
 	if (id !== -1) {
 		let brick = queue[id]
@@ -58,7 +66,8 @@ function reuseBrick() {
 	}
 }
 
-function deleteBrick(brick) { // TODO check if object is used or not
+function deleteBrick(brick) {
+	// TODO check if object is used or not
 	brick.onDelete()
 	brick.forceSetPosition(new Vector3(-99999999, -99999999, -99999999))
 	brick.canReuse = true

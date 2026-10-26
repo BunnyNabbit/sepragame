@@ -19,7 +19,8 @@ function formatHex(input) {
 
 	return input
 }
-function removeTextFormatting(str) { // TODO: Move function and regex
+function removeTextFormatting(str) {
+	// TODO: Move function and regex
 	str = str.replace(colorcodeRegex, "")
 	str = str.replace(hexcodeRegex, "")
 	str = str.replace(internalcodeRegex, "")
@@ -103,7 +104,6 @@ function init(playerImpostor) {
 				}, 5000)
 			}
 		}
-
 	}
 
 	playerImpostor.setJumpPower = function (msg) {
@@ -155,7 +155,7 @@ function init(playerImpostor) {
 		}
 		this.on("keypress", kpCallback)
 		return {
-			disconnect: () => this.off("keypress", kpCallback)
+			disconnect: () => this.off("keypress", kpCallback),
 		}
 	}
 
@@ -165,7 +165,7 @@ function init(playerImpostor) {
 		}
 		this.on("mouseclick", clickCallback)
 		return {
-			disconnect: () => this.off("mouseclick", clickCallback)
+			disconnect: () => this.off("mouseclick", clickCallback),
 		}
 	}
 
@@ -177,15 +177,10 @@ function init(playerImpostor) {
 		playerImpostor.rotation = msg
 	}
 
-	playerImpostor.setPosition = function (msg, slippery = false) { // This one does however.
+	playerImpostor.setPosition = function (msg, slippery = false) {
+		// This one does however.
 		playerImpostor.position = msg
-		new PacketBuilder("Figure")
-			.write("uint32", playerImpostor.netId)
-			.write("string", "ABC")
-			.write("float", playerImpostor.position.x)
-			.write("float", playerImpostor.position.y)
-			.write("float", playerImpostor.position.z)
-			.broadcast()
+		new PacketBuilder("Figure").write("uint32", playerImpostor.netId).write("string", "ABC").write("float", playerImpostor.position.x).write("float", playerImpostor.position.y).write("float", playerImpostor.position.z).broadcast()
 		playerImpostor.socketio.emit("setPosition", { x: playerImpostor.position.x, y: playerImpostor.position.z, z: playerImpostor.position.y, s: slippery })
 	}
 
@@ -199,22 +194,17 @@ function init(playerImpostor) {
 
 	playerImpostor.debugLine = function (positions) {
 		const cleanPositions = []
-		positions.forEach(position => {
+		positions.forEach((position) => {
 			cleanPositions.push({ x: position.x, y: position.z, z: position.y })
 		})
 		playerImpostor.socketio.emit("debugLine", cleanPositions)
 	}
 
-	playerImpostor.changePosition = function (msg) { // Doesn't tell the client their position!
+	playerImpostor.changePosition = function (msg) {
+		// Doesn't tell the client their position!
 		playerImpostor.position = msg
 		playerImpostor.emit("moved")
-		new PacketBuilder("Figure")
-			.write("uint32", playerImpostor.netId)
-			.write("string", "ABC")
-			.write("float", playerImpostor.position.x)
-			.write("float", playerImpostor.position.y)
-			.write("float", playerImpostor.position.z)
-			.broadcast()
+		new PacketBuilder("Figure").write("uint32", playerImpostor.netId).write("string", "ABC").write("float", playerImpostor.position.x).write("float", playerImpostor.position.y).write("float", playerImpostor.position.z).broadcast()
 	}
 
 	playerImpostor.getBlockedPlayers = function () {
@@ -227,7 +217,8 @@ function init(playerImpostor) {
 		playerImpostor.socketio.emit("hover", bool)
 	}
 
-	playerImpostor.guiSelectSlot = function (slot) { // Hi lights the 1 only slot. 0 or null for no slot [1,2,3,4,5]
+	playerImpostor.guiSelectSlot = function (slot) {
+		// Hi lights the 1 only slot. 0 or null for no slot [1,2,3,4,5]
 		let send = []
 		if (slot != 1 && playerImpostor.atk1Cooldown < 0) send.push({ type: "slot", number: 1, inner: "selection", value: "unselected" })
 		if (slot != 2 && playerImpostor.atk2Cooldown < 0) send.push({ type: "slot", number: 2, inner: "selection", value: "unselected" })
@@ -239,7 +230,8 @@ function init(playerImpostor) {
 		playerImpostor.socketio.emit("gui", send)
 	}
 
-	playerImpostor.newBrick = function (brick) { //TODO: networking
+	playerImpostor.newBrick = function (brick) {
+		//TODO: networking
 		let localBrick = brick.clone()
 		//localBrick.socket = this.socket
 		playerImpostor.localBricks.push(localBrick)
@@ -253,7 +245,7 @@ function init(playerImpostor) {
 		//playerImpostor.rotation = msg
 		//console.log(bricks.length)
 		let data = []
-		bricks.forEach(b => {
+		bricks.forEach((b) => {
 			data.push(b.netId)
 			b.destroyed = true
 		})
@@ -264,21 +256,20 @@ function init(playerImpostor) {
 		//console.log(bricks.length)
 		let data = {
 			brk: [],
-			players: []
+			players: [],
 		}
-		bricks.forEach(b => {
+		bricks.forEach((b) => {
 			if (b.outline == undefined) b.outline = true
 			data.brk.push({
 				position: { x: b.position.x, y: b.position.y, z: b.position.z },
 				color: b.color,
 				outline: false,
 				scale: { x: b.scale.x, y: b.scale.y, z: b.scale.z },
-				netId: `${b.netId}`
+				netId: `${b.netId}`,
 			})
 		})
 		playerImpostor.socketio.emit("bricks", data)
 	}
-
 
 	playerImpostor.setSpeed = function (msg) {
 		playerImpostor.socketio.emit("mod", { type: "speed", value: msg })

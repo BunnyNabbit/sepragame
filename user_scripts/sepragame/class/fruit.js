@@ -3,7 +3,7 @@ const pulsingBlue = ["#3399FF", "#6699ff"]
 
 world.fruit = []
 
-function spawnFruit(pos,pulse) {
+function spawnFruit(pos, pulse) {
 	// Create brick
 	pulse = pulse || pulsingBlue
 	pos = new Vector3(pos.x, pos.y, pos.z)
@@ -22,26 +22,27 @@ function spawnFruit(pos,pulse) {
 	fruit.persistent = false
 
 	let time = 0
-	var loop = setInterval(() => { // Pulsing
+	var loop = setInterval(() => {
+		// Pulsing
 		time++
 		fruit.setColor(pulse[time % 2])
 		if (!fruit.heldBy) {
-			let messageplayer = Game.players.find(player => Game.pointDistance3D(player.position, fruit.position) < 10)
+			let messageplayer = Game.players.find((player) => Game.pointDistance3D(player.position, fruit.position) < 10)
 			if (messageplayer) {
 				if (messageplayer.clientType === "Web") {
 					if (messageplayer.mobile) {
-						messageplayer.centerPrint("\\c4Press \"SLASH\" to grab this Power Fruit", 2)
-					} else messageplayer.centerPrint("\\c4Press \"E\" to grab this Power Fruit", 2)
+						messageplayer.centerPrint('\\c4Press "SLASH" to grab this Power Fruit', 2)
+					} else messageplayer.centerPrint('\\c4Press "E" to grab this Power Fruit', 2)
 				} else {
-					messageplayer.centerPrint("\\c4Press \"E\" to grab this Power Fruit", 2)
+					messageplayer.centerPrint('\\c4Press "E" to grab this Power Fruit', 2)
 				}
 			}
 		}
-	}, 1000);
+	}, 1000)
 
-	fruit.eat = function (creature) { // Player or Bot
+	fruit.eat = function (creature) {
+		// Player or Bot
 		if (creature.isBot) {
-
 		} else {
 			creature.centerPrint(`\\c5+ ${fruit.energy}% Energy`, 1)
 			creature.setHealth(fruit.health + creature.health)
@@ -52,7 +53,7 @@ function spawnFruit(pos,pulse) {
 		soundbrick({
 			url: `/sounds/eat/bodyexplode.flac`,
 			isGlobal: false,
-			position: creature.position
+			position: creature.position,
 		})
 
 		const settings = {
@@ -65,9 +66,9 @@ function spawnFruit(pos,pulse) {
 		for (let index = 0; index < 5; index++) {
 			let color = fruit.color
 			setTimeout(() => {
-				drippyPosition = new Vector3
+				drippyPosition = new Vector3()
 				drippyPosition.x = creature.position.x + creature.currentCreature.charmodel.mouth.x * Math.sin(creature.rotation.z / debug)
-				drippyPosition.y = creature.position.y - + creature.currentCreature.charmodel.mouth.x * Math.cos(creature.rotation.z / debug)
+				drippyPosition.y = creature.position.y - +creature.currentCreature.charmodel.mouth.x * Math.cos(creature.rotation.z / debug)
 				drippyPosition.z = creature.position.z + creature.currentCreature.charmodel.mouth.y - 0.8
 				particleManager.emitParticle("drippy", {
 					position: drippyPosition,
@@ -76,49 +77,52 @@ function spawnFruit(pos,pulse) {
 					direction: 0,
 					expire: 200,
 				})
-			}, 800 * index);
+			}, 800 * index)
 		}
-
 
 		soundbrick({
 			url: `/sounds/eat/${randomIntFromInterval(1, 4)}.flac`,
 			isGlobal: false,
-			position: creature.position
+			position: creature.position,
 		})
 		fruit.drop(creature, false)
 		fruit.remove()
 	}
 
-	fruit.drop = function (creature, sfx) { // Player or Bot
+	fruit.drop = function (creature, sfx) {
+		// Player or Bot
 		if (sfx === undefined) sfx = true
 
-		if (sfx) soundbrick({
-			url: `/sounds/fruit/drop.mp3`,
-			isGlobal: false,
-			position: creature.position
-		})
+		if (sfx)
+			soundbrick({
+				url: `/sounds/fruit/drop.mp3`,
+				isGlobal: false,
+				position: creature.position,
+			})
 
 		fruit.heldBy = null
 		creature.holdingObject = null
 	}
 
-	fruit.hold = function (creature, sfx) { // Player or Bot
+	fruit.hold = function (creature, sfx) {
+		// Player or Bot
 		if (!creature.holdingObject || !fruit.heldBy) {
 			if (sfx === undefined) sfx = true
 
-			if (sfx) soundbrick({
-				url: `/sounds/fruit/grab.mp3`,
-				isGlobal: false,
-				position: creature.position
-			})
+			if (sfx)
+				soundbrick({
+					url: `/sounds/fruit/grab.mp3`,
+					isGlobal: false,
+					position: creature.position,
+				})
 
 			if (!creature.isBot) {
 				if (creature.clientType === "Web") {
 					if (creature.mobile) {
-						creature.centerPrint("\\c4Press \"SLASH\" to eat this Power Fruit", 2)
-					} else creature.centerPrint("\\c4Press \"E\" to eat this Power Fruit or \"Q\" to drop it", 2)
+						creature.centerPrint('\\c4Press "SLASH" to eat this Power Fruit', 2)
+					} else creature.centerPrint('\\c4Press "E" to eat this Power Fruit or "Q" to drop it', 2)
 				} else {
-					creature.centerPrint("\\c4Press \"E\" to eat this Power Fruit or \"Q\" to drop it", 2)
+					creature.centerPrint('\\c4Press "E" to eat this Power Fruit or "Q" to drop it', 2)
 				}
 			}
 			creature.holdingObject = fruit
@@ -132,8 +136,7 @@ function spawnFruit(pos,pulse) {
 
 		const index = world.fruit.indexOf(this)
 
-		if (index !== -1)
-			world.fruit.splice(index, 1)
+		if (index !== -1) world.fruit.splice(index, 1)
 
 		reuseHandler.deleteBrick(fruit)
 		clearInterval(loop)

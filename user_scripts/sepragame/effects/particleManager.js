@@ -19,7 +19,7 @@ function getpar() {
 }
 
 function emitParticle(particle, settings) {
-	var result = particleData.find(x => x.name == particle)
+	var result = particleData.find((x) => x.name == particle)
 	if (result == undefined) return Game.messageAll(`\\c6Interal game error: \\c0Unable to find particle ${particle}`)
 	result.script(settings)
 }

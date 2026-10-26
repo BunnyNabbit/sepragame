@@ -15,8 +15,6 @@ function chargedProjectile(player, attack) {
 	player.atk4Cooldown = attack.cooldown // TODO: Aware of what slot is being used
 	player.atk5Cooldown = player.atk5Cooldown + 25
 
-
-
 	let prot = player.rotation.z
 
 	brick.setColor(attack.color)
@@ -25,15 +23,14 @@ function chargedProjectile(player, attack) {
 
 	let ready = false
 
-
 	let time = 0
 
 	let chargingLoop = setInterval(() => {
 		time++
 		brick.position.x = player.position.x + 5 * Math.sin(player.rotation.z / debug)
-		brick.position.y = player.position.y - + 5 * Math.cos(player.rotation.z / debug)
+		brick.position.y = player.position.y - +5 * Math.cos(player.rotation.z / debug)
 		brick.position.z = player.position.z + 5
-	
+
 		brick.setPosition(brick.position)
 		if (time > 25) {
 			soundbrick({
@@ -53,8 +50,6 @@ function chargedProjectile(player, attack) {
 
 	brick.position = new Vector3(player.position.x, player.position.y, player.position.z + 5)
 
-
-
 	let grav = 0
 	let sped = attack.speed
 
@@ -62,7 +57,7 @@ function chargedProjectile(player, attack) {
 		if (!ready) return
 		time++
 		brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - + sped * Math.cos(prot / debug)
+		brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
 		brick.position.z = brick.position.z += grav
 		brick.setPosition(brick.position)
 
@@ -87,7 +82,7 @@ function chargedProjectile(player, attack) {
 				clearInterval(loop)
 			}
 		}
-	}, 25);
+	}, 25)
 }
 
 module.exports = chargedProjectile

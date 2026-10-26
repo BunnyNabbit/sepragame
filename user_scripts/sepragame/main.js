@@ -3,9 +3,10 @@ const sepragame = {}
 
 function init(VM_GLOBALS) {
 	// General utils
-	noop = function () { }
-	createPromise = function createPromise() { // Creates a promise that has a resolve function
-		let promise = new Promise(resolve => {
+	noop = function () {}
+	createPromise = function createPromise() {
+		// Creates a promise that has a resolve function
+		let promise = new Promise((resolve) => {
 			var res = resolve
 		})
 		promise.resolve = res
@@ -33,38 +34,38 @@ function init(VM_GLOBALS) {
 			if (!id || id === 1) {
 				resolve({
 					mesh: null,
-					texture: null
+					texture: null,
 				})
 			}
 			resolve({
 				mesh: `mol_${id}`,
-				texture: `tex_${id}`
+				texture: `tex_${id}`,
 			})
 		})
 	}
 
 	Discord = require("discord.js")
 	express = require("express")
-	ndarray = require('ndarray')
+	ndarray = require("ndarray")
 	app = express()
 	app.use("/", express.static(require("path").join(__dirname, "/web/static")))
-	http = require('http').Server(app);
+	http = require("http").Server(app)
 	//console.log(io)
 	let path = "/socket.io"
-	io = require('socket.io')(http, {
+	io = require("socket.io")(http, {
 		path: path,
-	});
+	})
 	fs = require("fs")
 
 	// Discord.js
-	bot = new Discord.Client({ disableEveryone: true });
+	bot = new Discord.Client({ disableEveryone: true })
 	disBot = bot // Alias
-	if (Game.serverSettings.botToken) bot.login(Game.serverSettings.botToken);
+	if (Game.serverSettings.botToken) bot.login(Game.serverSettings.botToken)
 	// FTODO: server settings
 	channel = Game.serverSettings.botChannel
-	bot.on('error', console.error)
+	bot.on("error", console.error)
 
-	EventEmitter = require('events');
+	EventEmitter = require("events")
 	// Classes
 	Tickable = require("./class/tickable.js")
 	Reflector = require("./class/reflector.js")
@@ -92,9 +93,9 @@ function init(VM_GLOBALS) {
 	patcher = require("./funct/patcher.js")
 
 	// Get bricks from brk
-	SELbrick1 = world.bricks.find(br => br.name == "sgs1")
-	SELbrick2 = world.bricks.find(br => br.name == "sgs2")
-	SELbrick3 = world.bricks.find(br => br.name == "sgs3")
+	SELbrick1 = world.bricks.find((br) => br.name == "sgs1")
+	SELbrick2 = world.bricks.find((br) => br.name == "sgs2")
+	SELbrick3 = world.bricks.find((br) => br.name == "sgs3")
 
 	gameName = "sepragame"
 	Game.systemMessages = false
@@ -127,21 +128,23 @@ function init(VM_GLOBALS) {
 
 	initalSelectionTree = require("./selectorTree.js")
 
-	selectorData = [{
-		creatureName: "Back",
-		saveID: "ico-back",
-		description: "",
-		charmodel: {
-			hat1: 5192006,
-			animNone: 50,
-		},
-		webModelRotationOffset: 1.565, // For the visual model
-		webLogicRotationOffset: 0, // For converting BH rotation
-		webNetworkRotationOffset: 1.565, // for other player's model
-		class: "icon",
+	selectorData = [
+		{
+			creatureName: "Back",
+			saveID: "ico-back",
+			description: "",
+			charmodel: {
+				hat1: 5192006,
+				animNone: 50,
+			},
+			webModelRotationOffset: 1.565, // For the visual model
+			webLogicRotationOffset: 0, // For converting BH rotation
+			webNetworkRotationOffset: 1.565, // for other player's model
+			class: "icon",
 
-		trigger: triggerBackToMain
-	}]
+			trigger: triggerBackToMain,
+		},
+	]
 
 	function triggerBackToMain(p) {
 		p.selectorData = initalSelectionTree
@@ -167,6 +170,7 @@ function init(VM_GLOBALS) {
 	}
 
 	class BarGenerator {
+		/**/
 		constructor(props) {
 			this.fullColor = props.fullColor ?? "\\c5"
 			this.emptyColor = props.emptyColor ?? "\\c0"
@@ -178,7 +182,7 @@ function init(VM_GLOBALS) {
 		generate(quantity, maxQuantity) {
 			// Give us a percentage represented in integer number of bars
 			quantity = Math.min(quantity, maxQuantity)
-			const percentageFull = Math.max(Math.floor(quantity / maxQuantity * this.barLength), 0)
+			const percentageFull = Math.max(Math.floor((quantity / maxQuantity) * this.barLength), 0)
 			const remainingEmpty = this.barLength - percentageFull
 
 			if (percentageFull) {
@@ -193,14 +197,14 @@ function init(VM_GLOBALS) {
 		fullColor: "[#FF6A00]",
 		emptyColor: "[#7F3300]",
 		barLength: 8,
-		character: ". "
+		character: ". ",
 	})
 
 	const pBar = new BarGenerator({
 		fullColor: "[#FFD800]",
 		emptyColor: "[#7F6A00]",
 		barLength: 8,
-		character: ". "
+		character: ". ",
 	})
 
 	Game.command("respawn", (p, msg) => {
@@ -248,18 +252,19 @@ function init(VM_GLOBALS) {
 	commandKeyAlias("selectorpoint1", "!")
 	commandKeyAlias("selectorpoint2", "@")
 
-
 	require("./player/player.js")
 
-	Game.command("spawnbot", (caller, creatureid) => { // Spawns in a bot
-		var botData = botManager.bots.find(x => x.saveID == creatureid)
+	Game.command("spawnbot", (caller, creatureid) => {
+		// Spawns in a bot
+		var botData = botManager.bots.find((x) => x.saveID == creatureid)
 		if (botData == undefined || botData == -1) return
 		botManager.spawnBot(botData, caller.position)
 	})
 
 	spawnFruit = require("./class/fruit.js")
 
-	Game.command("fruit", (caller, creatureid) => { // Spawns in a bot
+	Game.command("fruit", (caller, creatureid) => {
+		// Spawns in a bot
 		spawnFruit(caller.position)
 	})
 
@@ -280,13 +285,11 @@ function init(VM_GLOBALS) {
 
 						switch (block) {
 							case 0:
-
-								break;
+								break
 							default:
 								result = z * 4
-								break loop;
+								break loop
 						}
-
 					}
 				}
 			}
@@ -295,32 +298,32 @@ function init(VM_GLOBALS) {
 		return result + 4
 	}
 
-	var fruitSpawner = setInterval(() => { // fruit spawner and despawner
+	var fruitSpawner = setInterval(() => {
+		// fruit spawner and despawner
 		if (world.fruit.length < 10) {
 			Game.players.forEach(async (player) => {
 				if (player.currentCreature === undefined) return
 				if (player.currentCreature.class !== "builder") {
 					let x = Math.floor((randomIntFromInterval(-160, 160) + player.position.x) / 4) * 4 + 1.5
 					let y = Math.floor((randomIntFromInterval(-160, 160) + player.position.y) / 4) * 4 + 1.5
-					let canSpawn = !world.fruit.some(fruit => Game.pointDistance3D(new Vector3(x, y, player.position.z), fruit.position) < 200)
+					let canSpawn = !world.fruit.some((fruit) => Game.pointDistance3D(new Vector3(x, y, player.position.z), fruit.position) < 200)
 					if (canSpawn === true) {
 						let surface = findTopSurfaceOfWorld(new Vector3(x, y, 0))
 						if (randomIntFromInterval(0, 1)) {
 							let fruit = spawnFruit(new Vector3(x, y, surface))
 							if (fruit) {
 								let fruitDespawn = setInterval(() => {
-									if (!Game.players.some(player => Game.pointDistance3D(new Vector3(fruit.position.x, fruit.position.y, fruit.position.z), player.position) < 250)) {
+									if (!Game.players.some((player) => Game.pointDistance3D(new Vector3(fruit.position.x, fruit.position.y, fruit.position.z), player.position) < 250)) {
 										if (fruit.persistent) return
 										fruit.remove()
 										clearInterval(fruitDespawn)
 									}
-								}, 3000);
+								}, 3000)
 							}
 						} else {
 							let fruit = spawnFruit(new Vector3(x, y, surface), ["#ff4dff", "#ffb3ff"])
 							fruit.eat = function (creature) {
 								if (creature.isBot) {
-
 								} else {
 									creature.centerPrint(`Unstable energy! (4s)`, 4)
 									let hp = creature.health
@@ -331,19 +334,19 @@ function init(VM_GLOBALS) {
 											soundbrick({
 												url: `/sounds/ready.flac`,
 												isGlobal: false,
-												position: creature.position
+												position: creature.position,
 											})
-										}, 1000 * index);
+										}, 1000 * index)
 									}
 									for (let index = 0; index < 400; index++) {
 										setTimeout(() => {
 											let newHp = creature.health * 0.9
 											if (newHp > 1) creature.setHealth(newHp)
-										}, 10 * index);
+										}, 10 * index)
 									}
 									setTimeout(() => {
 										creature.setHealth(hp)
-									}, 5000);
+									}, 5000)
 
 									creature.changeStamina(400)
 								}
@@ -351,15 +354,15 @@ function init(VM_GLOBALS) {
 								soundbrick({
 									url: `/sounds/eat/bodyexplode.flac`,
 									isGlobal: false,
-									position: creature.position
+									position: creature.position,
 								})
 
 								for (let index = 0; index < 5; index++) {
 									let color = fruit.color
 									setTimeout(() => {
-										const drippyPosition = new Vector3
+										const drippyPosition = new Vector3()
 										drippyPosition.x = creature.position.x + creature.currentCreature.charmodel.mouth.x * Math.sin(creature.rotation.z / debug)
-										drippyPosition.y = creature.position.y - + creature.currentCreature.charmodel.mouth.x * Math.cos(creature.rotation.z / debug)
+										drippyPosition.y = creature.position.y - +creature.currentCreature.charmodel.mouth.x * Math.cos(creature.rotation.z / debug)
 										drippyPosition.z = creature.position.z + creature.currentCreature.charmodel.mouth.y - 0.8
 										particleManager.emitParticle("drippy", {
 											position: drippyPosition,
@@ -368,51 +371,53 @@ function init(VM_GLOBALS) {
 											direction: 0,
 											expire: 200,
 										})
-									}, 800 * index);
+									}, 800 * index)
 								}
 								soundbrick({
 									url: `/sounds/generalExplosion1.flac`,
 									isGlobal: false,
-									position: creature.position
+									position: creature.position,
 								})
 
 								soundbrick({
 									url: `/sounds/eat/${randomIntFromInterval(1, 4)}.flac`,
 									isGlobal: false,
-									position: creature.position
+									position: creature.position,
 								})
 								fruit.drop(creature, false)
 								fruit.remove()
 							}
 							if (fruit) {
 								let fruitDespawn = setInterval(() => {
-									if (!Game.players.some(player => Game.pointDistance3D(new Vector3(fruit.position.x, fruit.position.y, fruit.position.z), player.position) < 250)) {
+									if (!Game.players.some((player) => Game.pointDistance3D(new Vector3(fruit.position.x, fruit.position.y, fruit.position.z), player.position) < 250)) {
 										if (fruit.persistent) return
 										fruit.remove()
 										clearInterval(fruitDespawn)
 									}
-								}, 3000);
+								}, 3000)
 							}
 						}
 					}
 				}
-			});
+			})
 		}
 	}, 1000)
 	const notWeakling = ["guna", "magmeer"] // saveID
-	const botLoop = setInterval(() => { // Wild bot spawner
+	const botLoop = setInterval(() => {
+		// Wild bot spawner
 		if (botManager.ingameBots.length < 10) {
-			Game.players.forEach(player => {
+			Game.players.forEach((player) => {
 				if (player.currentCreature === undefined) return
 				if (player.currentCreature.class === "builder") return
 				const x = randomIntFromInterval(-250, 250) + player.position.x
 				const y = randomIntFromInterval(-250, 250) + player.position.y
-				const canSpawn = Game.pointDistance3D(new Vector3(x, y, player.position.z), player.position) > 25 && !botManager.ingameBots.some(bot => Game.pointDistance3D(bot.position, player.position) < 120 && bot.alive === true)
+				const canSpawn = Game.pointDistance3D(new Vector3(x, y, player.position.z), player.position) > 25 && !botManager.ingameBots.some((bot) => Game.pointDistance3D(bot.position, player.position) < 120 && bot.alive === true)
 				if (canSpawn === true) {
-					if (randomIntFromInterval(0, 100) > 75) { // Chance to spawn in a non weakling creature
+					if (randomIntFromInterval(0, 100) > 75) {
+						// Chance to spawn in a non weakling creature
 						const numb = randomIntFromInterval(0, notWeakling.length - 1)
 						try {
-							const botData = botManager.bots.find(element => element.saveID === notWeakling[numb]) // Get AI
+							const botData = botManager.bots.find((element) => element.saveID === notWeakling[numb]) // Get AI
 							botManager.spawnBot(botData, new Vector3(x, y, 1024))
 						} catch (error) {
 							console.log(error)
@@ -420,7 +425,7 @@ function init(VM_GLOBALS) {
 						}
 					} else {
 						const n = randomIntFromInterval(1, 2)
-						const botData = botManager.bots.find(element => element.saveID === `weakling${n}`) // Get AI
+						const botData = botManager.bots.find((element) => element.saveID === `weakling${n}`) // Get AI
 						botManager.spawnBot(botData, new Vector3(x, y, 1024))
 					}
 				}
