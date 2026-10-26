@@ -44,8 +44,6 @@ function init(VM_GLOBALS) {
 	}
 
 	Discord = require("discord.js")
-	seedrandom = require("seedrandom")
-	simplex = require("simplex-noise")
 	express = require("express")
 	ndarray = require('ndarray')
 	app = express()
