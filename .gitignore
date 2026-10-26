@@ -132,3 +132,4 @@ dist
 # sepragame
 /voxelStorage
 user_scripts/sepragame/chat/data.json
+sepragame.js
