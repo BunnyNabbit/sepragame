@@ -14,7 +14,8 @@ module.exports = async function evaluateWorldObjectsOnPlayer(player) {
 	chunks.forEach((chunk) => {
 		chunk.objects.forEach((obj) => {
 			// Evaluate
-			worldObjectTypes[obj.objectName](obj, player)
+			const worldObjectEvaluateFunction = worldObjectTypes[obj.objectName]
+			if (typeof worldObjectEvaluateFunction === "function") worldObjectEvaluateFunction(obj, player)
 		})
 	})
 }
