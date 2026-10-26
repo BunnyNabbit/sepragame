@@ -69,7 +69,7 @@ function bite(bot, player) {
 	player.stamina += bot.currentCreature.biteRegenStam
 	player.health += bot.currentCreature.biteRegenHP
 	if (player.stamina > 300) player.stamina = 300
-	if (player.clientType === "Web") player.socketio.emit("gui", [{ type: "stamina", value: player.stamina }])
+	player.socketio.emit("gui", [{ type: "stamina", value: player.stamina }])
 	if (player.health > player.maxhealth) player.health = player.maxhealth
 	player.setHealth(player.health)
 	if (bot.totalBites == bot.currentCreature.totalBites) {

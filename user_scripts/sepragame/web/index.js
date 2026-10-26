@@ -138,10 +138,8 @@ async function init(io) {
 					playerImpostor.inSelector = false
 					playerImpostor.switchCreature("builder")
 					playerImpostor.setPosition(new Vector3(parseInt(search[0]) * 4, parseInt(search[1]) * 4, parseInt(search[2]) * 4))
-					if (playerImpostor.clientType === "Web") {
-						playerImpostor.bottomPrint("", 1)
-						playerImpostor.socketio.emit("changecamera", "player")
-					}
+					playerImpostor.bottomPrint("", 1)
+					playerImpostor.socketio.emit("changecamera", "player")
 				}, 500)
 			} catch (error) {}
 		})
@@ -167,7 +165,6 @@ async function init(io) {
 			canChangeUsername = false
 			new PacketBuilder(3).write("uint8", 1).write("uint32", playerImpostor.netId).write("string", playerImpostor.username).write("uint32", playerImpostor.userId).write("uint8", playerImpostor.admin).write("uint8", playerImpostor.membershipType).broadcast()
 
-			playerImpostor.clientType = "Web"
 			playerImpostor.socketio = socket
 			playerImpostor.soundSocket = socket
 			playerImpostor.webNetId = socket.netId

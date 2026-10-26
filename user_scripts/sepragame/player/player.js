@@ -7,27 +7,15 @@ Game.on("playerJoin", async (p) => {
 
 	if (constants.discordEnabled) bot.channels.get(channel).send(`${p.username} joined ${gameName}`)
 
-	if (p.clientType === "Web") p.socketio.emit("changecamera", "selector")
-
-	if (p.clientType === "Brick Hill") {
-		p.SELbrick1 = await p.newBrick(SELbrick1)
-		p.SELbrick2 = await p.newBrick(SELbrick2)
-		p.SELbrick3 = await p.newBrick(SELbrick3)
-
-		p.SELbrick1.setRotation(480)
-		p.SELbrick2.setRotation(480)
-		p.SELbrick3.setRotation(480)
-	}
+	p.socketio.emit("changecamera", "selector")
 
 	p.updateSelector()
 
-	if (p.clientType === "Web") {
-		p.atk1OldCooldownState = false
-		p.atk2OldCooldownState = false
-		p.atk3OldCooldownState = false
-		p.atk4OldCooldownState = false
-		p.atk5OldCooldownState = false
-	}
+	p.atk1OldCooldownState = false
+	p.atk2OldCooldownState = false
+	p.atk3OldCooldownState = false
+	p.atk4OldCooldownState = false
+	p.atk5OldCooldownState = false
 
 	p.on("initialSpawn", () => {
 		p.setScale(new Vector3(0, 0, p.currentCreature.charmodel.cameraHeight))
@@ -75,9 +63,9 @@ Game.on("playerJoin", async (p) => {
 		p.debuffAttackRef = "none"
 		p.setEnvironment({ ambient: "#000000" })
 
-		if (p.clientType === "Web") p.socketio.emit("changecamera", "selector")
-		if (p.clientType === "Web") p.updateSelector()
-		if (p.clientType === "Web") p.socketio.emit("hover", false)
+		p.socketio.emit("changecamera", "selector")
+		p.updateSelector()
+		p.socketio.emit("hover", false)
 		p.switchCreature(defaultCreature)
 		p.inSelector = true
 	})
@@ -189,10 +177,8 @@ Game.on("playerJoin", async (p) => {
 					p.inSelector = false
 					p.switchCreature(p.selectorData[p.currentindex].saveID)
 					p.setPosition(new Vector3(randomIntFromInterval(-500, 500), randomIntFromInterval(-500, 500), 500))
-					if (p.clientType === "Web") {
-						p.bottomPrint("", 1)
-						p.socketio.emit("changecamera", "player")
-					}
+					p.bottomPrint("", 1)
+					p.socketio.emit("changecamera", "player")
 				}
 			} else {
 				switch (p.currentCreature.saveID) {
@@ -238,11 +224,9 @@ Game.on("playerJoin", async (p) => {
 			p.selectedattack = 1
 			p.centerPrint(p.currentCreature.attacks.atk1.attackDescription.description, 3)
 			p.currentAttackName = p.currentCreature.attacks.atk1.attackDescription.name
-			if (p.clientType === "Web") {
-				p.guiSelectSlot(1)
-				if (p.currentCreature.class === "builder") {
-					p.socketio.emit("blockmode", p.currentCreature.attacks.atk1.blockmode) // Block placement type ["in","out"]
-				}
+			p.guiSelectSlot(1)
+			if (p.currentCreature.class === "builder") {
+				p.socketio.emit("blockmode", p.currentCreature.attacks.atk1.blockmode) // Block placement type ["in","out"]
 			}
 		}
 		if (key == "2") {
@@ -250,11 +234,9 @@ Game.on("playerJoin", async (p) => {
 			p.selectedattack = 2
 			p.centerPrint(p.currentCreature.attacks.atk2.attackDescription.description, 3)
 			p.currentAttackName = p.currentCreature.attacks.atk2.attackDescription.name
-			if (p.clientType === "Web") {
-				p.guiSelectSlot(2)
-				if (p.currentCreature.class === "builder") {
-					p.socketio.emit("blockmode", p.currentCreature.attacks.atk2.blockmode) // Block placement type ["in","out"]
-				}
+			p.guiSelectSlot(2)
+			if (p.currentCreature.class === "builder") {
+				p.socketio.emit("blockmode", p.currentCreature.attacks.atk2.blockmode) // Block placement type ["in","out"]
 			}
 		}
 		if (key == "3") {
@@ -262,11 +244,9 @@ Game.on("playerJoin", async (p) => {
 			p.selectedattack = 3
 			p.centerPrint(p.currentCreature.attacks.atk3.attackDescription.description, 3)
 			p.currentAttackName = p.currentCreature.attacks.atk3.attackDescription.name
-			if (p.clientType === "Web") {
-				p.guiSelectSlot(3)
-				if (p.currentCreature.class === "builder") {
-					p.socketio.emit("blockmode", p.currentCreature.attacks.atk3.blockmode) // Block placement type ["in","out"]
-				}
+			p.guiSelectSlot(3)
+			if (p.currentCreature.class === "builder") {
+				p.socketio.emit("blockmode", p.currentCreature.attacks.atk3.blockmode) // Block placement type ["in","out"]
 			}
 		}
 		if (key == "4") {
@@ -274,11 +254,9 @@ Game.on("playerJoin", async (p) => {
 			p.selectedattack = 4
 			p.centerPrint(p.currentCreature.attacks.atk4.attackDescription.description, 3)
 			p.currentAttackName = p.currentCreature.attacks.atk4.attackDescription.name
-			if (p.clientType === "Web") {
-				p.guiSelectSlot(4)
-				if (p.currentCreature.class === "builder") {
-					p.socketio.emit("blockmode", p.currentCreature.attacks.atk4.blockmode) // Block placement type ["in","out"]
-				}
+			p.guiSelectSlot(4)
+			if (p.currentCreature.class === "builder") {
+				p.socketio.emit("blockmode", p.currentCreature.attacks.atk4.blockmode) // Block placement type ["in","out"]
 			}
 		}
 		if (key == "5") {
@@ -286,18 +264,16 @@ Game.on("playerJoin", async (p) => {
 			p.selectedattack = 5
 			p.centerPrint(p.currentCreature.attacks.atk5.attackDescription.description, 3)
 			p.currentAttackName = p.currentCreature.attacks.atk5.attackDescription.name
-			if (p.clientType === "Web") {
-				p.guiSelectSlot(5)
-				if (p.currentCreature.class === "builder") {
-					p.socketio.emit("blockmode", p.currentCreature.attacks.atk5.blockmode) // Block placement type ["in","out"]
-				}
+			p.guiSelectSlot(5)
+			if (p.currentCreature.class === "builder") {
+				p.socketio.emit("blockmode", p.currentCreature.attacks.atk5.blockmode) // Block placement type ["in","out"]
 			}
 		}
 		if (key === "e") {
 			// (SLASH) Eat food or enable hovering and "bump" position
 			if (p.inSelector === true) return
 			if (p.currentCreature.class === "builder") {
-				if (p.clientType === "Web") p.setHover(true)
+				p.setHover(true)
 				p.setPosition(new Vector3(p.position.x, p.position.y, p.position.z + 4))
 			}
 			if (p.bitecooldown > 0 || p.alive === false || p.currentCreature.class === "builder") return
@@ -349,7 +325,7 @@ Game.on("playerJoin", async (p) => {
 		if (key === "q") {
 			// Drop food or disable hovering
 			if (p.currentCreature.class === "builder") {
-				if (p.clientType === "Web") p.setHover(false)
+				p.setHover(false)
 			}
 			if (p.holdingObject) p.holdingObject.drop(p) // Drop any item
 		}
@@ -372,13 +348,6 @@ Game.on("playerJoin", async (p) => {
 		p.atk3Cooldown--
 		p.atk4Cooldown--
 		p.atk5Cooldown--
-
-		if (p.clientType === "Brick Hill") {
-			if (typeof webClient.characters[p.webNetId] !== "undefined") {
-				webClient.characters[p.webNetId].position = { x: p.position.x, y: p.position.y, z: p.position.z, r: p.rotation.z }
-				webClient.socketio.emit("pm", { p: { x: p.position.x, y: p.position.y, z: p.position.z, r: p.rotation.z }, netId: p.webNetId }) // Player movement
-			} else console.log("something is wrong!")
-		}
 
 		switch (p.musicBiome) {
 			case 195: // Snow
@@ -412,143 +381,132 @@ Game.on("playerJoin", async (p) => {
 		if (p.lastSkyColor !== p.skyColor) p.setEnvironment({ skyColor: p.skyColor })
 		p.lastSkyColor = p.skyColor
 
-		if (p.inSelector == true && p.clientType === "Brick Hill") {
-			p.setCameraRotation(new Vector3(0, 0, 270))
-			p.setPosition(new Vector3(0, 0, -21))
-		} else {
-			if (world.portals.some((portal) => Game.pointDistance3D(portal.position, p.position) < portal.size)) {
-				// Portals
-				particleManager.emitParticle("ghost", p.position)
-				particleManager.emitParticle("ghost", p.position)
-				particleManager.emitParticle("ghost", p.position)
-				particleManager.emitParticle("ghost", p.position)
-				particleManager.emitParticle("ghost", p.position)
-				particleManager.emitParticle("ghost", p.position)
+		if (world.portals.some((portal) => Game.pointDistance3D(portal.position, p.position) < portal.size)) {
+			// Portals
+			particleManager.emitParticle("ghost", p.position)
+			particleManager.emitParticle("ghost", p.position)
+			particleManager.emitParticle("ghost", p.position)
+			particleManager.emitParticle("ghost", p.position)
+			particleManager.emitParticle("ghost", p.position)
+			particleManager.emitParticle("ghost", p.position)
 
-				p.setPosition(world.portals.find((portal) => Game.pointDistance3D(portal.position, p.position) < portal.size).teleportPosition)
+			p.setPosition(world.portals.find((portal) => Game.pointDistance3D(portal.position, p.position) < portal.size).teleportPosition)
 
-				particleManager.emitParticle("ghost", p.position)
-				particleManager.emitParticle("ghost", p.position)
-				particleManager.emitParticle("ghost", p.position)
-				particleManager.emitParticle("ghost", p.position)
-				particleManager.emitParticle("ghost", p.position)
-				particleManager.emitParticle("ghost", p.position)
+			particleManager.emitParticle("ghost", p.position)
+			particleManager.emitParticle("ghost", p.position)
+			particleManager.emitParticle("ghost", p.position)
+			particleManager.emitParticle("ghost", p.position)
+			particleManager.emitParticle("ghost", p.position)
+			particleManager.emitParticle("ghost", p.position)
 
-				p.lastVaildPosition = new Vector3(p.position.x, p.position.y, p.position.z)
-				soundbrick(
-					{
-						url: `/sounds/port.ogg`,
-						isGlobal: true,
-					},
-					p
-				)
-			}
-
-			p.ui1 = 1
-			p.ui2 = 2
-			p.ui3 = 3
-			p.ui4 = 4
-			p.ui5 = 5
-
-			p[`ui${p.selectedattack}`] = `\\c5${p.selectedattack}\\c0` // Hilight selected attack
-
-			if (p.atk1Cooldown > 0) p.ui1 = "\\c61\\c0"
-			if (p.atk2Cooldown > 0) p.ui2 = "\\c62\\c0"
-			if (p.atk3Cooldown > 0) p.ui3 = "\\c63\\c0"
-			if (p.atk4Cooldown > 0) p.ui4 = "\\c64\\c0"
-			if (p.atk5Cooldown > 0) p.ui5 = "\\c65\\c0"
+			p.lastVaildPosition = new Vector3(p.position.x, p.position.y, p.position.z)
+			soundbrick(
+				{
+					url: `/sounds/port.ogg`,
+					isGlobal: true,
+				},
+				p
+			)
 		}
 
-		if (p.clientType == "Web") var guiChanges = [] // Optimize sending gui changes like energy and stamina
+		p.ui1 = 1
+		p.ui2 = 2
+		p.ui3 = 3
+		p.ui4 = 4
+		p.ui5 = 5
+
+		p[`ui${p.selectedattack}`] = `\\c5${p.selectedattack}\\c0` // Hilight selected attack
+
+		if (p.atk1Cooldown > 0) p.ui1 = "\\c61\\c0"
+		if (p.atk2Cooldown > 0) p.ui2 = "\\c62\\c0"
+		if (p.atk3Cooldown > 0) p.ui3 = "\\c63\\c0"
+		if (p.atk4Cooldown > 0) p.ui4 = "\\c64\\c0"
+		if (p.atk5Cooldown > 0) p.ui5 = "\\c65\\c0"
+
+		var guiChanges = [] // Optimize sending gui changes like energy and stamina
 
 		if (p.energy < 100 && p.energyRegen == true) {
 			p.energy++
-			if (p.clientType === "Web") {
-				guiChanges.push({ type: "energy", value: p.energy })
-			}
+			guiChanges.push({ type: "energy", value: p.energy })
 		}
 
 		if (p.stamina < 300 && p.sprintCoolDown == 0) {
 			p.stamina++
-			if (p.clientType === "Web") {
-				guiChanges.push({ type: "stamina", value: p.stamina })
-			}
+			guiChanges.push({ type: "stamina", value: p.stamina })
 		}
 
-		if (p.clientType === "Web") {
-			if (p.atk1OldCooldownState !== p.atk1Cooldown > 0) {
-				if (p.atk1OldCooldownState === true) {
-					// New state is false
-					if (p.selectedattack === 1) {
-						guiChanges.push({ type: "slot", number: 1, inner: "selection", value: "selected" })
-					} else {
-						guiChanges.push({ type: "slot", number: 1, inner: "selection", value: "unselected" })
-					}
+		if (p.atk1OldCooldownState !== p.atk1Cooldown > 0) {
+			if (p.atk1OldCooldownState === true) {
+				// New state is false
+				if (p.selectedattack === 1) {
+					guiChanges.push({ type: "slot", number: 1, inner: "selection", value: "selected" })
 				} else {
-					// New state is true
-					guiChanges.push({ number: 1, type: "slot", inner: "selection", value: "cooldown" })
+					guiChanges.push({ type: "slot", number: 1, inner: "selection", value: "unselected" })
 				}
-				p.atk1OldCooldownState = p.atk1Cooldown > 0
+			} else {
+				// New state is true
+				guiChanges.push({ number: 1, type: "slot", inner: "selection", value: "cooldown" })
 			}
-			if (p.atk2OldCooldownState !== p.atk2Cooldown > 0) {
-				if (p.atk2OldCooldownState === true) {
-					// New state is false
-					if (p.selectedattack === 2) {
-						guiChanges.push({ type: "slot", number: 2, inner: "selection", value: "selected" })
-					} else {
-						guiChanges.push({ type: "slot", number: 2, inner: "selection", value: "unselected" })
-					}
-				} else {
-					// New state is true
-					guiChanges.push({ number: 2, type: "slot", inner: "selection", value: "cooldown" })
-				}
-				p.atk2OldCooldownState = p.atk2Cooldown > 0
-			}
-			if (p.atk3OldCooldownState !== p.atk3Cooldown > 0) {
-				if (p.atk3OldCooldownState === true) {
-					// New state is false
-					if (p.selectedattack === 3) {
-						guiChanges.push({ type: "slot", number: 3, inner: "selection", value: "selected" })
-					} else {
-						guiChanges.push({ type: "slot", number: 3, inner: "selection", value: "unselected" })
-					}
-				} else {
-					// New state is true
-					guiChanges.push({ number: 3, type: "slot", inner: "selection", value: "cooldown" })
-				}
-				p.atk3OldCooldownState = p.atk3Cooldown > 0
-			}
-			if (p.atk4OldCooldownState !== p.atk4Cooldown > 0) {
-				if (p.atk4OldCooldownState === true) {
-					// New state is false
-					if (p.selectedattack === 4) {
-						guiChanges.push({ type: "slot", number: 4, inner: "selection", value: "selected" })
-					} else {
-						guiChanges.push({ type: "slot", number: 4, inner: "selection", value: "unselected" })
-					}
-				} else {
-					// New state is true
-					guiChanges.push({ number: 4, type: "slot", inner: "selection", value: "cooldown" })
-				}
-				p.atk4OldCooldownState = p.atk4Cooldown > 0
-			}
-			if (p.atk5OldCooldownState !== p.atk5Cooldown > 0) {
-				if (p.atk5OldCooldownState === true) {
-					// New state is false
-					if (p.selectedattack === 5) {
-						guiChanges.push({ type: "slot", number: 5, inner: "selection", value: "selected" })
-					} else {
-						guiChanges.push({ type: "slot", number: 5, inner: "selection", value: "unselected" })
-					}
-				} else {
-					// New state is true
-					guiChanges.push({ number: 5, type: "slot", inner: "selection", value: "cooldown" })
-				}
-				p.atk5OldCooldownState = p.atk5Cooldown > 0
-			}
-
-			if (guiChanges.length > 0) p.socketio.emit("gui", guiChanges) // Send all the GUI changes to the client
+			p.atk1OldCooldownState = p.atk1Cooldown > 0
 		}
+		if (p.atk2OldCooldownState !== p.atk2Cooldown > 0) {
+			if (p.atk2OldCooldownState === true) {
+				// New state is false
+				if (p.selectedattack === 2) {
+					guiChanges.push({ type: "slot", number: 2, inner: "selection", value: "selected" })
+				} else {
+					guiChanges.push({ type: "slot", number: 2, inner: "selection", value: "unselected" })
+				}
+			} else {
+				// New state is true
+				guiChanges.push({ number: 2, type: "slot", inner: "selection", value: "cooldown" })
+			}
+			p.atk2OldCooldownState = p.atk2Cooldown > 0
+		}
+		if (p.atk3OldCooldownState !== p.atk3Cooldown > 0) {
+			if (p.atk3OldCooldownState === true) {
+				// New state is false
+				if (p.selectedattack === 3) {
+					guiChanges.push({ type: "slot", number: 3, inner: "selection", value: "selected" })
+				} else {
+					guiChanges.push({ type: "slot", number: 3, inner: "selection", value: "unselected" })
+				}
+			} else {
+				// New state is true
+				guiChanges.push({ number: 3, type: "slot", inner: "selection", value: "cooldown" })
+			}
+			p.atk3OldCooldownState = p.atk3Cooldown > 0
+		}
+		if (p.atk4OldCooldownState !== p.atk4Cooldown > 0) {
+			if (p.atk4OldCooldownState === true) {
+				// New state is false
+				if (p.selectedattack === 4) {
+					guiChanges.push({ type: "slot", number: 4, inner: "selection", value: "selected" })
+				} else {
+					guiChanges.push({ type: "slot", number: 4, inner: "selection", value: "unselected" })
+				}
+			} else {
+				// New state is true
+				guiChanges.push({ number: 4, type: "slot", inner: "selection", value: "cooldown" })
+			}
+			p.atk4OldCooldownState = p.atk4Cooldown > 0
+		}
+		if (p.atk5OldCooldownState !== p.atk5Cooldown > 0) {
+			if (p.atk5OldCooldownState === true) {
+				// New state is false
+				if (p.selectedattack === 5) {
+					guiChanges.push({ type: "slot", number: 5, inner: "selection", value: "selected" })
+				} else {
+					guiChanges.push({ type: "slot", number: 5, inner: "selection", value: "unselected" })
+				}
+			} else {
+				// New state is true
+				guiChanges.push({ number: 5, type: "slot", inner: "selection", value: "cooldown" })
+			}
+			p.atk5OldCooldownState = p.atk5Cooldown > 0
+		}
+
+		if (guiChanges.length > 0) p.socketio.emit("gui", guiChanges) // Send all the GUI changes to the client
 
 		if (p.stunned == false) {
 			if (p.sprintTime > 0) {
@@ -566,10 +524,6 @@ Game.on("playerJoin", async (p) => {
 			}
 		}
 
-		if (p.clientType === "Brick Hill" && p.inSelector == false) {
-			p.topPrint(`${p.currentAttackName} | ${p.ui1} ${p.ui2} ${p.ui3} ${p.ui4} ${p.ui5}`, 1)
-			p.bottomPrint(`\\c4ENERGY: \\c7[${p.energy}%] ${barGen(7, 4, p.energy, 100)} \\c5STAMINA: ${Math.round((p.stamina / 300) * 100)}% ${barGen(5, 8, p.stamina, 300)}`, 1)
-		}
 		p.bitecooldown--
 		if (p.inSelector === false) {
 			// Ground check for footsteps
@@ -782,14 +736,6 @@ Game.on("playerLeave", (p) => {
 	//p.charbot.destroy() // This is also another solution to the above problem
 
 	//webClient.characters[p.webNetId] = undefined
-	if (p.clientType === "Brick Hill") {
-		Game.players.forEach((player) => {
-			if (player.clientType === "Web") {
-				player.message(`\\c6[SERVER]: \\c0${p.username} has left the server!`)
-			}
-		})
-		webClient.socketio.emit("deleteplayer", p.webNetId)
-	}
 	delete webClient.characters[p.webNetId]
 	try {
 		if (p?.undoBuffer?.undo.length) {
@@ -868,12 +814,6 @@ function removeTextFormatting(str) {
 
 Game.on("chatted", (caller, msg) => {
 	if (constants.discordEnabled) bot.channels.get(channel).send(`${gameName} | ${caller.currentCreature.discordEmoji} ${caller.username}: ${msg}`)
-	//if (caller.clientType === "Web") return
-	//Game.players.forEach(player => {
-	//	if (player.clientType === "Web" && caller !== player) {
-	//		player.message(`\\c7${caller.username}:\\c0 ${msg}`)
-	//	}
-	//});
 })
 
 bot.on("message", async (message) => {

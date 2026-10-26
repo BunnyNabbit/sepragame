@@ -57,18 +57,16 @@ function init({ config, express, app, http, io }) {
 
 		// Clean and play
 		if (player) {
-			if (player.isLinked == true || player.clientType === "Web") {
-				// Altered
-				if (clientData.position !== undefined) {
-					const distance = Game.pointDistance3D(player.position, clientData.position)
+			// Altered
+			if (clientData.position !== undefined) {
+				const distance = Game.pointDistance3D(player.position, clientData.position)
 
-					clientData = distanceVolume(clientData, distance)
+				clientData = distanceVolume(clientData, distance)
 
-					if (clientData) return player.soundSocket.emit(`playSound`, clientData) // Send sound to a player
-				} else {
-					clientData.volume = 1
-					return player.soundSocket.emit(`playSound`, clientData) // Send sound to a player
-				}
+				if (clientData) return player.soundSocket.emit(`playSound`, clientData) // Send sound to a player
+			} else {
+				clientData.volume = 1
+				return player.soundSocket.emit(`playSound`, clientData) // Send sound to a player
 			}
 		} else {
 			if (clientData.position !== undefined) {
@@ -102,27 +100,25 @@ function init({ config, express, app, http, io }) {
 				Game.players.forEach((p) => {
 					// copy of above but for web client players
 					try {
-						if (p.clientType === "Web") {
-							var distance = Game.pointDistance3D(p.position, clientData.position)
-							var canPlay = false
-							if (distance < clientData.maxDistance) {
-								canPlay = true
-								clientData.volume = 1
+						var distance = Game.pointDistance3D(p.position, clientData.position)
+						var canPlay = false
+						if (distance < clientData.maxDistance) {
+							canPlay = true
+							clientData.volume = 1
+						} else {
+							if (distance > clientData.minDistance) {
+								// ntohign! LMAO funny
 							} else {
-								if (distance > clientData.minDistance) {
-									// ntohign! LMAO funny
-								} else {
-									var newvolume = 1 - distance / clientData.minDistance
+								var newvolume = 1 - distance / clientData.minDistance
 
-									canPlay = true
-									clientData.volume = newvolume
-								}
+								canPlay = true
+								clientData.volume = newvolume
 							}
-
-							if (canPlay == false) return
-
-							p.socketio.emit(`playSound`, clientData)
 						}
+
+						if (canPlay == false) return
+
+						p.socketio.emit(`playSound`, clientData)
 					} catch (error) {}
 				})
 			} else {
@@ -130,9 +126,7 @@ function init({ config, express, app, http, io }) {
 				clientData.volume = 1
 				socketio.emit(`playSound`, clientData) // else just emit the global sound
 				Game.players.forEach((p) => {
-					if (p.clientType === "Web") {
-						p.socketio.emit(`playSound`, clientData)
-					}
+					p.socketio.emit(`playSound`, clientData)
 				})
 			}
 		}

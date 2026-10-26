@@ -29,13 +29,9 @@ function spawnFruit(pos, pulse) {
 		if (!fruit.heldBy) {
 			let messageplayer = Game.players.find((player) => Game.pointDistance3D(player.position, fruit.position) < 10)
 			if (messageplayer) {
-				if (messageplayer.clientType === "Web") {
-					if (messageplayer.mobile) {
-						messageplayer.centerPrint('\\c4Press "SLASH" to grab this Power Fruit', 2)
-					} else messageplayer.centerPrint('\\c4Press "E" to grab this Power Fruit', 2)
-				} else {
-					messageplayer.centerPrint('\\c4Press "E" to grab this Power Fruit', 2)
-				}
+				if (messageplayer.mobile) {
+					messageplayer.centerPrint('\\c4Press "SLASH" to grab this Power Fruit', 2)
+				} else messageplayer.centerPrint('\\c4Press "E" to grab this Power Fruit', 2)
 			}
 		}
 	}, 1000)
@@ -117,13 +113,9 @@ function spawnFruit(pos, pulse) {
 				})
 
 			if (!creature.isBot) {
-				if (creature.clientType === "Web") {
-					if (creature.mobile) {
-						creature.centerPrint('\\c4Press "SLASH" to eat this Power Fruit', 2)
-					} else creature.centerPrint('\\c4Press "E" to eat this Power Fruit or "Q" to drop it', 2)
-				} else {
-					creature.centerPrint('\\c4Press "E" to eat this Power Fruit or "Q" to drop it', 2)
-				}
+				if (creature.mobile) {
+					creature.centerPrint('\\c4Press "SLASH" to eat this Power Fruit', 2)
+				} else creature.centerPrint('\\c4Press "E" to eat this Power Fruit or "Q" to drop it', 2)
 			}
 			creature.holdingObject = fruit
 			fruit.heldBy = creature

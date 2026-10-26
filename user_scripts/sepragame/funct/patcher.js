@@ -14,17 +14,7 @@ function patchBrick(brick) {
 		let radiusPlayers = Game.players.filter((player) => Game.pointDistance3D(player.position, brick.position) < 200)
 
 		radiusPlayers.forEach((player) => {
-			if (player.clientType === "Brick Hill") {
-				let brickPacket = new PacketBuilder("Brick").write("uint32", brick.netId).write("string", "pos")
-
-				brickPacket.write("float", brick.position.x)
-				brickPacket.write("float", brick.position.y)
-				brickPacket.write("float", brick.position.z)
-
-				brickPacket.send(player.socket)
-			} else {
-				socketio.emit("bpos", { netId: brick.netId, x: parseFloat(position.x.toFixed(2)), y: parseFloat(position.y.toFixed(2)), z: parseFloat(position.z.toFixed(2)) })
-			}
+			socketio.emit("bpos", { netId: brick.netId, x: parseFloat(position.x.toFixed(2)), y: parseFloat(position.y.toFixed(2)), z: parseFloat(position.z.toFixed(2)) })
 		})
 
 		return

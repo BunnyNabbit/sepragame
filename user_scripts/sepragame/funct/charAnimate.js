@@ -24,7 +24,7 @@ function initCharModel(p) {
 	let webClientState = "idle"
 	let standingstill = 0
 	//console.log("why???", p.webNetId)
-	if (!p.isBot || p.clientType === "Web") {
+	if (!p.isBot) {
 		var AnimationInterval = setInterval(async () => {
 			AnimationHandler(false)
 		}, 25)

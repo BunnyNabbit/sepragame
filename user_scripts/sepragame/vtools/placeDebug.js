@@ -7,11 +7,7 @@ function tool(player, blockPos) {
 	var falsebrick = new Brick(new Vector3(blockPos.x * 4 - 0.1, blockPos.y * 4 - 0.1, blockPos.z * 4 - 0.1), new Vector3(4.3, 4.3, 4.3), util.color.randomHexColor())
 	player.loadBricks([falsebrick])
 	setTimeout(() => {
-		if (player.clientType === "Brick Hill") {
-			falsebrick.destroy()
-		} else {
-			player.deleteBricksWeb([falsebrick])
-		}
+		player.deleteBricksWeb([falsebrick])
 	}, 1000)
 }
 

@@ -212,16 +212,15 @@ function init(VM_GLOBALS) {
 	})
 
 	Game.command("settings", (p, msg) => {
-		//if (p.clientType === "Web") p.message("\\c7Brick Quailty: /brk [performance-quailty]")
+		//p.message("\\c7Brick Quailty: /brk [performance-quailty]")
 		p.message("\\c7Terrain View Distance: /viewdistance [1-8]")
-		//if (p.clientType === "Web") p.message("\\c7Post Processing: /pp [on-off]")
-		if (p.clientType === "Web") p.message("\\c7Glow: /glow [on-off]") // \\c2(Requires post processing)
-		//if (p.clientType === "Web") p.message("\\c7Enable or disable mobile controls: /joystick [on-off]") // \\c2(Requires post processing)
-		//if (p.clientType === "Web") p.message("\\c7Ambient Occlusion: /ssao [on-off] \\c2(Requires post processing)")
+		//p.message("\\c7Post Processing: /pp [on-off]")
+		p.message("\\c7Glow: /glow [on-off]") // \\c2(Requires post processing)
+		//p.message("\\c7Enable or disable mobile controls: /joystick [on-off]") // \\c2(Requires post processing)
+		//p.message("\\c7Ambient Occlusion: /ssao [on-off] \\c2(Requires post processing)")
 	})
 
 	Game.command("glow", (p, msg) => {
-		if (p.clientType !== "Web") return
 		if (msg === "off") {
 			p.message("Glow bricks has been turned off!")
 			p.message("Refresh the page to apply these changes")

@@ -1,52 +1,25 @@
 module.exports = function (p) {
-	if (p.clientType == undefined) {
-		// If isn't undefined then that means the player connected from a source that isn't Brick Hill
-		p.clientType = "Brick Hill"
-		webClient.nextNetId.id++
-		p.webNetId = `${webClient.nextNetId.id}`
-		Game.players.forEach((player) => {
-			if (player.clientType === "Web") {
-				player.message(`\\c6[SERVER]: \\c0${p.username} has joined the server!`)
-			}
-		})
-		p.setSpeedN = p.setSpeed
-		p.setSpeed = function (params) {
-			return p.setSpeedN(params * 1.5)
-		}
-		if (p.userId == 782) p.builderPermission = true
-	} else if (p.clientType === "Web") {
-		p.readInstructions = true
-		Game.messageAll(`\\c6[SERVER]: \\c0${p.username} has joined the server!`)
+	p.readInstructions = true
+	Game.messageAll(`\\c6[SERVER]: \\c0${p.username} has joined the server!`)
 
-		setTimeout(() => {
-			// Tutorial
-			if (p.clientType === "Web") {
-				// Web client instructions
-				if (p.mobile === false) {
-					// Desktop
-					p.message("For settings press M")
-					p.message("== Selector Controls ==")
-					p.message("Press A and D to switch creature selector")
-					p.message("Press spacebar to confirm selection")
-					p.message("==============")
-				} else {
-					// Mobile
-					p.message("For settings use the /settings command on chat")
-					p.message("== Selector Controls ==")
-					p.message("Flick the joystick left or right to switch creature selector")
-					p.message('Press the "A" button to confirm selection')
-					p.message("==============")
-				}
-			} else {
-				p.message("\\c1Welcome to sepragame WIP!")
-				p.message("\\c1Join our Discord server! https://discord.gg/zUjpDMw")
-				p.message("\\c1For settings use the /settings command on chat")
-				p.message("\\c1== Selector Controls ==")
-				p.message("\\c1Press A and D to switch creature selector")
-				p.message("\\c1Press spacebar to confirm selection")
-			}
-		}, 100)
-	}
+	setTimeout(() => {
+		// Tutorial
+		if (p.mobile === false) {
+			// Desktop
+			p.message("For settings press M")
+			p.message("== Selector Controls ==")
+			p.message("Press A and D to switch creature selector")
+			p.message("Press spacebar to confirm selection")
+			p.message("==============")
+		} else {
+			// Mobile
+			p.message("For settings use the /settings command on chat")
+			p.message("== Selector Controls ==")
+			p.message("Flick the joystick left or right to switch creature selector")
+			p.message('Press the "A" button to confirm selection')
+			p.message("==============")
+		}
+	}, 100)
 
 	p.selectorData = selectorData
 	playerFunctions(p)
@@ -164,13 +137,13 @@ function playerFunctions(p) {
 		p.energy += amt
 		if (p.energy > 100) p.energy = 100
 		if (p.energy < 0) p.energy = 0
-		if (p.clientType === "Web") p.socketio.emit("gui", [{ type: "energy", value: p.energy }])
+		p.socketio.emit("gui", [{ type: "energy", value: p.energy }])
 	}
 	p.changeStamina = function (amt) {
 		p.stamina += amt
 		if (p.stamina > 300) p.stamina = 300
 		if (p.stamina < 0) p.stamina = 0
-		if (p.clientType === "Web") p.socketio.emit("gui", [{ type: "stamina", value: p.stamina }])
+		p.socketio.emit("gui", [{ type: "stamina", value: p.stamina }])
 	}
 	p.switchCreature = (creatureId) => {
 		var verify = creatureData.find((x) => x.saveID == creatureId)
@@ -184,7 +157,7 @@ function playerFunctions(p) {
 		verify = creatureData.find((x) => x.saveID == creatureId)
 		if (verify == undefined || verify == -1) return
 		p.selectedattack = 1
-		if (p.clientType === "Web") p.guiSelectSlot(1)
+		p.guiSelectSlot(1)
 		p.currentCreature = verify
 		p.setJumpPower(p.currentCreature.jump)
 		p.setSpeed(p.currentCreature.speed)
@@ -213,34 +186,28 @@ function playerFunctions(p) {
 
 		if (p.tutorialStep === 0 && creatureId !== "none") {
 			// Is player at first stage of the tutorial?
-			if (p.clientType === "Web") {
-				if (p.mobile === false) {
-					p.message("== Player controls ==")
-					p.message("WASD to move!")
-					p.message("Spacebar to jump!")
-					p.message("Press the number keys to switch attacks")
-					p.message("Press E to bite (Weak melee attack + eat dead bots for HP)")
-					p.message("Press Shift to sprint (Each press uses up stamina)")
-					p.message("Press C to sit down")
-					p.message("Press T to talk")
-					p.message("==============")
-				} else {
-					p.message("== Player controls ==")
-					p.message("Joystick to move!")
-					p.message('"A" to jump!')
-					p.message('"B" to use selected attacks')
-					p.message("Switch attacks by clicking on the slots")
-					p.message("==============")
-				}
+			if (p.mobile === false) {
+				p.message("== Player controls ==")
+				p.message("WASD to move!")
+				p.message("Spacebar to jump!")
+				p.message("Press the number keys to switch attacks")
+				p.message("Press E to bite (Weak melee attack + eat dead bots for HP)")
+				p.message("Press Shift to sprint (Each press uses up stamina)")
+				p.message("Press C to sit down")
+				p.message("Press T to talk")
+				p.message("==============")
 			} else {
-				p.message("\\c1== Player controls ==")
-				p.message("\\c1Press the number keys to switch attacks")
-				p.message("\\c1Press E to bite (Weak melee attack + eat dead bots for HP)")
-				p.message("\\c1Press Shift to sprint (Each press uses up stamina)")
+				p.message("== Player controls ==")
+				p.message("Joystick to move!")
+				p.message('"A" to jump!')
+				p.message('"B" to use selected attacks')
+				p.message("Switch attacks by clicking on the slots")
+				p.message("==============")
 			}
+
 			p.tutorialStep = 1
 		}
-		if (p.clientType === "Web" && creatureId !== "none") {
+		if (creatureId !== "none") {
 			let guiSlot = []
 
 			if (p.currentCreature.attacks.atk1 !== undefined) {
@@ -281,14 +248,6 @@ function playerFunctions(p) {
 				)
 			}
 		}
-
-		if (p.clientType === "Brick Hill") {
-			if (creatureId !== "none") {
-				p.setRPC(`sepragame: ${p.currentCreature.creatureName}`)
-			} else {
-				p.setRPC(`sepragame`)
-			}
-		}
 	}
 	p.updateSelector = function () {
 		// really needs cleaning and use of %
@@ -305,43 +264,23 @@ function playerFunctions(p) {
 		}
 
 		b = p.selectorData[p.currentindex]
-		if (p.clientType == "Brick Hill") {
-			p.SELbrick2.setModel(p.selectorData[p.currentindex].charmodel.hat1)
-			p.SELbrick2.setPosition(new Vector3(p.SELbrick2.position.x, p.SELbrick2.position.y, -p.selectorData[p.currentindex].charmodel.animNone - 16))
-		}
-		if (p.clientType == "Web") p.socketio.emit("charmodel", { slot: 2, meta: { model: p.selectorData[p.currentindex].saveID, modelRotationOffset: p.selectorData[p.currentindex].webModelRotationOffset } })
+		p.socketio.emit("charmodel", { slot: 2, meta: { model: p.selectorData[p.currentindex].saveID, modelRotationOffset: p.selectorData[p.currentindex].webModelRotationOffset } })
 
 		if (p.currentindex + 1 > p.selectorData.length - 1) {
-			if (p.clientType == "Brick Hill") {
-				p.SELbrick3.setModel(p.selectorData[0].charmodel.hat1)
-				p.SELbrick3.setPosition(new Vector3(p.SELbrick3.position.x, p.SELbrick3.position.y, -p.selectorData[0].charmodel.animNone - 16))
-			}
-			if (p.clientType == "Web") p.socketio.emit("charmodel", { slot: 3, meta: { model: p.selectorData[0].saveID, modelRotationOffset: p.selectorData[0].webModelRotationOffset } })
+			p.socketio.emit("charmodel", { slot: 3, meta: { model: p.selectorData[0].saveID, modelRotationOffset: p.selectorData[0].webModelRotationOffset } })
 
 			c = p.selectorData[0].creatureName
 		} else {
-			if (p.clientType == "Brick Hill") {
-				p.SELbrick3.setModel(p.selectorData[p.currentindex + 1].charmodel.hat1)
-				p.SELbrick3.setPosition(new Vector3(p.SELbrick3.position.x, p.SELbrick3.position.y, -p.selectorData[p.currentindex + 1].charmodel.animNone - 16))
-			}
-			if (p.clientType == "Web") p.socketio.emit("charmodel", { slot: 3, meta: { model: p.selectorData[p.currentindex + 1].saveID, modelRotationOffset: p.selectorData[p.currentindex + 1].webModelRotationOffset } })
+			p.socketio.emit("charmodel", { slot: 3, meta: { model: p.selectorData[p.currentindex + 1].saveID, modelRotationOffset: p.selectorData[p.currentindex + 1].webModelRotationOffset } })
 
 			c = p.selectorData[p.currentindex + 1].creatureName
 		}
 
 		if (p.currentindex - 1 == -1) {
-			if (p.clientType == "Brick Hill") {
-				p.SELbrick1.setModel(p.selectorData[p.selectorData.length - 1].charmodel.hat1)
-				p.SELbrick1.setPosition(new Vector3(p.SELbrick1.position.x, p.SELbrick1.position.y, -p.selectorData[p.selectorData.length - 1].charmodel.animNone - 16))
-			}
-			if (p.clientType == "Web") p.socketio.emit("charmodel", { slot: 1, meta: { model: p.selectorData[p.selectorData.length - 1].saveID, modelRotationOffset: p.selectorData[p.selectorData.length - 1].webModelRotationOffset } })
+			p.socketio.emit("charmodel", { slot: 1, meta: { model: p.selectorData[p.selectorData.length - 1].saveID, modelRotationOffset: p.selectorData[p.selectorData.length - 1].webModelRotationOffset } })
 			a = p.selectorData[p.selectorData.length - 1].creatureName
 		} else {
-			if (p.clientType == "Brick Hill") {
-				p.SELbrick1.setModel(p.selectorData[p.currentindex - 1].charmodel.hat1)
-				p.SELbrick1.setPosition(new Vector3(p.SELbrick1.position.x, p.SELbrick1.position.y, -p.selectorData[p.currentindex - 1].charmodel.animNone - 16))
-			}
-			if (p.clientType == "Web") p.socketio.emit("charmodel", { slot: 1, meta: { model: p.selectorData[p.currentindex - 1].saveID, modelRotationOffset: p.selectorData[p.currentindex - 1].webModelRotationOffset } })
+			p.socketio.emit("charmodel", { slot: 1, meta: { model: p.selectorData[p.currentindex - 1].saveID, modelRotationOffset: p.selectorData[p.currentindex - 1].webModelRotationOffset } })
 			a = p.selectorData[p.currentindex - 1].creatureName
 		}
 		if (b.trigger) {

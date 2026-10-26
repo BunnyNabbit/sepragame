@@ -61,40 +61,7 @@ module.exports = [
 	//}
 ]
 
-const settingDataBH = [
-	{
-		creatureName: "Back",
-		saveID: "ico-back",
-		description: "",
-		charmodel: {
-			hat1: 5192006,
-			animNone: 50,
-		},
-		webModelRotationOffset: 1.565, // For the visual model
-		webLogicRotationOffset: 0, // For converting BH rotation
-		webNetworkRotationOffset: 1.565, // for other player's model
-		class: "icon",
-
-		trigger: triggerBackToMain,
-	},
-	{
-		creatureName: "View terrain distance",
-		saveID: "ico-terrain",
-		description: "",
-		charmodel: {
-			hat1: 5192003,
-			animNone: 50,
-		},
-		webModelRotationOffset: 1.565, // For the visual model
-		webLogicRotationOffset: 0, // For converting BH rotation
-		webNetworkRotationOffset: 1.565, // for other player's model
-		class: "icon",
-
-		trigger: triggerTerrain,
-	},
-]
-
-const settingDataWeb = [
+const settingData = [
 	{
 		creatureName: "Back",
 		saveID: "ico-back",
@@ -147,74 +114,52 @@ function triggerBackToMain(p) {
 }
 
 function triggerTerrain(p) {
-	if (p.clientType === "Brick Hill") {
-		switch (p.viewDistanceN) {
-			case -2:
-				p.viewDistanceN = -1
-				p.viewDistanceP = 2
-				p.message("\\c5View distanced toggled to 3x3x3")
-				break
-			case -1:
-				p.viewDistanceN = -2
-				p.viewDistanceP = 3
-				p.message("\\c5View distanced toggled to 5x5x5")
-				break
-			default:
-				p.viewDistanceN = -1
-				p.viewDistanceP = 2
-				p.message("\\c5View distanced toggled to 3x3x3")
-				break
-		}
-	}
-
-	if (p.clientType === "Web") {
-		switch (p.viewDistanceN) {
-			case -8:
-				p.viewDistanceN = -1
-				p.viewDistanceP = 2
-				p.message("\\c5View distanced toggled to 3x3x3")
-				break
-			case -1:
-				p.viewDistanceN = -2
-				p.viewDistanceP = 3
-				p.message("\\c5View distanced toggled to 5x5x5")
-				break
-			case -2:
-				p.viewDistanceN = -3
-				p.viewDistanceP = 4
-				p.message("\\c5View distanced toggled to 7x7x7")
-				break
-			case -3:
-				p.viewDistanceN = -4
-				p.viewDistanceP = 5
-				p.message("\\c5View distanced toggled to 9x9x9")
-				break
-			case -4:
-				p.viewDistanceN = -5
-				p.viewDistanceP = 6
-				p.message("\\c5View distanced toggled to 11x11x11")
-				break
-			case -5:
-				p.viewDistanceN = -6
-				p.viewDistanceP = 7
-				p.message("\\c5View distanced toggled to 13x13x13")
-				break
-			case -6:
-				p.viewDistanceN = -7
-				p.viewDistanceP = 8
-				p.message("\\c5View distanced toggled to 15x15x15")
-				break
-			case -7:
-				p.viewDistanceN = -8
-				p.viewDistanceP = 9
-				p.message("\\c5View distanced toggled to 17x17x17")
-				break
-			default:
-				p.viewDistanceN = -1
-				p.viewDistanceP = 2
-				p.message("\\c5View distanced toggled to 3x3x3")
-				break
-		}
+	switch (p.viewDistanceN) {
+		case -8:
+			p.viewDistanceN = -1
+			p.viewDistanceP = 2
+			p.message("\\c5View distanced toggled to 3x3x3")
+			break
+		case -1:
+			p.viewDistanceN = -2
+			p.viewDistanceP = 3
+			p.message("\\c5View distanced toggled to 5x5x5")
+			break
+		case -2:
+			p.viewDistanceN = -3
+			p.viewDistanceP = 4
+			p.message("\\c5View distanced toggled to 7x7x7")
+			break
+		case -3:
+			p.viewDistanceN = -4
+			p.viewDistanceP = 5
+			p.message("\\c5View distanced toggled to 9x9x9")
+			break
+		case -4:
+			p.viewDistanceN = -5
+			p.viewDistanceP = 6
+			p.message("\\c5View distanced toggled to 11x11x11")
+			break
+		case -5:
+			p.viewDistanceN = -6
+			p.viewDistanceP = 7
+			p.message("\\c5View distanced toggled to 13x13x13")
+			break
+		case -6:
+			p.viewDistanceN = -7
+			p.viewDistanceP = 8
+			p.message("\\c5View distanced toggled to 15x15x15")
+			break
+		case -7:
+			p.viewDistanceN = -8
+			p.viewDistanceP = 9
+			p.message("\\c5View distanced toggled to 17x17x17")
+			break
+		default:
+			p.viewDistanceN = -1
+			p.viewDistanceP = 2
+			p.message("\\c5View distanced toggled to 3x3x3")
+			break
 	}
 }
 
@@ -225,17 +170,8 @@ function triggerResolution(p) {
 function bloodInfo(p) {}
 
 function enterSettings(p) {
-	switch (p.clientType) {
-		case "Web":
-			p.selectorData = settingDataWeb
-			p.updateSelector()
-			break
-
-		default:
-			p.selectorData = settingDataBH
-			p.updateSelector()
-			break
-	}
+	p.selectorData = settingData
+	p.updateSelector()
 }
 
 function enterCreatures(p) {

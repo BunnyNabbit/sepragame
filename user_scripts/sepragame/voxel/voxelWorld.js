@@ -99,16 +99,12 @@ async function render(sectionX, sectionY, sectionZ, player, reload) {
 				})
 				clusterData.loaded = true
 				if (bricks.length !== 0) {
-					if (player.clientType === "Brick Hill") {
-						return player.loadBricks(bricks)
-					} else {
-						let cluster = {
-							p: `${sectionX} ${sectionY} ${sectionZ}`,
-							position: { x: sectionX, y: sectionY, z: sectionZ },
-							b: lightenBricks(bricks),
-						}
-						return cluster
+					let cluster = {
+						p: `${sectionX} ${sectionY} ${sectionZ}`,
+						position: { x: sectionX, y: sectionY, z: sectionZ },
+						b: lightenBricks(bricks),
 					}
+					return cluster
 				}
 				return
 			} else {
@@ -138,17 +134,13 @@ async function render(sectionX, sectionY, sectionZ, player, reload) {
 						loadfromcache = true
 						clusterData.loaded = true
 						if (brickArray.length !== 0) {
-							if (player.clientType === "Brick Hill") {
-								return player.loadBricks(brickArray)
-							} else {
-								// Web client
-								let cluster = {
-									p: `${sectionX} ${sectionY} ${sectionZ}`,
-									position: { x: sectionX, y: sectionY, z: sectionZ },
-									b: lightenBricks(brickArray),
-								}
-								return cluster
+							// Web client
+							let cluster = {
+								p: `${sectionX} ${sectionY} ${sectionZ}`,
+								position: { x: sectionX, y: sectionY, z: sectionZ },
+								b: lightenBricks(brickArray),
 							}
+							return cluster
 						}
 						return
 					} else {
@@ -191,21 +183,6 @@ async function render(sectionX, sectionY, sectionZ, player, reload) {
 	if (reload == true) {
 		if (toDelete == "no") return console.log("it said no")
 		if (toDelete == undefined) return console.log("it undefindd")
-		if (player.clientType === "Brick Hill") {
-			toDelete.bricks.forEach((brick) => {
-				brick.destroy()
-			})
-		} else {
-			// Remove cluster
-			//player.socketio.emit("dt", `${chunkx} ${section} ${chunky}`)
-			//Game.players.forEach((client) => {
-			//	if (client.clientType === "Web") {
-			//		if (client.loadedchunks.some(i => i.x == chunkx && i.y == section && i.z == chunky && i.loaded == true)) {
-			//			client.socketio.emit("dt", `${chunkx} ${section} ${chunky}`)
-			//		}
-			//	}
-			//});
-		}
 		player.loadedchunks.splice(player.loadedchunks.indexOf(toDelete), 1)
 	}
 
@@ -241,50 +218,42 @@ async function render(sectionX, sectionY, sectionZ, player, reload) {
 
 	// Send bricks
 	if (brickArray[0] !== undefined) {
-		if (player.clientType === "Brick Hill") {
-			player.loadBricks(brickArray)
-		} else {
-			player.socketio.emit(
-				"t",
-				clusterSerialize([
-					{
-						// Clusters
-						p: `${sectionX} ${sectionY} ${sectionZ}`,
-						position: { x: sectionX, y: sectionY, z: sectionZ },
-						b: lightenBricks(brickArray),
-					},
-				])
-			)
-			if (reload === true) {
-				// Send reload to web clients
-				Game.players.forEach((client) => {
-					if (client.clientType === "Web") {
-						if (client.loadedchunks.some((i) => i.x == sectionX && i.y == sectionY && i.z == sectionZ && i.loaded == true)) {
-							client.socketio.emit(
-								"t",
-								clusterSerialize([
-									{
-										// Clusters
-										p: `${sectionX} ${sectionY} ${sectionZ}`,
-										position: { x: sectionX, y: sectionY, z: sectionZ },
-										b: lightenBricks(brickArray),
-									},
-								])
-							)
-						}
-					}
-				})
-			}
+		player.socketio.emit(
+			"t",
+			clusterSerialize([
+				{
+					// Clusters
+					p: `${sectionX} ${sectionY} ${sectionZ}`,
+					position: { x: sectionX, y: sectionY, z: sectionZ },
+					b: lightenBricks(brickArray),
+				},
+			])
+		)
+		if (reload === true) {
+			// Send reload to web clients
+			Game.players.forEach((client) => {
+				if (client.loadedchunks.some((i) => i.x == sectionX && i.y == sectionY && i.z == sectionZ && i.loaded == true)) {
+					client.socketio.emit(
+						"t",
+						clusterSerialize([
+							{
+								// Clusters
+								p: `${sectionX} ${sectionY} ${sectionZ}`,
+								position: { x: sectionX, y: sectionY, z: sectionZ },
+								b: lightenBricks(brickArray),
+							},
+						])
+					)
+				}
+			})
 		}
 	} else {
 		if (reload === true) {
 			// Send reload to web clients
 			player.socketio.emit("dt", `${sectionX} ${sectionY} ${sectionZ}`)
 			Game.players.forEach((client) => {
-				if (client.clientType === "Web") {
-					if (client.loadedchunks.some((i) => i.x == sectionX && i.y == sectionY && i.z == sectionZ && i.loaded == true)) {
-						client.socketio.emit("dt", `${sectionX} ${sectionY} ${sectionZ}`)
-					}
+				if (client.loadedchunks.some((i) => i.x == sectionX && i.y == sectionY && i.z == sectionZ && i.loaded == true)) {
+					client.socketio.emit("dt", `${sectionX} ${sectionY} ${sectionZ}`)
 				}
 			})
 		}
@@ -324,10 +293,8 @@ Game.on("playerJoin", async (player) => {
 	player.viewDistanceN = -1 // 3x3x3
 	player.viewDistanceP = 2 // | | |
 	player.viewDistanceToggle = 3
-	if (player.clientType === "Web") {
-		player.viewDistanceN = -2
-		player.viewDistanceP = 3
-	}
+	player.viewDistanceN = -2
+	player.viewDistanceP = 3
 	player.blockData = 0
 	player.selectedColor = 9
 	player.blockHeightPlacement = 0
@@ -482,9 +449,9 @@ Game.on("playerJoin", async (player) => {
 	player.loadBricks([player.selectionBox])
 	player.selectorBrick.setCollision(false)
 	player.selectorBrickMirrored.setCollision(false)
-	if (player.clientType === "Web") player.socketio.emit("bs", { netId: player.selectorBrick.netId, x: 4, y: 4, z: 4 }) // Removes collision
-	if (player.clientType === "Web") player.socketio.emit("bs", { netId: player.selectorBrickMirrored.netId, x: 4, y: 4, z: 4 }) // Removes collision
-	if (player.clientType === "Web") player.socketio.emit("bs", { netId: player.selectionBox.netId, x: 4, y: 4, z: 4 }) // Removes collision
+	player.socketio.emit("bs", { netId: player.selectorBrick.netId, x: 4, y: 4, z: 4 }) // Removes collision
+	player.socketio.emit("bs", { netId: player.selectorBrickMirrored.netId, x: 4, y: 4, z: 4 }) // Removes collision
+	player.socketio.emit("bs", { netId: player.selectionBox.netId, x: 4, y: 4, z: 4 }) // Removes collision
 
 	player.setInterval(async () => {
 		player.plchunkx = Math.floor(player.position.x / 64)
@@ -567,56 +534,6 @@ Game.on("playerJoin", async (player) => {
 
 	//render(0,0,4,player)
 	//renderaround(player)
-	if (player.clientType !== "Web") {
-		var brightness = 50
-		var visibility = 0
-		let toplight = new Brick(new Vector3(0, 0, 0), new Vector3(1, 1, 1), "#ffffff")
-		let lightBricks = []
-		toplight.visibility = visibility
-		toplight.lightEnabled = true
-		toplight.lightColor = "#ffffff"
-		toplight.lightRange = brightness
-		lightBricks.push(toplight)
-		let bottomlight = new Brick(new Vector3(0, 0, 0), new Vector3(0, 0, 0), "#ffffff")
-		bottomlight.visibility = visibility
-		bottomlight.lightEnabled = true
-		bottomlight.lightColor = "#ffffff"
-		bottomlight.lightRange = brightness
-		lightBricks.push(bottomlight)
-		let uplight = new Brick(new Vector3(0, 0, 0), new Vector3(0, 0, 0), "#ffffff")
-		uplight.visibility = visibility
-		uplight.lightEnabled = true
-		uplight.lightColor = "#ffffff"
-		uplight.lightRange = brightness
-		lightBricks.push(uplight)
-		let downlight = new Brick(new Vector3(0, 0, 0), new Vector3(0, 0, 0), "#ffffff")
-		downlight.visibility = visibility
-		downlight.lightEnabled = true
-		downlight.lightColor = "#ffffff"
-		downlight.lightRange = brightness
-		lightBricks.push(downlight)
-		let rightlight = new Brick(new Vector3(0, 0, 0), new Vector3(0, 0, 0), "#ffffff")
-		rightlight.visibility = visibility
-		rightlight.lightEnabled = true
-		rightlight.lightColor = "#ffffff"
-		rightlight.lightRange = brightness
-		lightBricks.push(rightlight)
-		let leftlight = new Brick(new Vector3(0, 0, 0), new Vector3(0, 0, 0), "#ffffff")
-		leftlight.visibility = visibility
-		leftlight.lightEnabled = true
-		leftlight.lightColor = "#ffffff"
-		leftlight.lightRange = brightness
-		lightBricks.push(leftlight)
-		player.loadBricks(lightBricks)
-		player.on("moved", (newPosition, newRotation) => {
-			toplight.setPosition(new Vector3(player.position.x, player.position.y + 28, player.position.z + 5))
-			bottomlight.setPosition(new Vector3(player.position.x, player.position.y - 28, player.position.z + 5))
-			uplight.setPosition(new Vector3(player.position.x + 28, player.position.y, player.position.z + 5))
-			leftlight.setPosition(new Vector3(player.position.x, player.position.y, player.position.z - 25))
-			downlight.setPosition(new Vector3(player.position.x - 28, player.position.y, player.position.z + 5))
-			rightlight.setPosition(new Vector3(player.position.x, player.position.y, player.position.z + 25))
-		})
-	}
 
 	player.rendering = false
 
@@ -634,28 +551,17 @@ Game.on("playerJoin", async (player) => {
 			let block1Col = !(block1 == 0 || block1Data == 1)
 			let block2Col = !(block2 == 0 || block2Data == 1)
 
-			switch (player.clientType) {
-				case "Web":
-					if ((!block1Col && !block2Col) || player.position.z < 4) {
-						// Strict
-						player.lastVaildPosition = new Vector3(player.position.x, player.position.y, player.position.z)
-					} else {
-						if (!block1Col && block2Col) {
-							// Step\
-							player.setPosition(new Vector3(player.position.x, player.position.y, player.position.z + 4), false)
-						} else {
-							// push
-							player.setPosition(new Vector3(Math.floor(player.lastVaildPosition.x / 4) * 4 + 2.5, Math.floor(player.lastVaildPosition.y / 4) * 4 + 2.5, player.lastVaildPosition.z), true)
-						}
-					}
-					break
-				case "Brick Hill":
-					if (block1Col && block2Col) {
-						player.setPosition(player.lastVaildPosition)
-					} else {
-						player.lastVaildPosition = new Vector3(player.position.x, player.position.y, player.position.z)
-					}
-					break
+			if ((!block1Col && !block2Col) || player.position.z < 4) {
+				// Strict
+				player.lastVaildPosition = new Vector3(player.position.x, player.position.y, player.position.z)
+			} else {
+				if (!block1Col && block2Col) {
+					// Step\
+					player.setPosition(new Vector3(player.position.x, player.position.y, player.position.z + 4), false)
+				} else {
+					// push
+					player.setPosition(new Vector3(Math.floor(player.lastVaildPosition.x / 4) * 4 + 2.5, Math.floor(player.lastVaildPosition.y / 4) * 4 + 2.5, player.lastVaildPosition.z), true)
+				}
 			}
 
 			switch (block3) {
@@ -744,29 +650,22 @@ Game.on("playerJoin", async (player) => {
 			const posY = Math.floor(player.position.y / 4) * 4
 			const posZ = Math.floor(player.position.z / 4) * 4
 
-			// Set cursor position depending on client type
-			if (player.clientType === "Brick Hill") {
-				player.selectorBrick.setPosition(new Vector3(posX, posY, posZ))
-			} else {
-				const newPos = new Vector3(posX, posY, posZ)
-				const me = player.selectorBrick.position
-				if ((me.x === newPos.x && me.y === newPos.y && me.z === newPos.z) == false) {
-					player.selectorBrick.position = newPos
-					player.socketio.emit("bpos", { netId: player.selectorBrick.netId, x: player.selectorBrick.position.x, y: player.selectorBrick.position.y, z: player.selectorBrick.position.z }) // Move brick packet
-				}
+			const newPos = new Vector3(posX, posY, posZ)
+			const me = player.selectorBrick.position
+			if ((me.x === newPos.x && me.y === newPos.y && me.z === newPos.z) == false) {
+				player.selectorBrick.position = newPos
+				player.socketio.emit("bpos", { netId: player.selectorBrick.netId, x: player.selectorBrick.position.x, y: player.selectorBrick.position.y, z: player.selectorBrick.position.z }) // Move brick packet
 			}
 
 			// If symmetry is enabled, move the mirror cursor
-			if (player.clientType === "Web") {
-				if (player.symmetryEnabled === true) {
-					if (player.symmetryAxis === "x") {
-						player.selectorBrickMirrored.setPosition(new Vector3(player.symmetryOrigin.x - (player.selectorBrick.position.x - player.symmetryOrigin.x), player.selectorBrick.position.y, player.selectorBrick.position.z))
-					} else {
-						// z
-						player.selectorBrickMirrored.setPosition(new Vector3(player.selectorBrick.position.x, player.symmetryOrigin.y - (player.selectorBrick.position.y - player.symmetryOrigin.y), player.selectorBrick.position.z))
-					}
-					player.socketio.emit("bpos", { netId: player.selectorBrickMirrored.netId, x: player.selectorBrickMirrored.position.x, y: player.selectorBrickMirrored.position.y, z: player.selectorBrickMirrored.position.z })
+			if (player.symmetryEnabled === true) {
+				if (player.symmetryAxis === "x") {
+					player.selectorBrickMirrored.setPosition(new Vector3(player.symmetryOrigin.x - (player.selectorBrick.position.x - player.symmetryOrigin.x), player.selectorBrick.position.y, player.selectorBrick.position.z))
+				} else {
+					// z
+					player.selectorBrickMirrored.setPosition(new Vector3(player.selectorBrick.position.x, player.symmetryOrigin.y - (player.selectorBrick.position.y - player.symmetryOrigin.y), player.selectorBrick.position.z))
 				}
+				player.socketio.emit("bpos", { netId: player.selectorBrickMirrored.netId, x: player.selectorBrickMirrored.position.x, y: player.selectorBrickMirrored.position.y, z: player.selectorBrickMirrored.position.z })
 			}
 		}
 	}
@@ -899,36 +798,23 @@ async function renderAround(player) {
 			var verticalSectionP = 4
 		} else var verticalSectionP = player.viewDistanceP
 
-		if (player.clientType === "Brick Hill") {
-			for (var x = player.viewDistanceN; x < player.viewDistanceP; x++) {
-				// was -1 2
-				for (var y = player.viewDistanceN; z < player.viewDistanceP; z++) {
-					for (var z = verticalSectionN; y < verticalSectionP; y++) {
-						await render(renderSectionPos.x + x, renderSectionPos.y + y, renderSectionPos.z + z, player, false)
-					}
-				}
+		const loopCols = []
+		spiral([-player.viewDistanceN + player.viewDistanceP, -player.viewDistanceN + player.viewDistanceP], function (x, y) {
+			loopCols.push([x, y])
+		})
+
+		for (let i = 0; i < loopCols.length; i++) {
+			const x = loopCols[i][0] + player.viewDistanceN
+			const y = loopCols[i][1] + player.viewDistanceN
+			for (var z = verticalSectionN; z < verticalSectionP; z++) {
+				let cluster = await render(renderSectionPos.x + x, renderSectionPos.y + y, renderSectionPos.z + z, player, false)
+				if (cluster) clusters.push(cluster)
 			}
-
-			player.rendering = false
-		} else {
-			const loopCols = []
-			spiral([-player.viewDistanceN + player.viewDistanceP, -player.viewDistanceN + player.viewDistanceP], function (x, y) {
-				loopCols.push([x, y])
-			})
-
-			for (let i = 0; i < loopCols.length; i++) {
-				const x = loopCols[i][0] + player.viewDistanceN
-				const y = loopCols[i][1] + player.viewDistanceN
-				for (var z = verticalSectionN; z < verticalSectionP; z++) {
-					let cluster = await render(renderSectionPos.x + x, renderSectionPos.y + y, renderSectionPos.z + z, player, false)
-					if (cluster) clusters.push(cluster)
-				}
-			}
-
-			clusters = clusterSerialize(clusters)
-			if (clusters) player.socketio.emit("t", clusters)
-			player.rendering = false
 		}
+
+		clusters = clusterSerialize(clusters)
+		if (clusters) player.socketio.emit("t", clusters)
+		player.rendering = false
 	}
 }
 
@@ -1088,12 +974,7 @@ function unloadSections(player) {
 	player.loadedchunks
 		.filter((section) => section.x > player.viewDistanceP + renderChunkPos.x - 1 || section.x < player.viewDistanceN + renderChunkPos.x || section.z > verticalSectionP + renderChunkPos.z - 1 || section.z < verticalSectionN + renderChunkPos.z || section.y > player.viewDistanceP + renderChunkPos.y - 1 || section.y < player.viewDistanceN + renderChunkPos.y)
 		.forEach((toDelete) => {
-			if (player.clientType === "Web") {
-				player.socketio.emit("dt", `${toDelete.x} ${toDelete.y} ${toDelete.z}`)
-			} else {
-				// Brick Hill
-				player.deleteBricks(toDelete.bricks)
-			}
+			player.socketio.emit("dt", `${toDelete.x} ${toDelete.y} ${toDelete.z}`)
 			player.loadedchunks.splice(player.loadedchunks.indexOf(toDelete), 1)
 		})
 }
@@ -1213,11 +1094,7 @@ async function placeblock(blockPos, blockType, player, soundEnabled, showGhostBl
 
 		player.loadBricks([falsebrick])
 		setTimeout(() => {
-			if (player.clientType === "Brick Hill") {
-				falsebrick.destroy()
-			} else {
-				player.deleteBricksWeb([falsebrick])
-			}
+			player.deleteBricksWeb([falsebrick])
 		}, 400)
 		if (!useSymmetry && player.symmetryEnabled) {
 			if (player.symmetryAxis === "x") placeblock(new Vector3(player.symmetryOrigin.x / 4 - (blockPos.x - player.symmetryOrigin.x / 4), blockPos.y, blockPos.z), blockType, player, true, true, true)
@@ -1423,32 +1300,6 @@ async function getPlayerData(id) {
 
 Game.command("pos", (p, msg) => {
 	console.log(`${Math.round(p.position.x)} ${Math.round(p.position.y)} ${Math.round(p.position.z)}`)
-})
-
-Game.command("paintrow", async (player, msg) => {
-	if (player.clientType === "Brick Hill" && player.userId == 782) {
-		let pickX = Math.floor(player.selectorBrick.position.x / 4)
-		let pickY = Math.floor(player.selectorBrick.position.y / 4)
-
-		for (let z = 200; y > 1; y--) {
-			var success = false
-			var block = await voxelworld.getBlockType(new Vector3(pickX, pickY, z))
-
-			switch (block) {
-				case 0:
-					break
-				default:
-					success = true
-
-					break
-			}
-
-			if (success == true) {
-				voxelworld.setBlockType(new Vector3(pickX, pickY, z), player.selectedColor)
-			}
-		}
-		//player.setPosition(new Vector3(player.position.x, player.position.y, player.position.z + 8))
-	}
 })
 
 async function replaceBlocksInSelection(player, blockType, settings = { type: "default" }) {
@@ -2040,37 +1891,6 @@ Game.command("getobject", async (player, msg) => {
 			player.message(`Now refering to ID: ${trial.id} at chunk: ${chunkx}, ${chunky}`)
 		} else {
 			player.message("Can't find world object! Are you in the correct chunk?")
-		}
-	}
-})
-
-Game.command("paintchunk", async (player, msg) => {
-	if (player.clientType === "Brick Hill" && player.userId == 782) {
-		//if (player.builderPermission === true) {
-
-		let pickX = Math.floor(player.selectorBrick.position.x / 4 / 16) * 16
-		let pickY = Math.floor(player.selectorBrick.position.y / 4 / 16) * 16
-
-		for (let x = 0; x < 16; x++) {
-			for (let y = 0; y < 16; y++) {
-				for (let z = 200; z > 1; z--) {
-					var isBlock = false
-					var block = await voxelworld.getBlockType(new Vector3(pickX + x, pickY + y, z))
-
-					switch (block) {
-						case 0:
-							break
-						default:
-							isBlock = true
-
-							break
-					}
-
-					if (isBlock == true) {
-						voxelworld.setBlockType(new Vector3(pickX + x, pickY + y, z), player.selectedColor)
-					}
-				}
-			}
 		}
 	}
 })

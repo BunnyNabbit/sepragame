@@ -11,46 +11,11 @@ function blastJump(player, attack) {
 
 	attack.attackCreate(player)
 
-	if (player.clientType === "Web") {
-		// Is the player using the web client? If they are then instantly blast them
-		player.socketio.emit("launch", 50)
-		blastBrick(player, attack)
-		attack.onBlast(player)
-		return
-	} // else use Brick Hill functions to force the player to manually jump
-
-	player.energyRegen = false
-
-	player.blastJumpActive = true
-
-	player.setJumpPower(player.currentCreature.blastJumpPower)
-	player.centerPrint("\\c6Jump!", 3)
-
-	var overheatTimer = 0
-	var blastLoop = setInterval(() => {
-		overheatTimer++
-
-		if (player.destroyed == true) {
-			clearInterval(blastLoop)
-		}
-		if (player.blastJumpActive == false) {
-			player.energyRegen = true
-			player.setJumpPower(player.currentCreature.jump)
-			player.centerPrint("\\c6BOOM!", 1)
-			blastBrick(player, attack)
-			attack.onBlast(player)
-			clearInterval(blastLoop)
-		}
-		if (player.alive == false) {
-			player.energyRegen = true
-			player.centerPrint("...", 5)
-			clearInterval(blastLoop)
-		}
-		if (overheatTimer > 40) {
-			overheat(player)
-			clearInterval(blastLoop)
-		}
-	}, 50)
+	// Is the player using the web client? If they are then instantly blast them
+	player.socketio.emit("launch", 50)
+	blastBrick(player, attack)
+	attack.onBlast(player)
+	return
 }
 
 async function overheat(player) {
