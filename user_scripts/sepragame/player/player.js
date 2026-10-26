@@ -579,10 +579,10 @@ Game.on("playerJoin", async (p) => {
 						p.musicBiome = -4
 						switch (blockType) {
 							case 195: // Snow
-								// FTODO: sepraThermic replace/add license
+								// OPEN SOURCE TODO: sepraThermic replace/add license
 								break
 							default:
-								// FTODO: awful replace
+								// OPEN SOURCE TODO: awful replace
 								break
 						}
 					} else {
@@ -590,7 +590,7 @@ Game.on("playerJoin", async (p) => {
 						p.musicBiome = -3
 						switch (blockType) {
 							case 195: // Snow
-								// FTODO: sepraThermic replace/add license
+								// OPEN SOURCE TODO: sepraThermic replace/add license
 								break
 							default:
 								soundbrick(

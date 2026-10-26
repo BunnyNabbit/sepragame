@@ -61,7 +61,7 @@ function init(VM_GLOBALS) {
 	bot = new Discord.Client({ disableEveryone: true })
 	disBot = bot // Alias
 	if (Game.serverSettings.botToken) bot.login(Game.serverSettings.botToken)
-	// FTODO: server settings
+	// OPEN SOURCE TODO: server settings
 	channel = Game.serverSettings.botChannel
 	bot.on("error", console.error)
 

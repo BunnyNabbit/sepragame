@@ -3,7 +3,7 @@ function call(data, player) {
 	curCall(data, player)
 }
 function init({ config, express, app, http, io }) {
-	// FTODO: no longer listens HTTP
+	// OPEN SOURCE TODO: no longer listens HTTP
 	console.log(config)
 
 	if (typeof config.InterfacePort === "undefined") console.log("sound-brick interface port undefined.")
