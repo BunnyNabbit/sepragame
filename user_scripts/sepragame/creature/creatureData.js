@@ -1,0 +1,23 @@
+let none = require("./none.js")
+let guna = require("./guna.js")
+let magmeer = require("./magmeer.js")
+let weakling1 = require("./weaklingvariant1.js")
+let weakling2 = require("./weaklingvariant2.js")
+let builder = require("./builder.js")
+let builderm2 = require("./builderm2.js")
+let builderm3 = require("./builderm3.js")
+let ice = require("./shrivark.js")
+//let weakling2yellow = require("./weaklingvariant2yellow.js")
+let creatureData = []
+creatureData.push(none)
+creatureData.push(guna)
+creatureData.push(magmeer)
+creatureData.push(weakling1)
+creatureData.push(weakling2)
+creatureData.push(builder)
+creatureData.push(builderm2)
+creatureData.push(builderm3)
+creatureData.push(ice)
+//creaturedata.push(weakling2yellow)
+
+module.exports = creatureData

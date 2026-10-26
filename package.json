@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "chunked-vox": "^1.0.0",
+    "discord.js": "^11.5.1",
+    "express": "^4.17.2",
+    "mongojs": "^3.1.0",
+    "ndarray": "^1.0.19",
+    "ndarray-to-vox": "^0.1.0",
+    "node-hill": "^12.1.18",
+    "prismarine-chunk": "^1.26.0",
+    "prismarine-provider-anvil": "^2.5.1",
+    "prismarine-world": "^3.6.0",
+    "seedrandom": "^3.0.5",
+    "simplex-noise": "^3.0.0",
+    "socket.io": "^4.4.1",
+    "spiralloop": "^1.0.2",
+    "vox-reader": "^2.0.3"
+  }
+}
