@@ -2343,7 +2343,7 @@
 								// Show loading screen
 								playSound({
 									volume: 1,
-									url: "/audio/soundbrickcore-disconnect.mp3",
+									src: "/audio/soundbrickcore-disconnect.mp3",
 									isloop: false,
 								})
 
@@ -2415,7 +2415,7 @@
 							screenshot = function () {
 								playSound({
 									volume: 1,
-									url: "/audio/brickhill/sepra/random/takephoto.mp3",
+									src: "/audio/brickhill/sepra/random/takephoto.mp3",
 									isloop: false,
 								})
 								toggleUI(false)
@@ -2675,7 +2675,7 @@
 								}
 								playSound({
 									volume: 1,
-									url: `/sounds/chat/${(output % 8) + 1}.mp3`,
+									src: `/sounds/chat/${(output % 8) + 1}.mp3`,
 									isloop: false,
 								})
 							}
@@ -3411,7 +3411,7 @@
 								if (e.key === "AudioVolumeUp" || e.key === "AudioVolumeDown" || e.key === "AudioVolumeMute") {
 									playSound({
 										volume: 2,
-										url: "/audio/brickhill/chat/2.mp3",
+										src: "/audio/brickhill/chat/2.mp3",
 										isloop: false,
 									})
 								}
@@ -3518,7 +3518,7 @@
 								if (holdingClick && !useCursorAsBC) socket.emit("positionclick", { x: player.position.x, y: player.position.z, z: player.position.y - 2.3, r: player.playerRotation + 90 })
 								playSound({
 									volume: 1,
-									url: "/audio/brickhill/voxel/move.flac",
+									src: "/sounds/builder-tick.flac",
 									isloop: false,
 								})
 							}
@@ -3587,7 +3587,7 @@
 						player.yVel = 24
 						playSound({
 							volume: 1,
-							url: "/audio/brickhill/tonecraft/sample/drums/5.ogg",
+							src: "/audio/brickhill/tonecraft/sample/drums/5.ogg",
 							isloop: false,
 						})
 					}
