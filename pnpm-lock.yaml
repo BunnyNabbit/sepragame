@@ -40,14 +40,14 @@ importers:
         version: 2.0.3
     devDependencies:
       prettier:
-        specifier: ^3.9.10
-        version: 3.9.10
+        specifier: ~3.8.5
+        version: 3.8.5
       prettier-plugin-drone-class:
         specifier: ^0.1.0
         version: 0.1.0(supports-color@6.1.0)
       prettier-plugin-drone-jsdoc:
         specifier: ^1.8.0
-        version: 1.8.0(prettier@3.9.10)(supports-color@6.1.0)
+        version: 1.8.0(prettier@3.8.5)(supports-color@6.1.0)
 
 packages:
 
@@ -880,6 +880,11 @@ packages:
     engines: {node: '>=14.13.1 || >=16.0.0'}
     peerDependencies:
       prettier: ^3.0.0
+
+  prettier@3.8.5:
+    resolution: {integrity: sha512-zxcTTCedNGJM4R8sj/Cq/F0W/c4iE0afWBcBwMTRtw4WHYP9TWkYjdiH3npPRUYsXQCPR0hTU9yjovOu+E6EQA==}
+    engines: {node: '>=14'}
+    hasBin: true
 
   prettier@3.9.10:
     resolution: {integrity: sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA==}
@@ -2138,14 +2143,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  prettier-plugin-drone-jsdoc@1.8.0(prettier@3.9.10)(supports-color@6.1.0):
+  prettier-plugin-drone-jsdoc@1.8.0(prettier@3.8.5)(supports-color@6.1.0):
     dependencies:
       binary-searching: 2.0.5
       comment-parser: 1.4.9
       mdast-util-from-markdown: 2.1.0(supports-color@6.1.0)
-      prettier: 3.9.10
+      prettier: 3.8.5
     transitivePeerDependencies:
       - supports-color
+
+  prettier@3.8.5: {}
 
   prettier@3.9.10: {}
 
