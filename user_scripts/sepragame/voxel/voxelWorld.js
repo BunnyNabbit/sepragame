@@ -889,11 +889,6 @@ async function startRegularIntervals() {
 		}
 	}
 
-	Game.command("netid", (caller, args) => {
-		let brick = new Brick(new Vector3(0, 0, 0), new Vector3(0, 0, 0), "#000000")
-		caller.message(`Brick netId: ${brick.netId}`)
-	})
-
 	if (Game.serverSettings.sepraType === "regular") {
 		Game.command("post", (caller, args) => {
 			postBlocks()
