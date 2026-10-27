@@ -169,44 +169,6 @@ function init(VM_GLOBALS) {
 		return Math.max(Math.min(num, max), min)
 	}
 
-	class BarGenerator {
-		/**/
-		constructor(props) {
-			this.fullColor = props.fullColor ?? "\\c5"
-			this.emptyColor = props.emptyColor ?? "\\c0"
-			this.character = props.character ?? "="
-			this.emptyCharacter = props.emptyCharacter ?? this.character
-			this.barLength = props.barLength ?? 4
-		}
-
-		generate(quantity, maxQuantity) {
-			// Give us a percentage represented in integer number of bars
-			quantity = Math.min(quantity, maxQuantity)
-			const percentageFull = Math.max(Math.floor((quantity / maxQuantity) * this.barLength), 0)
-			const remainingEmpty = this.barLength - percentageFull
-
-			if (percentageFull) {
-				return this.fullColor + this.emptyCharacter.repeat(percentageFull) + this.emptyColor + this.character.repeat(remainingEmpty)
-			} else {
-				return this.character.repeat(remainingEmpty)
-			}
-		}
-	}
-
-	const hBar = new BarGenerator({
-		fullColor: "[#FF6A00]",
-		emptyColor: "[#7F3300]",
-		barLength: 8,
-		character: ". ",
-	})
-
-	const pBar = new BarGenerator({
-		fullColor: "[#FFD800]",
-		emptyColor: "[#7F6A00]",
-		barLength: 8,
-		character: ". ",
-	})
-
 	Game.command("respawn", (p, msg) => {
 		p.setHealth(0)
 	})

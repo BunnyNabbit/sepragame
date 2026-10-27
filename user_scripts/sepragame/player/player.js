@@ -770,41 +770,6 @@ const rateLimit = new Set()
 
 swearReplacements = ["*utterance*", "*screeches*", "*murrs*", "*caws*", "I am very silly."]
 
-Game.on("chat", (player, message) => {
-	// Brick Hill chats
-	message = message.trim()
-	if (message.length > 85) message = message.substring(0, 85) + "..."
-
-	if (rateLimit.has(player.userId)) return player.message("You're chatting too fast!")
-
-	rateLimit.add(player.userId)
-	setTimeout(() => rateLimit.delete(player.userId), 2000)
-
-	const remark = filter.isSwear(message)
-	if (remark) {
-		const swearReplacement = swearReplacements[randomIntFromInterval(0, 4)]
-		console.log(`[x]: ${player.username}: ${message}`)
-		if (remark === true) {
-			// Boolean = slient
-			player.message(`\\c7${removeTextFormatting(player.username)}\\c1:\\c0 ` + message)
-			if (constants.discordEnabled) bot.channels.get(channel).send(`${gameName} | ${player.currentCreature.discordEmoji} ${player.username}: ${swearReplacement}`)
-			messageAllExcept(`\\c7${removeTextFormatting(player.username)}\\c1:\\c0 ` + swearReplacement, player)
-			return
-		}
-		message = removeTextFormatting(message)
-		player.message(`\\c2${player.username}: ${message}`)
-
-		if (constants.discordEnabled) bot.channels.get(channel).send(`${gameName} | ${player.currentCreature.discordEmoji} ${player.username}: ${swearReplacement}`)
-		Game.messageAll(`\\c7${removeTextFormatting(player.username)}\\c1:\\c0 ` + swearReplacement)
-		return player.message("Don't swear! Your message has not been sent.")
-	}
-
-	console.log(`${player.username}: ${message}`)
-	Game.emit("chatted", player, message)
-	player.emit("chatted", message)
-	Game.messageAll(`\\c7${removeTextFormatting(player.username)}\\c1:\\c0 ` + message)
-})
-
 function removeTextFormatting(str) {
 	str = str.replace(colorcodeRegex, "")
 	str = str.replace(hexcodeRegex, "")
@@ -856,54 +821,4 @@ function lerpColor(a, b, amount) {
 		rb = ab + amount * (bb - ab)
 
 	return "#" + (((1 << 24) + (rr << 16) + (rg << 8) + rb) | 0).toString(16).slice(1)
-}
-
-function barGen(BCFull, BCEmpty, var1, var2) {
-	// TODO: stop!!!
-	var dumbBar = ``
-	let bob = var1 / var2
-	if (0.99 < bob) {
-		dumbBar = `\\c${BCFull}////////////////////\\c${BCEmpty}`
-	} else if (0.95 < bob) {
-		dumbBar = `\\c${BCFull}///////////////////\\c${BCEmpty}/`
-	} else if (0.9 < bob) {
-		dumbBar = `\\c${BCFull}//////////////////\\c${BCEmpty}//`
-	} else if (0.85 < bob) {
-		dumbBar = `\\c${BCFull}/////////////////\\c${BCEmpty}///`
-	} else if (0.8 < bob) {
-		dumbBar = `\\c${BCFull}////////////////\\c${BCEmpty}////`
-	} else if (0.75 < bob) {
-		dumbBar = `\\c${BCFull}///////////////\\c${BCEmpty}/////`
-	} else if (0.7 < bob) {
-		dumbBar = `\\c${BCFull}//////////////\\c${BCEmpty}//////`
-	} else if (0.65 < bob) {
-		dumbBar = `\\c${BCFull}/////////////\\c${BCEmpty}///////`
-	} else if (0.6 < bob) {
-		dumbBar = `\\c${BCFull}////////////\\c${BCEmpty}////////`
-	} else if (0.55 < bob) {
-		dumbBar = `\\c${BCFull}///////////\\c${BCEmpty}/////////`
-	} else if (0.5 < bob) {
-		dumbBar = `\\c${BCFull}//////////\\c${BCEmpty}//////////`
-	} else if (0.45 < bob) {
-		dumbBar = `\\c${BCFull}/////////\\c${BCEmpty}///////////`
-	} else if (0.4 < bob) {
-		dumbBar = `\\c${BCFull}////////\\c${BCEmpty}////////////`
-	} else if (0.35 < bob) {
-		dumbBar = `\\c${BCFull}///////\\c${BCEmpty}/////////////`
-	} else if (0.3 < bob) {
-		dumbBar = `\\c${BCFull}//////\\c${BCEmpty}//////////////`
-	} else if (0.25 < bob) {
-		dumbBar = `\\c${BCFull}/////\\c${BCEmpty}///////////////`
-	} else if (0.2 < bob) {
-		dumbBar = `\\c${BCFull}////\\c${BCEmpty}////////////////`
-	} else if (0.15 < bob) {
-		dumbBar = `\\c${BCFull}///\\c${BCEmpty}/////////////////`
-	} else if (0.1 < bob) {
-		dumbBar = `\\c${BCFull}//\\c${BCEmpty}//////////////////`
-	} else if (0.05 < bob) {
-		dumbBar = `\\c${BCFull}/\\c${BCEmpty}///////////////////`
-	} else {
-		dumbBar = `\\c${BCEmpty}////////////////////`
-	}
-	return dumbBar
 }

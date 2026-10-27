@@ -1618,12 +1618,6 @@ Game.command("selection", async (player, msg) => {
 	}
 })
 
-Game.command("timetrial", async (player, msg) => {
-	if (player.currentCreature.class === "builder") {
-		player.message("aw fwick, i cwan't belivw yuve dwone wis. ;-;")
-	}
-})
-
 Game.command("enabletimetrial", async (player, msg) => {
 	if (player.currentCreature.class === "builder") {
 		if (player.referingWorldObject) {

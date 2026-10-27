@@ -167,8 +167,6 @@ function triggerResolution(p) {
 	p.socketio.emit("resolution")
 }
 
-function bloodInfo(p) {}
-
 function enterSettings(p) {
 	p.selectorData = settingData
 	p.updateSelector()
