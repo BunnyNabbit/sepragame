@@ -16,8 +16,27 @@ const saveQueue = {
 
 let blockLogAdd = 0
 let blockLogRemove = 0
+// Ensure required directories exist
+require("fs").mkdirSync(`./voxelStorage/${Game.serverSettings.sepraType}/cache`, {
+	recursive: true,
+})
+require("fs").mkdirSync(`./voxelStorage/${Game.serverSettings.sepraType}/savedata/chunkmeta`, {
+	recursive: true,
+})
+const globalDataPath = `./voxelStorage/${Game.serverSettings.sepraType}/savedata/global.json`
+var globalData = {
+	globalBlocksAdded: 0,
+	mapRenderQueue: {},
+}
 
-var globalData = JSON.parse(fs.readFileSync(`./voxelStorage/${Game.serverSettings.sepraType}/savedata/global.json`).toString())
+if (fs.existsSync(globalDataPath)) {
+	try {
+		globalData = JSON.parse(fs.readFileSync().toString())
+	} catch (error) {
+		console.error("Error when reading global data.", error)
+		process.exit(1)
+	}
+}
 
 function randomIntFromInterval(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
