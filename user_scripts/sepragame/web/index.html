@@ -892,10 +892,10 @@
 							addModel(container, "cyando2")
 							countAssetsAndPossiblyStartTheGame()
 						})
-						BABYLON.SceneLoader.LoadAssetContainer("/scenes/", "weakling2yellow.glb", scene, function (container) {
-							addModel(container, "weakling2yellow")
-							countAssetsAndPossiblyStartTheGame()
-						})
+						// BABYLON.SceneLoader.LoadAssetContainer("/scenes/", "weakling2yellow.glb", scene, function (container) {
+						// 	addModel(container, "weakling2yellow")
+						// 	countAssetsAndPossiblyStartTheGame()
+						// })
 
 						BABYLON.SceneLoader.LoadAssetContainer("/scenes/", "builderpoint.glb", scene, function (container) {
 							addModel(container, "builder")
@@ -927,18 +927,18 @@
 							addModel(container, "ico-settings")
 							countAssetsAndPossiblyStartTheGame()
 						})
-						BABYLON.SceneLoader.LoadAssetContainer("/scenes/", "ico-stats.glb", scene, function (container) {
-							addModel(container, "ico-stats")
-							countAssetsAndPossiblyStartTheGame()
-						})
+						// BABYLON.SceneLoader.LoadAssetContainer("/scenes/", "ico-stats.glb", scene, function (container) {
+						// 	addModel(container, "ico-stats")
+						// 	countAssetsAndPossiblyStartTheGame()
+						// })
 						BABYLON.SceneLoader.LoadAssetContainer("/scenes/", "ico-back.glb", scene, function (container) {
 							addModel(container, "ico-back")
 							countAssetsAndPossiblyStartTheGame()
 						})
-						BABYLON.SceneLoader.LoadAssetContainer("/scenes/", "ico-map.glb", scene, function (container) {
-							addModel(container, "ico-map")
-							countAssetsAndPossiblyStartTheGame()
-						})
+						// BABYLON.SceneLoader.LoadAssetContainer("/scenes/", "ico-map.glb", scene, function (container) {
+						// 	addModel(container, "ico-map")
+						// 	countAssetsAndPossiblyStartTheGame()
+						// })
 						BABYLON.SceneLoader.LoadAssetContainer("/scenes/", "ico-resolution.glb", scene, function (container) {
 							addModel(container, "ico-resolution")
 							countAssetsAndPossiblyStartTheGame()
@@ -1792,7 +1792,7 @@
 						assetCount++
 						engine.loadingUIText = `Assets: ${assetCount}/17`
 						console.count("Assets Loaded")
-						if (assetCount == 17) {
+						if (assetCount == 14) {
 							socket = io({
 								path: "/socket.io",
 							})
