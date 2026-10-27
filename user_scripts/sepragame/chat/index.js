@@ -16,9 +16,9 @@ function updateFilter() {
 		console.error("Unable to load filter data.")
 	}
 	rex = {
-		blockedWords: new RegExp(filterData?.blockedWords.join("|") ?? "water", "i"),
-		blockedExactWords: new RegExp(filterData?.blockedExactWords.join("|") ?? "water", "i"),
-		shadowedWords: new RegExp(filterData?.shadowedWords.join("|") ?? "water", "i"),
+		blockedWords: new RegExp(filterData.blockedWords?.join("|") ?? "water", "i"),
+		blockedExactWords: new RegExp(filterData.blockedExactWords?.join("|") ?? "water", "i"),
+		shadowedWords: new RegExp(filterData.shadowedWords?.join("|") ?? "water", "i"),
 	}
 }
 
