@@ -1,37 +1,10 @@
 const Vector3 = require("./class/Vector3.js")
 const fs = require("fs")
-const ndarray = require("ndarray")
-const { SmartBuffer } = require("smart-buffer")
 const mongojs = require(`mongojs`)
+const { Section } = require("./Section.js")
 const voxelCollection = mongojs("bunny").collection("sepragameVoxel")
 
-function vec3Key(vec3) {
-	return vec3.x + "." + vec3.y + "." + vec3.z
-}
-
-class Section {
-	/**/
-	constructor(size, data) {
-		if (data) {
-			const buff = new SmartBuffer()
-			buff.writeBuffer(data)
-			this.blockData = ndarray(buff.readBuffer(32768), [32, 32, 32])
-			this.typeData = ndarray(buff.readBuffer(32768), [32, 32, 32])
-		} else {
-			this.blockData = ndarray(new Uint8Array(32768), [32, 32, 32])
-			this.typeData = ndarray(new Uint8Array(32768), [32, 32, 32])
-		}
-	}
-
-	serialize() {
-		const buff = new SmartBuffer()
-		buff.writeBuffer(Buffer.from(this.blockData.data))
-		buff.writeBuffer(Buffer.from(this.typeData.data))
-		return buff.toBuffer()
-	}
-}
-
-class World {
+class BaseWorld {
 	/**/
 	constructor(props, newSection = () => {}) {
 		this.regionSize = props.regionSize ?? 32 // Regions aren't used at the moment
@@ -73,11 +46,13 @@ class World {
 			}
 		}, this.saveInterval)
 	}
-
-	async getSection(vec3) {
-		const key = vec3Key(vec3)
+	/**@param {Vector3} vec3
+	 * @returns {Promise<Section>}
+	 */
+	getSection(vec3) {
+		const key = BaseWorld.vec3Key(vec3)
 		if (this.cache[key]) {
-			return await this.cache[key]
+			return this.cache[key]
 		} else {
 			// const fileLocation = `${this.saveLocation}/${key}.vws`
 			const promise = new Promise((resolve) => {
@@ -85,17 +60,16 @@ class World {
 					if (doc) {
 						const section = new Section(this.sectionSize, doc.blocks.buffer)
 						section.key = key
-						this.cache[key] = section
 						resolve(section)
 					} else {
 						const section = new Section(this.sectionSize)
 						section.key = key
-						this.cache[key] = section
 						this.newSection(vec3) // Get user code to generate whatever. Blocks can be put outside in the newSection code but that'll possibly cause an infinite loop.
 						resolve(section)
 					}
 				})
 			})
+			this.cache[key] = promise
 			return promise
 		}
 	}
@@ -137,6 +111,10 @@ class World {
 
 		return section.typeData.get(vec3.x & sectionSizeOffset, vec3.y & sectionSizeOffset, vec3.z & sectionSizeOffset)
 	}
+
+	static vec3Key(vec3) {
+		return vec3.x + "." + vec3.y + "." + vec3.z
+	}
 }
 
-module.exports = World
+module.exports = BaseWorld
