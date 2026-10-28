@@ -108,11 +108,7 @@ async function render(sectionX, sectionY, sectionZ, player, reload) {
 				var bricks = []
 				data.forEach((element) => {
 					var brick = new Brick(element.position, element.scale, element.color)
-					if (element.visibility == 0.5) {
-						brickArray.push(brick)
-					} else {
-						brickArray.push(brick)
-					}
+					brickArray.push(brick)
 					brick.collision = element.collision
 					bricks.push(brick)
 				})
@@ -143,11 +139,7 @@ async function render(sectionX, sectionY, sectionZ, player, reload) {
 						data[`${sectionX} ${sectionY} ${sectionZ}`].forEach((element) => {
 							// Send all the bricks!
 							var brick = new Brick(element.position, element.scale, element.color)
-							if (element.visibility == 0.5) {
-								brickArray.push(brick)
-							} else {
-								brickArray.push(brick)
-							}
+							brickArray.push(brick)
 							brick.collision = element.collision
 						})
 						loadfromcache = true
@@ -209,7 +201,7 @@ async function render(sectionX, sectionY, sectionZ, player, reload) {
 	if (loadfromcache == false) {
 		let brickdata = []
 		brickArray.forEach((element) => {
-			brickdata.push({ scale: element.scale, position: element.position, color: element.color, visibility: element.visibility, collision: element.collision })
+			brickdata.push({ scale: element.scale, position: element.position, color: element.color, collision: element.collision })
 		})
 
 		if (dataCache.cacheData[`${Math.floor(sectionX / 32)} ${Math.floor(sectionY / 32)} ${Math.floor(sectionZ / 32)}`] !== undefined) {
