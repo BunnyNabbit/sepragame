@@ -631,6 +631,7 @@
 						//var audio = new Audio(data.url)
 						//audio.volume = data.volume// / 5
 					}
+					data.src = data.url ?? data.src
 					$buzz.play(data)
 					//audio.play();
 				} else {
