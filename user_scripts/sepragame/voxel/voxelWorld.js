@@ -31,7 +31,7 @@ var globalData = {
 
 if (fs.existsSync(globalDataPath)) {
 	try {
-		globalData = JSON.parse(fs.readFileSync().toString())
+		globalData = JSON.parse(fs.readFileSync(globalDataPath).toString())
 	} catch (error) {
 		console.error("Error when reading global data.", error)
 		process.exit(1)
