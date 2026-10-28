@@ -1,5 +1,5 @@
 var colorbyid = require("./color/blockColors.js")
-var VoxWorld = require("./voxel-world/index.js")
+var VoxWorld = require("./voxel-world/LegacyMongoWorld.cjs")
 // var canvas = require("canvas")
 
 const dataCache = {
