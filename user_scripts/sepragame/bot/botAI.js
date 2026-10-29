@@ -60,7 +60,7 @@ async function botAI(position, data) {
 	let state = "move"
 	let despawnTime = 0
 
-	bot.setPosition(new Vector3(Math.floor(bot.position.x / 4) * 4 + 1.5, Math.floor(bot.position.y / 4) * 4 + 1.5, findTopSurfaceOfWorld(bot.position)))
+	bot.setPosition(new Vector3(Math.floor(bot.position.x / 4) * 4 + 1.5, Math.floor(bot.position.y / 4) * 4 + 1.5, await findTopSurfaceOfWorld(bot.position)))
 
 	bot.getAttack = () => {
 		let atk1 = bot.attackStates.find((atk) => atk.cooldown <= 0)

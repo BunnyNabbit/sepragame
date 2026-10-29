@@ -233,7 +233,7 @@ function init(VM_GLOBALS) {
 		return Math.floor(Math.random() * (max - min + 1) + min)
 	}
 
-	findTopSurfaceOfWorld = function (position) {
+	findTopSurfaceOfWorld = async function (position) {
 		const pickX = Math.floor(position.x / 4)
 		const pickY = Math.floor(position.y / 4)
 		let result = 4
@@ -242,7 +242,7 @@ function init(VM_GLOBALS) {
 			for (let x = 0; x < 5; x++) {
 				for (let y = 0; y < 5; y++) {
 					for (let z = 200; z > 3; z--) {
-						var block = voxelWorld.world.getBlockType(new Vector3(pickX + x, pickY + y, z))
+						var block = await voxelWorld.world.getBlockType(new Vector3(pickX + x, pickY + y, z))
 
 						switch (block) {
 							case 0:
@@ -269,7 +269,7 @@ function init(VM_GLOBALS) {
 					let y = Math.floor((randomIntFromInterval(-160, 160) + player.position.y) / 4) * 4 + 1.5
 					let canSpawn = !world.fruit.some((fruit) => Game.pointDistance3D(new Vector3(x, y, player.position.z), fruit.position) < 200)
 					if (canSpawn === true) {
-						let surface = findTopSurfaceOfWorld(new Vector3(x, y, 0))
+						let surface = await findTopSurfaceOfWorld(new Vector3(x, y, 0))
 						if (randomIntFromInterval(0, 1)) {
 							let fruit = spawnFruit(new Vector3(x, y, surface))
 							if (fruit) {
