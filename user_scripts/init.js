@@ -6,7 +6,6 @@ sepragame.init({
 	Vector3: Vector3,
 	Bot: Bot,
 	Brick: Brick,
-	PacketBuilder: PacketBuilder,
 	Outfit: Outfit,
 	Team: Team,
 	Tool: Tool,

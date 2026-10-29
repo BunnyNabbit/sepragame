@@ -18,7 +18,6 @@ function init(VM_GLOBALS) {
 	Vector3 = VM_GLOBALS.Vector3
 	Bot = VM_GLOBALS.Bot
 	Brick = VM_GLOBALS.Brick
-	PacketBuilder = VM_GLOBALS.PacketBuilder
 	Outfit = VM_GLOBALS.Outfit
 	Team = VM_GLOBALS.Team
 	Tool = VM_GLOBALS.Tool

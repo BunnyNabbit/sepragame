@@ -42,15 +42,6 @@ module.exports = function (p) {
 		logicRotationOffset: 0,
 	})
 
-	let rpcCooldown
-
-	p.setRPC = (str) => {
-		clearInterval(rpcCooldown)
-		rpcCooldown = setTimeout(() => {
-			new PacketBuilder("Authentication").write("uint32", p.netId).write("uint32", 0).write("uint32", p.userId).write("string", p.username).write("bool", p.admin).write("uint8", p.membershipType).write("uint32", 12).write("string", str).send(p.socket)
-		}, 15000)
-	}
-
 	if (p.builderPermission == undefined) p.builderPermission = false
 
 	// Brick Hill

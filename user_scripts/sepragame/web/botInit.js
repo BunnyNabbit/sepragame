@@ -180,7 +180,6 @@ function init(playerImpostor) {
 	playerImpostor.setPosition = function (msg, slippery = false) {
 		// This one does however.
 		playerImpostor.position = msg
-		new PacketBuilder("Figure").write("uint32", playerImpostor.netId).write("string", "ABC").write("float", playerImpostor.position.x).write("float", playerImpostor.position.y).write("float", playerImpostor.position.z).broadcast()
 		playerImpostor.socketio.emit("setPosition", { x: playerImpostor.position.x, y: playerImpostor.position.z, z: playerImpostor.position.y, s: slippery })
 	}
 
@@ -204,7 +203,6 @@ function init(playerImpostor) {
 		// Doesn't tell the client their position!
 		playerImpostor.position = msg
 		playerImpostor.emit("moved")
-		new PacketBuilder("Figure").write("uint32", playerImpostor.netId).write("string", "ABC").write("float", playerImpostor.position.x).write("float", playerImpostor.position.y).write("float", playerImpostor.position.z).broadcast()
 	}
 
 	playerImpostor.getBlockedPlayers = function () {
@@ -235,7 +233,6 @@ function init(playerImpostor) {
 		let localBrick = brick.clone()
 		//localBrick.socket = this.socket
 		playerImpostor.localBricks.push(localBrick)
-		//const packet = new PacketBuilder_1.default(PacketBuilder_1.PacketEnums.SendBrick)
 		//scripts.addBrickProperties(packet, localBrick)
 		//yield packet.send(this.socket)
 

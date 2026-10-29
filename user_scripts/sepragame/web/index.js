@@ -163,7 +163,6 @@ async function init(io) {
 
 		function initClient() {
 			canChangeUsername = false
-			new PacketBuilder(3).write("uint8", 1).write("uint32", playerImpostor.netId).write("string", playerImpostor.username).write("uint32", playerImpostor.userId).write("uint8", playerImpostor.admin).write("uint8", playerImpostor.membershipType).broadcast()
 
 			playerImpostor.socketio = socket
 			playerImpostor.soundSocket = socket
@@ -178,7 +177,6 @@ async function init(io) {
 			socket.on("disconnect", function () {
 				users -= 1
 
-				new PacketBuilder("RemovePlayer").write("uint32", playerImpostor.netId).broadcast()
 				playerImpostor.destroy()
 				Game.emit("playerLeave", playerImpostor) // and removes from characters
 				Game.messageAll(`\\c6[SERVER]: \\c0${playerImpostor.username} has left the server!`)
