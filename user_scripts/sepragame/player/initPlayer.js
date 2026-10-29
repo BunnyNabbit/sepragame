@@ -63,12 +63,6 @@ module.exports = function (p) {
 	p.bitecooldown = 0
 	p.selectedattack = 1
 
-	p.ui1 = 1
-	p.ui2 = 2
-	p.ui3 = 3
-	p.ui4 = 4
-	p.ui5 = 5
-
 	p.settings = {
 		// TODO
 	}

@@ -409,20 +409,6 @@ Game.on("playerJoin", async (p) => {
 			)
 		}
 
-		p.ui1 = 1
-		p.ui2 = 2
-		p.ui3 = 3
-		p.ui4 = 4
-		p.ui5 = 5
-
-		p[`ui${p.selectedattack}`] = `\\c5${p.selectedattack}\\c0` // Hilight selected attack
-
-		if (p.atk1Cooldown > 0) p.ui1 = "\\c61\\c0"
-		if (p.atk2Cooldown > 0) p.ui2 = "\\c62\\c0"
-		if (p.atk3Cooldown > 0) p.ui3 = "\\c63\\c0"
-		if (p.atk4Cooldown > 0) p.ui4 = "\\c64\\c0"
-		if (p.atk5Cooldown > 0) p.ui5 = "\\c65\\c0"
-
 		var guiChanges = [] // Optimize sending gui changes like energy and stamina
 
 		if (p.energy < 100 && p.energyRegen == true) {
