@@ -133,8 +133,6 @@ function init(VM_GLOBALS) {
 			saveID: "ico-back",
 			description: "",
 			charmodel: {
-				hat1: 5192006,
-				animNone: 50,
 			},
 			webModelRotationOffset: 1.565, // For the visual model
 			webLogicRotationOffset: 0, // For converting BH rotation

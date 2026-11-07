@@ -13,16 +13,7 @@ var morphData = {
 	respawnEnergy: 100,
 	description: "",
 	charmodel: {
-		hat1: 1,
-		hat2: 1,
-		hat3: 1,
-		rotateoffset: -270,
 		cameraHeight: 1.2,
-		animWalk1: 110,
-		animWalk2: 210,
-		animNone: 10,
-		animIdle: 10,
-		animDead: -90,
 		mouth: {
 			x: 4,
 			y: 3,

@@ -4,22 +4,13 @@ function randomIntFromInterval(min, max) {
 
 function initCharModel(p) {
 	p.playerSize = 1
-	p.charbot = new Bot("Zombie")
-	p.charbot.changeSize = function (size) {
-		p.charbot.setScale(new Vector3(size, size, size))
-		p.playerSize = size
-	}
-	p.charbot.idletime = 0
+	p.idleTime = 0
 	let movestate = 1
 	let walking = false
 	let lastposition = new Vector3(0, 0, 0)
 	let walktimeout = 0
 	let AnimationState = "none"
 
-	let outfit = new Outfit().body("#0d9436").torso("#694813").rightLeg("#694813").leftLeg("#694813")
-	p.charbot.setOutfit(outfit)
-
-	Game.newBot(p.charbot)
 
 	let webClientState = "idle"
 	let standingstill = 0
@@ -36,13 +27,7 @@ function initCharModel(p) {
 
 	let AnimationHandler = function (forced) {
 		if (forced || standingstill < 10) {
-			p.charbot.setRotation(new Vector3(0, 0, p.rotation.z + 450))
 			if (p.animateReady) {
-				if (AnimationState == "none") p.charbot.setPosition(new Vector3(p.position.x, p.position.y, p.position.z - p.currentCreature.charmodel.animNone * p.playerSize))
-				if (AnimationState == "run1") p.charbot.setPosition(new Vector3(p.position.x, p.position.y, p.position.z - p.currentCreature.charmodel.animWalk1 * p.playerSize))
-				if (AnimationState == "run2") p.charbot.setPosition(new Vector3(p.position.x, p.position.y, p.position.z - p.currentCreature.charmodel.animWalk2 * p.playerSize))
-				if (AnimationState == "dead") p.charbot.setPosition(new Vector3(p.position.x, p.position.y, p.position.z - p.currentCreature.charmodel.animDead * p.playerSize))
-				if (AnimationState == "idle") p.charbot.setPosition(new Vector3(p.position.x, p.position.y, p.position.z - p.currentCreature.charmodel.animIdle * p.playerSize))
 
 				switch (AnimationState) {
 					case "none":
@@ -80,19 +65,7 @@ function initCharModel(p) {
 		} else if (standingstill > 15) {
 			standingstill = 9
 		}
-		// This is broken for some reason that I am unable to figure out
-		// Destroy the charbot after player has been destroyed instead of this code below not working
-		// insert confusion here
-
-		// comments above preserved and dont mean anything
 		if (p.destroyed == true) {
-			p.charbot.destroy()
-			if (world.bots.indexOf(p.charbot) != -1) {
-				console.log("Precaution: Spliced")
-				world.bots.splice(world.bots.indexOf(p.charbot, 1))
-			} else {
-				//console.log("Precaution: Not spliced")
-			}
 			clearInterval(AnimationInterval)
 		}
 	}
@@ -106,7 +79,7 @@ function initCharModel(p) {
 		if (p.alive == true) {
 			if (walking == true) {
 				if (movestate == 2 || movestate == 4) {
-					p.charbot.idletime = 0
+					p.idleTime = 0
 					if (movestate == 2) {
 						AnimationState = "run1"
 						if (prevAnimStateSimple !== "run") webClient.socketio.emit("pstate", { netId: p.webNetId, state: "run" })
@@ -152,12 +125,12 @@ function initCharModel(p) {
 				prevAnimStateSimple = "idle"
 
 				AnimationState = "none"
-				p.charbot.idletime++
+				p.idleTime++
 			}
 
-			if (p.charbot.idletime > 150) {
+			if (p.idleTime > 150) {
 				AnimationState = "idle"
-				if (p.charbot.idletime == 151 && p.currentCreature.class === "creature")
+				if (p.idleTime == 151 && p.currentCreature.class === "creature")
 					soundbrick({
 						url: `/sounds/pain/alienlike/murr${randomIntFromInterval(1, 4)}.flac`,
 						minDistance: 70,

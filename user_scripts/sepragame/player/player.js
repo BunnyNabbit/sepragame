@@ -332,10 +332,10 @@ Game.on("playerJoin", async (p) => {
 
 		if (key === "c") {
 			// Toggle sitting / force idle
-			if (p.charbot.idletime > 150) {
-				p.charbot.idletime = 0
+			if (p.idleTime > 150) {
+				p.idleTime = 0
 			} else {
-				p.charbot.idletime = 150
+				p.idleTime = 150
 			}
 		}
 	})
@@ -719,7 +719,6 @@ const SmartBuffer = require("smart-buffer").SmartBuffer
 Game.on("playerLeave", (p) => {
 	if (p.holdingObject) p.holdingObject.drop(p) // Drop any item
 	p.destroyed = true // p.destory() doesn't appear to set destroyed true for some reason and results in BH character models to remain
-	//p.charbot.destroy() // This is also another solution to the above problem
 
 	//webClient.characters[p.webNetId] = undefined
 	delete webClient.characters[p.webNetId]

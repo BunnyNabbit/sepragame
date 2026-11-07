@@ -4,8 +4,6 @@ module.exports = [
 		saveID: "ico-settings",
 		description: "Access the settings",
 		charmodel: {
-			hat1: 5192002,
-			animNone: 50,
 		},
 		webModelRotationOffset: 1.565, // For the visual model
 		webLogicRotationOffset: 0, // For converting BH rotation
@@ -19,8 +17,6 @@ module.exports = [
 		saveID: "ico-creatures",
 		description: "",
 		charmodel: {
-			hat1: 117121,
-			animNone: 10,
 		},
 		webModelRotationOffset: 1.565, // For the visual model
 		webLogicRotationOffset: 0, // For converting BH rotation
@@ -34,8 +30,6 @@ module.exports = [
 	//	saveID: "ico-stats",
 	//	description: "",
 	//	charmodel: {
-	//		hat1: 181917,
-	//		animNone: 50,
 	//	},
 	//	webModelRotationOffset: 1.565, // For the visual model
 	//	webLogicRotationOffset: 0, // For converting BH rotation
@@ -49,8 +43,6 @@ module.exports = [
 	//	saveID: "ico-map",
 	//	description: "",
 	//	charmodel: {
-	//		hat1: 181917,
-	//		animNone: 50,
 	//	},
 	//	webModelRotationOffset: 1.565, // For the visual model
 	//	webLogicRotationOffset: 0, // For converting BH rotation
@@ -67,8 +59,6 @@ const settingData = [
 		saveID: "ico-back",
 		description: "",
 		charmodel: {
-			hat1: 5192006,
-			animNone: 50,
 		},
 		webModelRotationOffset: 1.565, // For the visual model
 		webLogicRotationOffset: 0, // For converting BH rotation
@@ -82,8 +72,6 @@ const settingData = [
 		saveID: "ico-resolution",
 		description: "",
 		charmodel: {
-			hat1: 181917,
-			animNone: 50,
 		},
 		webModelRotationOffset: 1.565, // For the visual model
 		webLogicRotationOffset: 0, // For converting BH rotation
@@ -97,8 +85,6 @@ const settingData = [
 		saveID: "ico-terrain",
 		description: "",
 		charmodel: {
-			hat1: 5192003,
-			animNone: 50,
 		},
 		webModelRotationOffset: 1.565, // For the visual model
 		webLogicRotationOffset: 0, // For converting BH rotation

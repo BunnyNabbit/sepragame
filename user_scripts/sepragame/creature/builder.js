@@ -25,16 +25,7 @@ var morphData = {
 	respawnEnergy: 100,
 	description: "This is a description! Nothing much to see here.",
 	charmodel: {
-		hat1: 231503,
-		hat2: 231504,
-		hat3: 1,
-		rotateoffset: -270,
 		cameraHeight: 1.4,
-		animWalk1: 150,
-		animWalk2: 250,
-		animNone: 50,
-		animIdle: 350,
-		animDead: -50,
 		mouth: {
 			x: 0,
 			y: 0,

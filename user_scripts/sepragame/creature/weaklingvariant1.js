@@ -28,16 +28,7 @@ var morphData = {
 	respawnEnergy: 100,
 	description: "temp description chnage this now",
 	charmodel: {
-		hat1: 116574,
-		hat2: 1,
-		hat3: 1,
-		rotateoffset: -270,
 		cameraHeight: 0.9,
-		animWalk1: 110,
-		animWalk2: 210,
-		animNone: 10,
-		animIdle: 10,
-		animDead: -90,
 		mouth: {
 			x: 1,
 			y: 1.2,

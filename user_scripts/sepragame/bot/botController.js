@@ -54,7 +54,6 @@ async function kill(bot) {
 function destroy(bot) {
 	bot.destroy()
 	bot.destroyed = true // bot.destory() doesn't appear to set true for some reason and results in BH character models to remain
-	//bot.charbot.destroy() // This is also another solution to the above problem
 	webClient.socketio.emit("deleteplayer", bot.webNetId)
 	botManager.ingameBots.splice(botManager.ingameBots.indexOf(bot), 1)
 	//webClient.characters[bot.webNetId] = undefined
@@ -114,9 +113,6 @@ function init(position, meta) {
 
 	bot.webNetId = `${webClient.nextNetId.id}`
 	charAnimate(bot)
-	bot.charbot.changeSize(1)
-	let outfit2 = new Outfit(bot.charbot).hat1(meta.charmodel.hat1).hat2(meta.charmodel.hat2).hat3(meta.charmodel.hat3)
-	bot.charbot.setOutfit(outfit2)
 
 	webClient.characters[bot.webNetId] = {
 		netId: `${bot.webNetId}`,

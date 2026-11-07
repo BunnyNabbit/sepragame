@@ -49,16 +49,7 @@ var morphData = {
 	respawnEnergy: 100,
 	description: "replace this desctipton with something else",
 	charmodel: {
-		hat1: 231508,
-		hat2: 1,
-		hat3: 1,
-		rotateoffset: -270,
 		cameraHeight: 0.9,
-		animWalk1: 110,
-		animWalk2: 210,
-		animNone: 10,
-		animIdle: 10,
-		animDead: -90,
 		mouth: {
 			x: 4,
 			y: 2,

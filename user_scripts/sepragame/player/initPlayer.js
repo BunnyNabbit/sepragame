@@ -108,7 +108,6 @@ module.exports = function (p) {
 	p.currentindex = 0
 
 	charAnimate(p)
-	p.charbot.changeSize(1)
 
 	p.switchCreature(defaultCreature)
 
@@ -155,8 +154,6 @@ function playerFunctions(p) {
 		p.atk4Cooldown = 0
 		p.atk5Cooldown = 0
 		p.sprintTime = 0
-		let outfit = new Outfit().hat1(p.currentCreature.charmodel.hat1).hat2(p.currentCreature.charmodel.hat2).hat3(p.currentCreature.charmodel.hat3)
-		p.charbot.setOutfit(outfit)
 		webClient.socketio.emit("pmodel", {
 			netId: p.webNetId,
 			model: creatureId,

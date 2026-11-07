@@ -87,16 +87,7 @@ var morphData = {
 	respawnEnergy: 100,
 	description: "replace this desctipton with something else", // not used
 	charmodel: {
-		hat1: 222932, // Assets to use in the Brick Hill version. Use asset 1 to remove assets.
-		hat2: 1,
-		hat3: 1,
-		rotateoffset: -270, // The model may be rotated. This can be offset
 		cameraHeight: 0.8, // For Brick Hill: Sets the player's height. Should be above the creature's model.
-		animWalk1: 210, // Animation offsets height.
-		animWalk2: 310,
-		animNone: 110,
-		animIdle: 410,
-		animDead: -90,
 		mouth: {
 			// Position offset of the mouth. Mainly used for particles and attacks.
 			x: 2,
