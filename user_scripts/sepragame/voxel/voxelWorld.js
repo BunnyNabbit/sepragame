@@ -60,7 +60,6 @@ const brickMesher = require("./brickMesher.js")
 const WorldReader = require("./voxelReaders/WorldReader.js")
 const CulledWorldReader = require("./voxelReaders/CulledWorldReader.js")
 const VoxReader = require("./voxelReaders/VoxReader.js")
-const WorldmapReader = require("./voxelReaders/ImagemapReader.js")
 async function render(sectionX, sectionY, sectionZ, player, reload) {
 	// Get a world section meshed wih brircks
 	// if (section < 0) return
