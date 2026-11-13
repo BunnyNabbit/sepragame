@@ -30,7 +30,7 @@ function bullet(player, rotation, attack) {
 
 	let grav = 0
 	let time = 0
-	let sped = attack.speed
+	let speed = attack.speed
 	let target = null
 	var loop = setInterval(() => {
 		time++
@@ -54,8 +54,8 @@ function bullet(player, rotation, attack) {
 				if (tar) target = tar
 			}
 		}
-		brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
+		brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
+		brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
 		brick.setPosition(brick.position)
 
 		if (attack.reflectable && world.reflectors.some((reflector) => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player)) {

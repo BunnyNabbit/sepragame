@@ -58,7 +58,7 @@ async function attack(player, attack) {
 		brick.setPosition(new Vector3(player.position.x, player.position.y, player.position.z))
 		let grav = 0
 		let time = 0
-		let sped = 1.8
+		let speed = 1.8
 		let prot = player.rotation.z
 		var loop = setInterval(() => {
 			time++
@@ -69,8 +69,8 @@ async function attack(player, attack) {
 				prot = player.rotation.z
 				brick.setPosition(brick.position)
 			} else {
-				brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-				brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
+				brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
+				brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
 				brick.position.z = brick.position.z += grav
 				brick.setPosition(brick.position)
 				if (world.reflectors.some((reflector) => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player)) {
@@ -114,7 +114,7 @@ async function attack(player, attack) {
 				}
 				if (time > 50) {
 					grav += -0.02
-					sped += -0.01
+					speed += -0.01
 					if (time > 80) {
 						reuseHandler.deleteBrick(brick)
 						clearInterval(loop)

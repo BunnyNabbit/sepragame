@@ -40,7 +40,7 @@ function smallBlood(emitposition) {
 	let gracefulID = brick.gracefulID
 	let grav = 0.78
 	let time = 0
-	let sped = 0.8
+	let speed = 0.8
 	let spin = 0
 	let splatter = false
 	let prot = randomIntFromInterval(0, 1000)
@@ -51,11 +51,11 @@ function smallBlood(emitposition) {
 		if (brick.gracefulID !== gracefulID) return clearInterval(loop) // The brick got gracefully removed
 		time++
 		grav += -0.06
-		sped += -0.03
-		if (sped < 0) sped = 0
+		speed += -0.03
+		if (speed < 0) speed = 0
 		if (splatter === false) {
-			brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-			brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
+			brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
+			brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
 			brick.position.z = brick.position.z += grav
 
 			if ((await inBlock(brick.position)) === true) {

@@ -22,7 +22,7 @@ async function spit(player, y, attack) {
 		brick.setPosition(new Vector3(player.position.x, player.position.y, player.position.z + 5))
 		let grav = 0.78 + randomIntFromInterval(-10, 10) / 35
 		let time = 0
-		let sped = 0.8 + randomIntFromInterval(-10, 10) / 37
+		let speed = 0.8 + randomIntFromInterval(-10, 10) / 37
 		let spin = 0
 		let splatter = false
 		let prot = player.rotation.z + randomIntFromInterval(-15, 15)
@@ -32,11 +32,11 @@ async function spit(player, y, attack) {
 		var loop = setInterval(async () => {
 			time++
 			grav += -0.06
-			sped += -0.03
-			if (sped < 0) sped = 0
+			speed += -0.03
+			if (speed < 0) speed = 0
 			if (splatter == false) {
-				brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-				brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
+				brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
+				brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
 				brick.position.z = brick.position.z += grav
 
 				if (inBlock(brick.position) === true) {

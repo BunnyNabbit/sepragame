@@ -98,17 +98,17 @@ function debris(player, attack) {
 
 	let grav = 0.78
 	let time = 0
-	let sped = 0.8
+	let speed = 0.8
 	let spin = 0
 	let prot = randomIntFromInterval(0, 1000)
 	let randomrot = randomIntFromInterval(0, 9)
 	var loop = setInterval(() => {
 		time++
 		grav += -0.06
-		sped += -0.03
-		if (sped < 0) sped = 0
-		brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
+		speed += -0.03
+		if (speed < 0) speed = 0
+		brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
+		brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
 		brick.position.z = brick.position.z += grav
 		brick.setPosition(brick.position)
 

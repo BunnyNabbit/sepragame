@@ -52,12 +52,12 @@ function bullets(player, turrentPosition, attack) {
 	brick.setPosition(new Vector3(turrentPosition.x + 2.5, turrentPosition.y + 2.5, turrentPosition.z + 2.5))
 	let grav = 0
 	let time = 0
-	let sped = 1
+	let speed = 1
 	let prot = lookAtPoint(target.position, turrentPosition) + randomIntFromInterval(-10, 10)
 	var loop = setInterval(() => {
 		time++
-		brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
+		brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
+		brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
 		brick.position.z = brick.position.z += grav
 		brick.setPosition(brick.position)
 
@@ -82,7 +82,7 @@ function bullets(player, turrentPosition, attack) {
 		}
 		if (time > 30) {
 			grav += -0.02
-			sped += -0.01
+			speed += -0.01
 			if (time > 50) {
 				reuseHandler.deleteBrick(brick)
 				clearInterval(loop)

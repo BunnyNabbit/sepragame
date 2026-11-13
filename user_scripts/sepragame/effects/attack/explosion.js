@@ -24,7 +24,7 @@ function heat(position) {
 	brick.setPosition(new Vector3(position.x + randomIntFromInterval(-5, 5) / 2, position.y + randomIntFromInterval(-5, 5) / 2, position.z + randomIntFromInterval(-5, 5) / 2))
 	brick.gracefulRemovalMode = 1
 	let gracefulID = brick.gracefulID
-	let sped = randomIntFromInterval(1, 5) / 8
+	let speed = randomIntFromInterval(1, 5) / 8
 	let grav = randomIntFromInterval(-1, 1) / 2 + 0.3
 	let time = 0
 	let lifespan = randomIntFromInterval(10, 24)
@@ -35,8 +35,8 @@ function heat(position) {
 		if (brick.gracefulID !== gracefulID) return clearInterval(loop) // The brick got gracefully removed
 		time++
 
-		brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
+		brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
+		brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
 		brick.position.z = brick.position.z += grav
 
 		brick.setPosition(brick.position)
@@ -63,7 +63,7 @@ function sm(position) {
 	brick.setPosition(new Vector3(position.x + randomIntFromInterval(-5, 5) / 2, position.y + randomIntFromInterval(-5, 5) / 2, position.z + randomIntFromInterval(-5, 5) / 2))
 	brick.gracefulRemovalMode = 1
 	let gracefulID = brick.gracefulID
-	let sped = randomIntFromInterval(1, 5) / 2
+	let speed = randomIntFromInterval(1, 5) / 2
 	let grav = randomIntFromInterval(1, 5) / 2 + 0.3
 	let time = 0
 	let lifespan = randomIntFromInterval(70, 180)
@@ -74,8 +74,8 @@ function sm(position) {
 		if (brick.gracefulID !== gracefulID) return clearInterval(loop) // The brick got gracefully removed
 		time++
 
-		brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
+		brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
+		brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
 		brick.position.z = brick.position.z += grav
 
 		brick.setPosition(brick.position)

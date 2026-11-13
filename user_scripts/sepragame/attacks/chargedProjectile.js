@@ -51,13 +51,13 @@ function chargedProjectile(player, attack) {
 	brick.position = new Vector3(player.position.x, player.position.y, player.position.z + 5)
 
 	let grav = 0
-	let sped = attack.speed
+	let speed = attack.speed
 
 	var loop = setInterval(() => {
 		if (!ready) return
 		time++
-		brick.position.x = brick.position.x += sped * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - +sped * Math.cos(prot / debug)
+		brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
+		brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
 		brick.position.z = brick.position.z += grav
 		brick.setPosition(brick.position)
 
@@ -76,7 +76,7 @@ function chargedProjectile(player, attack) {
 		}
 		if (time > attack.decay) {
 			grav += -0.02
-			sped += -0.01
+			speed += -0.01
 			if (time > attack.lifespan) {
 				reuseHandler.deleteBrick(brick)
 				clearInterval(loop)
