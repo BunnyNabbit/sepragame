@@ -1,7 +1,6 @@
 let slash = require("./slash.js")
 let blastJump = require("./blastJump.js")
 let projectile = require("./projectile.js")
-let homingMissle = require("./homingMissle.js")
 let dash = require("./dash.js")
 let spikes = require("./spikes.js")
 let block = require("./block.js")
@@ -119,49 +118,6 @@ class Attack {
 					})
 				}
 				this.attackHit = noop
-				this.attackExtra = noop
-				break
-			case "homingMissle":
-				var that = this
-				this.use = function (player) {
-					homingMissle(player, that)
-				}
-				this.mouthXOffset = 0
-				this.mouthYOffset = 0
-				this.attackHeightOffset = 5
-				this.size = 1
-				this.lifespan = 350
-				this.speed = 0.7
-				this.radius = 5
-				this.reflectable = false
-				this.duoBlaster = false // i.e: Guna has 2 blasters, switch between them.
-				this.triShot = false // i.e: Weakling2 will tri-shot.
-				this.color = "#ff0000"
-				this.damage = -8
-				this.cooldown = -1
-				this.energyCost = 50
-				this.seekRadius = 30
-				this.attackDescription = { name: "The Red Rocket", description: "An amazing invention!", killmessage: "(killer) 'sploded (victim)", discordEmoji: ":boom:" }
-
-				this.attackCreate = function (player) {
-					soundbrick({
-						url: `/sounds/random/err.flac`,
-						position: player.position,
-						isGlobal: false,
-						minDistance: 70,
-						maxDistance: 30,
-					})
-				}
-				this.attackHit = function (position) {
-					soundbrick({
-						url: `/sounds/random/heavyexplosion.flac`,
-						position: position,
-						isGlobal: false,
-						minDistance: 200,
-						maxDistance: 50,
-					})
-					particleManager.emitParticle("explosion", position)
-				}
 				this.attackExtra = noop
 				break
 			case "dash":
