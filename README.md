@@ -1,5 +1,7 @@
 # _sepragame_
 
+[![Matrix](https://img.shields.io/matrix/sepragame%3Amatrix.org?label=matrix)](https://link.sable.moe/#/!XWpUPTLNUaDemzDJgNjD9sDWd2XeKT52gC4uugaqR_s?via=bunnynabbit.com&via=matrix.org)
+
 Game of critters.
 
 ## Setup
