@@ -83,7 +83,6 @@ var morphData = {
 	sprintSpeed: 8, // Speed when sprinting, should be higher than speed
 	jump: 3, // Might not be used.
 	blastJumpPower: 8, // Should be higher than jump
-	energyRegen: 3, // per 0.1 (unused)
 	respawnEnergy: 100,
 	description: "replace this desctipton with something else", // not used
 	characterModelOffsets: {
