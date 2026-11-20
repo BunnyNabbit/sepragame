@@ -1,10 +1,10 @@
 let attack1 = new Attack("slash")
-attack1.attackDescription = { name: "Slash", description: "Use 25% energy to melee slash! | 35 Damage | Cooldown 2.5 seconds", killmessage: "(killer) killed (victim)", discordEmoji: "<:slashstill:817618397193175101>" }
+attack1.attackDescription = { name: "Slash", description: "Use 25% energy to melee slash! | 35 Damage | Cooldown 2.5 seconds", killMessage: "(killer) killed (victim)", discordEmoji: "<:slashstill:817618397193175101>" }
 attack1.energyCost = 25
 attack1.cooldown = 25
 attack1.damage = -35
 let attack2 = new Attack("dash")
-attack2.attackDescription = { name: "Dash", description: "Use 60% energy to quickly dash towards your direction. | 20 Damage | Cooldown 5 seconds", killmessage: "(killer) killed (victim)", discordEmoji: "<:slashstill:817618397193175101>" }
+attack2.attackDescription = { name: "Dash", description: "Use 60% energy to quickly dash towards your direction. | 20 Damage | Cooldown 5 seconds", killMessage: "(killer) killed (victim)", discordEmoji: "<:slashstill:817618397193175101>" }
 attack2.cooldown = 50
 let attack3 = new Attack("blastJump")
 attack3.color = "#0000FF"
@@ -12,12 +12,12 @@ attack3.color = "#0000FF"
 var morphData = {
 	creatureName: "Cyando Weakling (Variant 1)",
 	discordEmoji: "<:weakling1:802646013759848498>",
-	saveID: "cyando1", // Used internally for saves
+	saveId: "cyando1", // Used internally for saves
 	attacks: {
 		atk1: attack1,
 		atk2: attack2,
 		atk3: attack3,
-		bite: { name: "Bite", killmessage: "(killer) killed (victim)", discordEmoji: "<:slashstill:817618397193175101>" },
+		bite: { name: "Bite", killMessage: "(killer) killed (victim)", discordEmoji: "<:slashstill:817618397193175101>" },
 	},
 	hp: 35,
 	speed: 4,
@@ -27,7 +27,7 @@ var morphData = {
 	energyRegen: 3, // per 0.1
 	respawnEnergy: 100,
 	description: "temp description chnage this now",
-	charmodel: {
+	characterModelOffsets: {
 		cameraHeight: 0.9,
 		mouth: {
 			x: 1,

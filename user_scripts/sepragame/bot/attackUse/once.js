@@ -1,5 +1,5 @@
-function clc(bot, attack) {
+function once(bot, attack) {
 	attack(bot)
 }
 
-module.exports = clc
+module.exports = once

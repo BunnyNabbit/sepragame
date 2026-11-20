@@ -8,9 +8,9 @@ attack1.attackCreate = function (player) {
 		maxDistance: 3,
 	})
 }
-attack1.attackDescription = { name: "Light Cyando Shots", description: "Use 12% energy to fire a fast moving low range low damage shot | Has a chance to tri-shot | 3 HP", killmessage: "(killer) splashed (victim)", discordEmoji: "<:bluecube:596827012962713611>" }
+attack1.attackDescription = { name: "Light Cyando Shots", description: "Use 12% energy to fire a fast moving low range low damage shot | Has a chance to tri-shot | 3 HP", killMessage: "(killer) splashed (victim)", discordEmoji: "<:bluecube:596827012962713611>" }
 attack1.triShot = true
-attack1.reflectable = true
+attack1.deflectable = true
 attack1.color = "#00FFFF"
 attack1.damage = -3
 attack1.energyCost = 12
@@ -18,7 +18,7 @@ attack1.lifespan = 50
 attack1.decay = 30
 attack1.speed = 1
 let attack2 = new Attack("crystal")
-attack2.attackDescription = { name: "Cyando Crystal", description: "Summon a turret to shoot at nearby creatures | Cooldown 40 seconds", killmessage: "(killer) killed (victim)", discordEmoji: "<:bluecube:596827012962713611>" }
+attack2.attackDescription = { name: "Cyando Crystal", description: "Summon a turret to shoot at nearby creatures | Cooldown 40 seconds", killMessage: "(killer) killed (victim)", discordEmoji: "<:bluecube:596827012962713611>" }
 attack2.energyCost = 0
 attack2.cooldown = 400
 attack2.colors = {
@@ -33,12 +33,12 @@ attack3.color = "#00FFFF"
 var morphData = {
 	creatureName: "Cyando Weakling (Variant 2)",
 	discordEmoji: "<:weakling2icon:699338274367471636>",
-	saveID: "cyando2", // Used internally for saves
+	saveId: "cyando2", // Used internally for saves
 	attacks: {
 		atk1: attack1,
 		atk2: attack2,
 		atk3: attack3,
-		bite: { name: "Bite", killmessage: "(killer) killed (victim)", discordEmoji: "<:slashstill:817618397193175101>" },
+		bite: { name: "Bite", killMessage: "(killer) killed (victim)", discordEmoji: "<:slashstill:817618397193175101>" },
 	},
 	hp: 45,
 	speed: 5,
@@ -48,7 +48,7 @@ var morphData = {
 	energyRegen: 3, // per 0.1
 	respawnEnergy: 100,
 	description: "replace this desctipton with something else",
-	charmodel: {
+	characterModelOffsets: {
 		cameraHeight: 0.9,
 		mouth: {
 			x: 4,

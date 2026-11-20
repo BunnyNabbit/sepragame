@@ -1,4 +1,4 @@
-async function tool(player, mcPos) {
+async function tool(player) {
 	if (player.builderPermission == false) return
 	let types = []
 	for (let x = -2; x < 3; x++) {

@@ -27,7 +27,7 @@ function damageHandler(vit, attacker, attack, damage) {
 				maxDistance: 10,
 			})
 			if (vit.isBot == false) {
-				Game.messageAll(`\\c6${attack.killmessage.replace("(killer)", attacker.username).replace("(victim)", vit.username)}`)
+				Game.messageAll(`\\c6${attack.killMessage.replace("(killer)", attacker.username).replace("(victim)", vit.username)}`)
 				if (constants.discordEnabled) bot.channels.get(channel).send(`${attacker.currentCreature.discordEmoji} ${attacker.username} ${attack.discordEmoji} ${vit.currentCreature.discordEmoji} ${vit.username}`)
 			}
 		}

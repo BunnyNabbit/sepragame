@@ -1,15 +1,15 @@
-module.exports = function evaluateObject(obj, p) {
-	if (Game.pointDistance3D(p.position, obj.position) > 50) return
+module.exports = function evaluateObject(landmarkObject, player) {
+	if (Game.pointDistance3D(player.position, landmarkObject.position) > 50) return
 
-	if (p.lastLandmark == obj.name) return
-	p.lastLandmark = obj.name
+	if (player.lastLandmark == landmarkObject.name) return
+	player.lastLandmark = landmarkObject.name
 	//p.message(`Discovered: ${obj.name}`)
-	p.centerPrint(`${obj.name}`, 5)
+	player.centerPrint(`${landmarkObject.name}`, 5)
 	soundbrick(
 		{
 			url: "/sounds/skid.ogg", // [Required]
 			isGlobal: true,
 		},
-		p
+		player
 	)
 }

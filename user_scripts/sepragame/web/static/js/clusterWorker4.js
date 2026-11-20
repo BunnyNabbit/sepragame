@@ -1,6 +1,6 @@
 // clusterWorker3.js: Now with more fast! (it was pretty simple lol)
 // Web worker for the sepragame web client to generate meshes of the brick-block terrain sent by the server.
-// Important note: Data isn't sent as voxels but instead bricks, which are data containg a position (local to cluster) and a scale. These bricks may overlap with each other and that's FINE.
+// Important note: Data isn't sent as voxels but instead bricks, which are data containing a position (local to cluster) and a scale. These bricks may overlap with each other and that's FINE.
 
 const queue = []
 
@@ -235,30 +235,30 @@ this.onmessage = function (data) {
 		cluster = cluster.split(",")
 
 		let bricks = []
-		const clustLength = cluster[3].length / 12
-		for (let i = 0; i < clustLength; i++) {
+		const clusterLength = cluster[3].length / 12
+		for (let i = 0; i < clusterLength; i++) {
 			const read = i * 13
-			const xClustOffset = cluster[0] * 32
-			const yClustOffset = cluster[1] * 32
-			const zClustOffset = cluster[2] * 32
-			const clustString = cluster[3]
+			const xClusterOffset = cluster[0] * 32
+			const yClusterOffset = cluster[1] * 32
+			const zClusterOffset = cluster[2] * 32
+			const clusterString = cluster[3]
 			bricks.push({
 				position: {
-					x: (decode(clustString[read + 0]) + (xClustOffset)) * 4,
-					y: (decode(clustString[read + 1]) + (yClustOffset)) * 4,
-					z: (decode(clustString[read + 2]) + (zClustOffset)) * 4
+					x: (decode(clusterString[read + 0]) + (xClusterOffset)) * 4,
+					y: (decode(clusterString[read + 1]) + (yClusterOffset)) * 4,
+					z: (decode(clusterString[read + 2]) + (zClusterOffset)) * 4
 				},
 				scale: {
-					x: (decode(clustString[read + 3])) * 4,
-					y: (decode(clustString[read + 4])) * 4,
-					z: (decode(clustString[read + 5])) * 4
+					x: (decode(clusterString[read + 3])) * 4,
+					y: (decode(clusterString[read + 4])) * 4,
+					z: (decode(clusterString[read + 5])) * 4
 				},
-				collision: readBol(clustString[read + 6]),
+				collision: readBol(clusterString[read + 6]),
 				color: cluster[3].substring(read + 7, read + 13),
 				dataTMP: { // Appears to be the local to cluster position, used in meshing
-					x: (decode(clustString[read + 0])) * 4,
-					y: (decode(clustString[read + 1])) * 4,
-					z: (decode(clustString[read + 2])) * 4
+					x: (decode(clusterString[read + 0])) * 4,
+					y: (decode(clusterString[read + 1])) * 4,
+					z: (decode(clusterString[read + 2])) * 4
 				}
 			})
 		}

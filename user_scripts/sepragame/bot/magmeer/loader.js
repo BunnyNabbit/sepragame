@@ -8,8 +8,8 @@ attack1.attackCreate = function (player) {
 		maxDistance: 3,
 	})
 }
-attack1.attackDescription = { name: "Fire Shots", description: "Use 9% energy to shoot a fire projectile | 7 Damage", killmessage: "(killer) killed (victim)", discordEmoji: "<:redcube:596828524069912618>" }
-attack1.reflectable = true
+attack1.attackDescription = { name: "Fire Shots", description: "Use 9% energy to shoot a fire projectile | 7 Damage", killMessage: "(killer) killed (victim)", discordEmoji: "<:redcube:596828524069912618>" }
+attack1.deflectable = true
 attack1.damage = -7
 attack1.color = "#FF6600"
 attack1.energyCost = 9
@@ -21,26 +21,26 @@ attack1.cooldown = 8
 let attack2 = new Attack("fluidPool")
 attack2.weight = 2
 attack2.cooldown *= 2
-attack2.attackDescription = { name: "Magma Spit", description: "Use 20% energy to spit out magma! | 20 Total damage (5HP/s over 5s) | Cooldown 8 seconds", killmessage: "(killer) burnt (victim)", discordEmoji: "<:redcube:596828524069912618>" }
+attack2.attackDescription = { name: "Magma Spit", description: "Use 20% energy to spit out magma! | 20 Total damage (5HP/s over 5s) | Cooldown 8 seconds", killMessage: "(killer) burnt (victim)", discordEmoji: "<:redcube:596828524069912618>" }
 
 var data = {
 	creatureName: "Magmeer", // Name of the creature | Used internally for lookup but thats bad bro
 	discordEmoji: "<:magmeer:786149611457871892>",
-	saveID: "magmeer", // Used internally for saves
+	saveId: "magmeer", // Used internally for saves
 	hp: 100,
 	speed: 5,
 	description: "define",
 	bloodColor: "#ff0000",
-	canBeEatten: true,
+	canBeEaten: true,
 	totalBites: 3,
-	biteRegenHP: 10,
-	biteRegenStam: 75,
+	biteRegenerateHp: 10,
+	biteRegenerateStamina: 75,
 	attacks: {
 		atk1: attack1,
 		atk2: attack2,
-		bite: { name: "Bite", killmessage: "killed", discordEmoji: ":crossed_swords:" },
+		bite: { name: "Bite", killMessage: "killed", discordEmoji: ":crossed_swords:" },
 	},
-	charmodel: {
+	characterModelOffsets: {
 		cameraHeight: 1.4,
 		mouth: {
 			x: 5,
@@ -60,11 +60,11 @@ var data = {
 
 	// AI Behavior
 	behavior: "angry",
-	wonderIdleTimeMin: 4,
-	wonderIdleTimeMax: 9,
+	wanderIdleTimeMin: 4,
+	wanderIdleTimeMax: 9,
 
-	wonderMoveTimeMin: 3,
-	wonderMoveTimeMax: 20,
+	wanderMoveTimeMin: 3,
+	wanderMoveTimeMax: 20,
 }
 
 function lookAtPoint(position, bot) {

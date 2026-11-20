@@ -1,9 +1,9 @@
 module.exports = [
 	{
 		creatureName: "Settings",
-		saveID: "ico-settings",
+		saveId: "ico-settings",
 		description: "Access the settings",
-		charmodel: {
+		characterModelOffsets: {
 		},
 		webModelRotationOffset: 1.565, // For the visual model
 		webLogicRotationOffset: 0, // For converting BH rotation
@@ -14,9 +14,9 @@ module.exports = [
 	},
 	{
 		creatureName: "Creatures",
-		saveID: "ico-creatures",
+		saveId: "ico-creatures",
 		description: "",
-		charmodel: {
+		characterModelOffsets: {
 		},
 		webModelRotationOffset: 1.565, // For the visual model
 		webLogicRotationOffset: 0, // For converting BH rotation
@@ -27,9 +27,9 @@ module.exports = [
 	},
 	//{
 	//	creatureName: "Stats",
-	//	saveID: "ico-stats",
+	//	saveId: "ico-stats",
 	//	description: "",
-	//	charmodel: {
+	//	characterModelOffsets: {
 	//	},
 	//	webModelRotationOffset: 1.565, // For the visual model
 	//	webLogicRotationOffset: 0, // For converting BH rotation
@@ -40,9 +40,9 @@ module.exports = [
 	//},
 	//{
 	//	creatureName: "Map",
-	//	saveID: "ico-map",
+	//	saveId: "ico-map",
 	//	description: "",
-	//	charmodel: {
+	//	characterModelOffsets: {
 	//	},
 	//	webModelRotationOffset: 1.565, // For the visual model
 	//	webLogicRotationOffset: 0, // For converting BH rotation
@@ -56,9 +56,9 @@ module.exports = [
 const settingData = [
 	{
 		creatureName: "Back",
-		saveID: "ico-back",
+		saveId: "ico-back",
 		description: "",
-		charmodel: {
+		characterModelOffsets: {
 		},
 		webModelRotationOffset: 1.565, // For the visual model
 		webLogicRotationOffset: 0, // For converting BH rotation
@@ -69,9 +69,9 @@ const settingData = [
 	},
 	{
 		creatureName: "Render quality",
-		saveID: "ico-resolution",
+		saveId: "ico-resolution",
 		description: "",
-		charmodel: {
+		characterModelOffsets: {
 		},
 		webModelRotationOffset: 1.565, // For the visual model
 		webLogicRotationOffset: 0, // For converting BH rotation
@@ -82,9 +82,9 @@ const settingData = [
 	},
 	{
 		creatureName: "View terrain distance",
-		saveID: "ico-terrain",
+		saveId: "ico-terrain",
 		description: "",
-		charmodel: {
+		characterModelOffsets: {
 		},
 		webModelRotationOffset: 1.565, // For the visual model
 		webLogicRotationOffset: 0, // For converting BH rotation
@@ -95,7 +95,7 @@ const settingData = [
 	},
 ]
 function triggerBackToMain(p) {
-	p.selectorData = initalSelectionTree
+	p.selectorData = initialSelectionTree
 	p.updateSelector()
 }
 

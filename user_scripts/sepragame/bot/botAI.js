@@ -18,11 +18,11 @@ async function botAI(position, data) {
 	bot.attackFocus = ""
 
 	bot.target = "ignore"
-	bot.wonderTravelAngle = 0
-	bot.wonderIdleTimeMin = data.wonderIdleTimeMin
-	bot.wonderIdleTimeMax = data.wonderIdleTimeMax
-	bot.wonderMoveTimeMin = data.wonderMoveTimeMin
-	bot.wonderMoveTimeMax = data.wonderMoveTimeMax
+	bot.wanderTravelAngle = 0
+	bot.wanderIdleTimeMin = data.wanderIdleTimeMin
+	bot.wanderIdleTimeMax = data.wanderIdleTimeMax
+	bot.wanderMoveTimeMin = data.wanderMoveTimeMin
+	bot.wanderMoveTimeMax = data.wanderMoveTimeMax
 
 	// Manage attack states
 	bot.attacks = []
@@ -83,11 +83,11 @@ async function botAI(position, data) {
 			if (time < 0) {
 				if (randomIntFromInterval(1, 2) == 1) {
 					state = "idle"
-					time = randomIntFromInterval(bot.wonderIdleTimeMin, bot.wonderIdleTimeMax)
+					time = randomIntFromInterval(bot.wanderIdleTimeMin, bot.wanderIdleTimeMax)
 				} else {
-					bot.wonderTravelAngle = randomIntFromInterval(1, 360)
+					bot.wanderTravelAngle = randomIntFromInterval(1, 360)
 					state = "move"
-					time = randomIntFromInterval(bot.wonderMoveTimeMin, bot.wonderMoveTimeMax)
+					time = randomIntFromInterval(bot.wanderMoveTimeMin, bot.wanderMoveTimeMax)
 				}
 				if (bot.anger > angerTol) {
 					state = "attack"
@@ -95,7 +95,7 @@ async function botAI(position, data) {
 				}
 			}
 			if (state == "move") {
-				botManager.botController.walkTowardsAngleAndStepUpOrDownTerrain(bot, bot.speed / 6, bot.wonderTravelAngle)
+				botManager.botController.walkTowardsAngleAndStepUpOrDownTerrain(bot, bot.speed / 6, bot.wanderTravelAngle)
 
 				let fleefrom = bot.findClosestPlayer(20)
 				if (fleefrom) {
@@ -170,7 +170,7 @@ async function botAI(position, data) {
 					state = "idle"
 				}
 
-				if (bot.hp < 20 && bot.saveID === "magmeer") {
+				if (bot.hp < 20 && bot.saveId === "magmeer") {
 					// Low on HP
 					bot.anger = -50
 					state = "flee"

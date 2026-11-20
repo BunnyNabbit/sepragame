@@ -5,7 +5,7 @@
 
 const queueSize = 50
 
-function initqueue() {
+function initializeQueue() {
 	let i = 0
 	for (i = 0; i < queueSize; i++) {
 		// Create the bricks and queue
@@ -14,7 +14,7 @@ function initqueue() {
 		brick.queueID = i
 		brick.gracefulRemovalMode = 0
 		brick.canReuse = true
-		brick.gracefulID = gracefulID++
+		brick.gracefulId = gracefulId++
 		brick.setCollision(false)
 		patcher.patchBrick(brick)
 		//brick.collision = false
@@ -27,7 +27,7 @@ function initqueue() {
 // 1 Aged = Can be gracefully removed but less priority than mode 2
 // 2 = Unimportant = Can be gracefully removed
 
-let gracefulID = 0
+let gracefulId = 0
 
 function reuseBrick() {
 	let id = queue.findIndex((object) => object.canReuse === true)
@@ -35,7 +35,7 @@ function reuseBrick() {
 		// Gracefully remove unimportant stuff like particles
 		let x = queue
 			.sort(function (a, b) {
-				return a.gracefulID - b.gracefulID
+				return a.gracefulId - b.gracefulId
 			})
 			.find((object) => object.gracefulRemovalMode === 2)
 
@@ -43,7 +43,7 @@ function reuseBrick() {
 			deleteBrick(x) // Remove mode 2
 		} else {
 			let x = queue.sort(function (a, b) {
-				return a.gracefulID - b.gracefulID
+				return a.gracefulId - b.gracefulId
 			}).queue
 			if (x !== undefined) x = x.find((object) => object.gracefulRemovalMode === 1)
 
@@ -56,7 +56,7 @@ function reuseBrick() {
 	if (id !== -1) {
 		let brick = queue[id]
 		brick.canReuse = false
-		brick.gracefulID = gracefulID++
+		brick.gracefulId = gracefulId++
 
 		if (brick.outline === true) brick.setOutline(false)
 		brick.setRotation(0)
@@ -75,4 +75,4 @@ function deleteBrick(brick) {
 	brick.onDelete = noop
 }
 
-module.exports = { reuseBrick, deleteBrick, initqueue }
+module.exports = { reuseBrick, deleteBrick, initializeQueue }

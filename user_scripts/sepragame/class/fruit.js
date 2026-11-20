@@ -27,11 +27,11 @@ function spawnFruit(pos, pulse) {
 		time++
 		fruit.setColor(pulse[time % 2])
 		if (!fruit.heldBy) {
-			let messageplayer = Game.players.find((player) => Game.pointDistance3D(player.position, fruit.position) < 10)
-			if (messageplayer) {
-				if (messageplayer.mobile) {
-					messageplayer.centerPrint('\\c4Press "SLASH" to grab this Power Fruit', 2)
-				} else messageplayer.centerPrint('\\c4Press "E" to grab this Power Fruit', 2)
+			let messagePlayer = Game.players.find((player) => Game.pointDistance3D(player.position, fruit.position) < 10)
+			if (messagePlayer) {
+				if (messagePlayer.mobile) {
+					messagePlayer.centerPrint('\\c4Press "SLASH" to grab this Power Fruit', 2)
+				} else messagePlayer.centerPrint('\\c4Press "E" to grab this Power Fruit', 2)
 			}
 		}
 	}, 1000)
@@ -63,9 +63,9 @@ function spawnFruit(pos, pulse) {
 			let color = fruit.color
 			setTimeout(() => {
 				drippyPosition = new Vector3()
-				drippyPosition.x = creature.position.x + creature.currentCreature.charmodel.mouth.x * Math.sin(creature.rotation.z / debug)
-				drippyPosition.y = creature.position.y - +creature.currentCreature.charmodel.mouth.x * Math.cos(creature.rotation.z / debug)
-				drippyPosition.z = creature.position.z + creature.currentCreature.charmodel.mouth.y - 0.8
+				drippyPosition.x = creature.position.x + creature.currentCreature.characterModelOffsets.mouth.x * Math.sin(creature.rotation.z / debug)
+				drippyPosition.y = creature.position.y - +creature.currentCreature.characterModelOffsets.mouth.x * Math.cos(creature.rotation.z / debug)
+				drippyPosition.z = creature.position.z + creature.currentCreature.characterModelOffsets.mouth.y - 0.8
 				particleManager.emitParticle("drippy", {
 					position: drippyPosition,
 					color: color,

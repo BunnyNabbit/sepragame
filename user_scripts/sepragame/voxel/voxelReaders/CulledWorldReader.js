@@ -1,6 +1,6 @@
 const cullOffsets = [new Vector3(0, 1, 0), new Vector3(0, -1, 0), new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 0, -1)]
 
-class CulledPrismarineReader {
+class CulledWorldReader {
 	/**/
 	constructor(x, y, z, w, h, d, pWorld) {
 		// MC Coords
@@ -44,4 +44,4 @@ class CulledPrismarineReader {
 	}
 }
 
-module.exports = CulledPrismarineReader
+module.exports = CulledWorldReader

@@ -29,7 +29,7 @@ async function tool(player) {
 		let blockType = await voxelWorld.world.getBlockType(new Vector3(p[0], p[1], p[2]))
 		if (blockType === 0) blockType = lastBlockType
 		lastBlockType = blockType
-		voxelWorld.placeblock(new Vector3(p[0], p[1], p[2]), blockType, player, false, false)
+		voxelWorld.placeBlock(new Vector3(p[0], p[1], p[2]), blockType, player, false, false)
 	})
 }
 

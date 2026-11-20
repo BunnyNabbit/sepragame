@@ -1,4 +1,4 @@
-var colorbyid = require("./color/blockColors.js")
+var blockColor = require("./color/blockColors.js")
 var VoxWorld = require("./voxel-world/LegacyMongoWorld.cjs")
 // var canvas = require("canvas")
 
@@ -297,7 +297,7 @@ Game.on("playerJoin", async (player) => {
 
 	player.userData.lastGlobalBlocks = globalData.globalBlocksAdded
 	player.scafolding = []
-	player.lastVaildPosition = new Vector3(0, 0, 500)
+	player.lastValidPosition = new Vector3(0, 0, 500)
 	player.loadTool = false
 
 	player.viewDistanceN = -1 // 3x3x3
@@ -563,20 +563,20 @@ Game.on("playerJoin", async (player) => {
 
 			if ((!block1Col && !block2Col) || player.position.z < 4) {
 				// Strict
-				player.lastVaildPosition = new Vector3(player.position.x, player.position.y, player.position.z)
+				player.lastValidPosition = new Vector3(player.position.x, player.position.y, player.position.z)
 			} else {
 				if (!block1Col && block2Col) {
 					// Step\
 					player.setPosition(new Vector3(player.position.x, player.position.y, player.position.z + 4), false)
 				} else {
 					// push
-					player.setPosition(new Vector3(Math.floor(player.lastVaildPosition.x / 4) * 4 + 2.5, Math.floor(player.lastVaildPosition.y / 4) * 4 + 2.5, player.lastVaildPosition.z), true)
+					player.setPosition(new Vector3(Math.floor(player.lastValidPosition.x / 4) * 4 + 2.5, Math.floor(player.lastValidPosition.y / 4) * 4 + 2.5, player.lastValidPosition.z), true)
 				}
 			}
 
 			switch (block3) {
 				case 2:
-					if (player.currentCreature.saveID !== "magmeer") {
+					if (player.currentCreature.saveId !== "magmeer") {
 						player.setHealth(player.health - 0.1)
 						soundbrick(
 							{
@@ -699,7 +699,7 @@ Game.command("colorhex", (p, msg) => {
 
 	var mName = "None"
 	var mHexC = "#000001"
-	colorbyid.forEach((element) => {
+	blockColor.forEach((element) => {
 		let value = deltaE(msg, hexToRgb(element.hexString))
 		//console.log(value)
 		if (value < colorComp) {
@@ -778,13 +778,13 @@ Game.command("slow", async (p, msg) => {
 
 Game.command("spawn", async (p, msg) => {
 	p.setPosition(new Vector3(0, 0, 300))
-	p.lastVaildPosition = p.position
+	p.lastValidPosition = p.position
 })
 
 Game.command("rtp", async (p, msg) => {
 	p.message("Teleported!")
 	p.setPosition(new Vector3(randomIntFromInterval(-3500, 3500), randomIntFromInterval(-3500, 3500), 500))
-	p.lastVaildPosition = p.position
+	p.lastValidPosition = p.position
 	soundbrick(
 		{
 			url: "/sounds/roll.mp3", // [Required]
@@ -984,7 +984,7 @@ function unloadSections(player) {
 		})
 }
 
-async function placeblock(blockPos, blockType, player, soundEnabled, showGhostBlock, useSymmetry) {
+async function placeBlock(blockPos, blockType, player, soundEnabled, showGhostBlock, useSymmetry) {
 	const chunkX = Math.floor(blockPos.x / 32)
 	const chunkY = Math.floor(blockPos.y / 32)
 	const chunkZ = Math.floor(blockPos.z / 32)
@@ -1095,16 +1095,16 @@ async function placeblock(blockPos, blockType, player, soundEnabled, showGhostBl
 	if (showGhostBlock === undefined) showGhostBlock = true
 	if (showGhostBlock === true) {
 		// Ghostly blocks
-		var falsebrick = new Brick(new Vector3(blockPos.x * 4, blockPos.y * 4, blockPos.z * 4), new Vector3(4, 4, 4), colorbyid[blockType].hexString)
+		var falsebrick = new Brick(new Vector3(blockPos.x * 4, blockPos.y * 4, blockPos.z * 4), new Vector3(4, 4, 4), blockColor[blockType].hexString)
 
 		player.loadBricks([falsebrick])
 		setTimeout(() => {
 			player.deleteBricksWeb([falsebrick])
 		}, 400)
 		if (!useSymmetry && player.symmetryEnabled) {
-			if (player.symmetryAxis === "x") placeblock(new Vector3(player.symmetryOrigin.x / 4 - (blockPos.x - player.symmetryOrigin.x / 4), blockPos.y, blockPos.z), blockType, player, true, true, true)
+			if (player.symmetryAxis === "x") placeBlock(new Vector3(player.symmetryOrigin.x / 4 - (blockPos.x - player.symmetryOrigin.x / 4), blockPos.y, blockPos.z), blockType, player, true, true, true)
 
-			if (player.symmetryAxis === "z") placeblock(new Vector3(blockPos.x, blockPos.y, player.symmetryOrigin.y / 4 - (blockPos.z - player.symmetryOrigin.y / 4)), blockType, player, true, true, true)
+			if (player.symmetryAxis === "z") placeBlock(new Vector3(blockPos.x, blockPos.y, player.symmetryOrigin.y / 4 - (blockPos.z - player.symmetryOrigin.y / 4)), blockType, player, true, true, true)
 		}
 	}
 
@@ -1135,7 +1135,7 @@ function hexToRgb(hex) {
 	return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null
 }
 
-async function pickcolor(blockPos, player) {
+async function pickColor(blockPos, player) {
 	// pickblock, pick block
 	var newColor = await voxelworld.getBlockType(blockPos)
 	if (newColor == 0) {
@@ -1149,7 +1149,7 @@ async function pickcolor(blockPos, player) {
 		)
 	} else {
 		player.selectedColor = newColor
-		player.message(`New color is [${colorbyid[newColor].hexString}]${colorbyid[newColor].name} \\c0[ID: ${newColor}]`)
+		player.message(`New color is [${blockColor[newColor].hexString}]${blockColor[newColor].name} \\c0[ID: ${newColor}]`)
 		soundbrick(
 			{
 				url: "/sounds/tonecraft/sample/corny/10.ogg", // [Required]
@@ -1340,7 +1340,7 @@ async function replaceBlocksInSelection(player, blockType, settings = { type: "d
 						for (var x = lx; x < hx + 1; x++) {
 							if (Math.random() < settings.amount) {
 								let block = await voxelworld.getBlockType(new Vector3(x, y, z))
-								if (block) await placeblock(new Vector3(x, y, z), blockType, player, false, false)
+								if (block) await placeBlock(new Vector3(x, y, z), blockType, player, false, false)
 							}
 						}
 					}
@@ -1349,7 +1349,7 @@ async function replaceBlocksInSelection(player, blockType, settings = { type: "d
 				for (var y = ly; y < hy + 1; y++) {
 					for (var z = lz; z < hz + 1; z++) {
 						for (var x = lx; x < hx + 1; x++) {
-							if (Math.random() < settings.amount) await placeblock(new Vector3(x, y, z), blockType, player, false, false)
+							if (Math.random() < settings.amount) await placeBlock(new Vector3(x, y, z), blockType, player, false, false)
 						}
 					}
 				}
@@ -1364,7 +1364,7 @@ async function replaceBlocksInSelection(player, blockType, settings = { type: "d
 							let block = await voxelworld.getBlockType(new Vector3(x, y, z))
 							if (block != 0) place = false
 						}
-						if (place) await placeblock(new Vector3(x, y, z), blockType, player, false, false)
+						if (place) await placeBlock(new Vector3(x, y, z), blockType, player, false, false)
 					}
 				}
 			}
@@ -1373,7 +1373,7 @@ async function replaceBlocksInSelection(player, blockType, settings = { type: "d
 			for (var y = ly; y < hy + 1; y++) {
 				for (var z = lz; z < hz + 1; z++) {
 					for (var x = lx; x < hx + 1; x++) {
-						await placeblock(new Vector3(x, y, z), blockType, player, false, false)
+						await placeBlock(new Vector3(x, y, z), blockType, player, false, false)
 					}
 				}
 			}
@@ -1408,7 +1408,7 @@ async function saveBlocksInSelectionToFile(player) {
 		}
 
 		const palette = []
-		colorbyid.forEach((element, index) => {
+		blockColor.forEach((element, index) => {
 			if (index !== 0) palette.push([element.rgb.r, element.rgb.g, element.rgb.b])
 		})
 		palette.push([0, 0, 0]) // air
@@ -1496,7 +1496,7 @@ Game.command("loadmesh", async (player, msg) => {
 							for (var z = 0; z < player.loadedPrefab.d + 1; z++) {
 								for (var x = 0; x < player.loadedPrefab.w + 1; x++) {
 									const blockType = await reader.getBlockType(new Vector3(x, y, z))
-									if (blockType !== 0) await placeblock(new Vector3(x + player.loadedPrefabPosition.x, y + player.loadedPrefabPosition.y, z + player.loadedPrefabPosition.z), blockType, player, false, false)
+									if (blockType !== 0) await placeBlock(new Vector3(x + player.loadedPrefabPosition.x, y + player.loadedPrefabPosition.y, z + player.loadedPrefabPosition.z), blockType, player, false, false)
 								}
 							}
 						}
@@ -2033,7 +2033,7 @@ async function mapRenderByChunks() {
 							if ((await voxelworld.getBlockType(new Vector3(x + Bx, y + By - 1, z))) == 0) {
 								finalBright += -16
 							}
-							// ctx.fillStyle = `rgba(${(colorbyid[blocktype].rgb.r) + Math.round((80 / 0.4) * 1.7) - 264 + finalBright},${colorbyid[blocktype].rgb.g + Math.round((80 / 0.4) * 1.7) - 264 + finalBright},${colorbyid[blocktype].rgb.b + Math.round((80 / 0.4) * 1.7) - 264 + finalBright},1)`;
+							// ctx.fillStyle = `rgba(${(blockColor[blocktype].rgb.r) + Math.round((80 / 0.4) * 1.7) - 264 + finalBright},${blockColor[blocktype].rgb.g + Math.round((80 / 0.4) * 1.7) - 264 + finalBright},${blockColor[blocktype].rgb.b + Math.round((80 / 0.4) * 1.7) - 264 + finalBright},1)`;
 							// ctx.fillRect(x + Bx + 1024, y + By + 1024, 1, 1);
 							break
 						}
@@ -2083,4 +2083,4 @@ async function idleGameWork() {
 }
 idleGameWork()
 
-module.exports = { world: voxelworld, placeblock, pickcolor, colorbyid, getChunkMeta, addSectionToQueue }
+module.exports = { world: voxelworld, placeBlock, pickColor, blockColor, getChunkMeta, addSectionToQueue }

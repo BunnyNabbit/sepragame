@@ -1,5 +1,5 @@
 const readVox = require("vox-reader")
-const colorbyid = require("../color/blockColors.js")
+const blockColor = require("../color/blockColors.js")
 
 class VoxReader {
 	// WIP
@@ -50,7 +50,7 @@ function convertHex(msg) {
 
 	var mName = "None"
 	var mHexC = "#000001"
-	colorbyid.forEach((element) => {
+	blockColor.forEach((element) => {
 		let value = deltaE(msg, hexToRgb(element.hexString))
 		if (value < colorComp) {
 			if (element.colorId != 0) {

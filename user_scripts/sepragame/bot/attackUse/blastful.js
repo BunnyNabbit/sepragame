@@ -1,4 +1,4 @@
-function clc(bot, attack) {
+function blastful(bot, attack) {
 	attack(bot)
 	if (randomIntFromInterval(1, 15) == 1) {
 		// spam the attack
@@ -39,4 +39,4 @@ function randomIntFromInterval(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-module.exports = clc
+module.exports = blastful

@@ -61,7 +61,7 @@ module.exports = function (p) {
 	p.atk4Cooldown = 0
 	p.atk5Cooldown = 0
 	p.bitecooldown = 0
-	p.selectedattack = 1
+	p.selectedAttack = 1
 
 	p.settings = {
 		// TODO
@@ -71,7 +71,7 @@ module.exports = function (p) {
 	p.keyPrompt = null
 
 	// vars for attacks
-	p.attackcos = false // OFF ON for attack scripts ie crimsonblaster
+	p.duoBlasterState = false // OFF ON for attack scripts ie crimsonblaster
 	p.blastJumpActive = false
 	//energy related
 	p.energy = 100
@@ -105,9 +105,9 @@ module.exports = function (p) {
 	p.isBot = false
 
 	p.inSelector = true
-	p.currentindex = 0
+	p.currentSelectorIndex = 0
 
-	charAnimate(p)
+	characterAnimate(p)
 
 	p.switchCreature(defaultCreature)
 
@@ -130,7 +130,7 @@ function playerFunctions(p) {
 		p.socketio.emit("gui", [{ type: "stamina", value: p.stamina }])
 	}
 	p.switchCreature = (creatureId) => {
-		var verify = creatureData.find((x) => x.saveID == creatureId)
+		var verify = creatureData.find((x) => x.saveId == creatureId)
 		if (verify == undefined || verify == -1) return
 		if (verify.class === "builder") {
 			if (p.builderPermission == false) {
@@ -138,14 +138,14 @@ function playerFunctions(p) {
 				creatureId = "weakling1"
 			}
 		}
-		verify = creatureData.find((x) => x.saveID == creatureId)
+		verify = creatureData.find((x) => x.saveId == creatureId)
 		if (verify == undefined || verify == -1) return
-		p.selectedattack = 1
+		p.selectedAttack = 1
 		p.guiSelectSlot(1)
 		p.currentCreature = verify
 		p.setJumpPower(p.currentCreature.jump)
 		p.setSpeed(p.currentCreature.speed)
-		p.setScale(new Vector3(0, 0, p.currentCreature.charmodel.cameraHeight))
+		p.setScale(new Vector3(0, 0, p.currentCreature.characterModelOffsets.cameraHeight))
 		p.maxHealth = p.currentCreature.hp
 		p.setHealth(p.currentCreature.hp)
 		p.atk1Cooldown = 0
@@ -237,33 +237,33 @@ function playerFunctions(p) {
 		var b = ""
 		var c = ""
 
-		if (p.currentindex > p.selectorData.length - 1) {
-			p.currentindex = 0
+		if (p.currentSelectorIndex > p.selectorData.length - 1) {
+			p.currentSelectorIndex = 0
 		}
 
-		if (p.currentindex == -1) {
-			p.currentindex = p.selectorData.length - 1
+		if (p.currentSelectorIndex == -1) {
+			p.currentSelectorIndex = p.selectorData.length - 1
 		}
 
-		b = p.selectorData[p.currentindex]
-		p.socketio.emit("charmodel", { slot: 2, meta: { model: p.selectorData[p.currentindex].saveID, modelRotationOffset: p.selectorData[p.currentindex].webModelRotationOffset } })
+		b = p.selectorData[p.currentSelectorIndex]
+		p.socketio.emit("charmodel", { slot: 2, meta: { model: p.selectorData[p.currentSelectorIndex].saveId, modelRotationOffset: p.selectorData[p.currentSelectorIndex].webModelRotationOffset } })
 
-		if (p.currentindex + 1 > p.selectorData.length - 1) {
-			p.socketio.emit("charmodel", { slot: 3, meta: { model: p.selectorData[0].saveID, modelRotationOffset: p.selectorData[0].webModelRotationOffset } })
+		if (p.currentSelectorIndex + 1 > p.selectorData.length - 1) {
+			p.socketio.emit("charmodel", { slot: 3, meta: { model: p.selectorData[0].saveId, modelRotationOffset: p.selectorData[0].webModelRotationOffset } })
 
 			c = p.selectorData[0].creatureName
 		} else {
-			p.socketio.emit("charmodel", { slot: 3, meta: { model: p.selectorData[p.currentindex + 1].saveID, modelRotationOffset: p.selectorData[p.currentindex + 1].webModelRotationOffset } })
+			p.socketio.emit("charmodel", { slot: 3, meta: { model: p.selectorData[p.currentSelectorIndex + 1].saveId, modelRotationOffset: p.selectorData[p.currentSelectorIndex + 1].webModelRotationOffset } })
 
-			c = p.selectorData[p.currentindex + 1].creatureName
+			c = p.selectorData[p.currentSelectorIndex + 1].creatureName
 		}
 
-		if (p.currentindex - 1 == -1) {
-			p.socketio.emit("charmodel", { slot: 1, meta: { model: p.selectorData[p.selectorData.length - 1].saveID, modelRotationOffset: p.selectorData[p.selectorData.length - 1].webModelRotationOffset } })
+		if (p.currentSelectorIndex - 1 == -1) {
+			p.socketio.emit("charmodel", { slot: 1, meta: { model: p.selectorData[p.selectorData.length - 1].saveId, modelRotationOffset: p.selectorData[p.selectorData.length - 1].webModelRotationOffset } })
 			a = p.selectorData[p.selectorData.length - 1].creatureName
 		} else {
-			p.socketio.emit("charmodel", { slot: 1, meta: { model: p.selectorData[p.currentindex - 1].saveID, modelRotationOffset: p.selectorData[p.currentindex - 1].webModelRotationOffset } })
-			a = p.selectorData[p.currentindex - 1].creatureName
+			p.socketio.emit("charmodel", { slot: 1, meta: { model: p.selectorData[p.currentSelectorIndex - 1].saveId, modelRotationOffset: p.selectorData[p.currentSelectorIndex - 1].webModelRotationOffset } })
+			a = p.selectorData[p.currentSelectorIndex - 1].creatureName
 		}
 		if (b.trigger) {
 			p.bottomPrint(`. . ${a} . \\c5> ${b.creatureName} < \\c0. ${c} . .`, 60)

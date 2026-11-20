@@ -75,22 +75,22 @@ function smallBlood(settings) {
 	brick.setScale(new Vector3(0.25, 0.25, 0.25))
 	brick.setPosition(new Vector3(settings.position.x + settings.offset.x * Math.sin(settings.direction / debug), settings.position.y - +settings.offset.x * Math.cos(settings.direction / debug), settings.position.z + settings.offset.y))
 	brick.gracefulRemovalMode = 1
-	let gracefulID = brick.gracefulID
-	let grav = randomIntFromInterval(1, 100) / 1600
+	let gracefulId = brick.gracefulId
+	let gravity = randomIntFromInterval(1, 100) / 1600
 	let time = 0
 	let spin = 0
 	let splatter = false
-	let randomrot = randomIntFromInterval(0, 9)
+	let randomRotation = randomIntFromInterval(0, 9)
 	let canStep = true
 	var loop = setInterval(async () => {
 		if (canStep === false) return
-		if (brick.gracefulID !== gracefulID) return clearInterval(loop) // The brick got gracefully removed
+		if (brick.gracefulId !== gracefulId) return clearInterval(loop) // The brick got gracefully removed
 		time++
-		grav += -0.03
+		gravity += -0.03
 		if (splatter === false) {
 			brick.position.x = brick.position.x += settings.directionalForce * Math.sin(settings.direction / debug)
 			brick.position.y = brick.position.y - +settings.directionalForce * Math.cos(settings.direction / debug)
-			brick.position.z = brick.position.z += grav
+			brick.position.z = brick.position.z += gravity
 
 			if ((await inBlock(brick.position)) === true) {
 				// Check if blood can splatter on the ground
@@ -115,9 +115,9 @@ function smallBlood(settings) {
 				if (bloods.has(`${Math.floor(brick.position.x / 1) * 1 - 0.05} ${Math.floor(brick.position.y / 1) * 1 - 0.05} ${Math.floor(brick.position.z / 1) * 1 - 0.05}`)) {
 					if (Math.random() > 0.085) {
 						settings.direction = randomIntFromInterval(0, 1000)
-						brick.position.z = brick.position.z -= grav
+						brick.position.z = brick.position.z -= gravity
 						settings.directionalForce = randomIntFromInterval(10, 30) / 200
-						grav = randomIntFromInterval(50, 100) / 700
+						gravity = randomIntFromInterval(50, 100) / 700
 						time = 3
 						brick.setScale(new Vector3(0.1, 0.1, 0.1))
 						return
@@ -158,13 +158,13 @@ function smallBlood(settings) {
 			brick.setPosition(brick.position)
 
 			if (time > 3) {
-				spin += randomrot
+				spin += randomRotation
 				brick.setRotation(spin)
 			}
 		} else {
 			brick.position.x = brick.position.x += settings.directionalForce * Math.sin(settings.direction / debug)
 			brick.position.y = brick.position.y - +settings.directionalForce * Math.cos(settings.direction / debug)
-			brick.position.z = brick.position.z += grav
+			brick.position.z = brick.position.z += gravity
 			if (time > 20) {
 				clearInterval(loop)
 				reuseHandler.deleteBrick(brick)

@@ -4,7 +4,7 @@ function randomIntFromInterval(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function lerpColor(a, b, amount) {
+function interpolateColor(a, b, amount) {
 	amount = clamp(amount, 0, 1)
 	var ah = parseInt(a.replace(/#/g, ""), 16),
 		ar = ah >> 16,
@@ -23,102 +23,102 @@ function lerpColor(a, b, amount) {
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 
-module.exports = function evaluateObject(obj, p) {
-	if (!obj.enabled) return
-	if (Game.pointDistance3D(p.position, obj.startPosition) > 10) return
-	if (p.timetrial) {
+module.exports = function evaluateObject(timeTrialObject, player) {
+	if (!timeTrialObject.enabled) return
+	if (Game.pointDistance3D(player.position, timeTrialObject.startPosition) > 10) return
+	if (player.timetrial) {
 		// Player already has an active timetrial
-		p.centerPrint('Press "E" or "SLASH" to exit time trial', 1)
-		p.keyPrompt = function () {
-			if (p.timetrial) {
-				if (Game.pointDistance3D(p.position, obj.startPosition) > 10) return
-				p.timetrial = null
-				reuseHandler.deleteBrick(p.checkPointFruit)
-				clearInterval(p.timetrialTimer)
-				p.message("Aborted time trial")
+		player.centerPrint('Press "E" or "SLASH" to exit time trial', 1)
+		player.keyPrompt = function () {
+			if (player.timetrial) {
+				if (Game.pointDistance3D(player.position, timeTrialObject.startPosition) > 10) return
+				player.timetrial = null
+				reuseHandler.deleteBrick(player.checkPointFruit)
+				clearInterval(player.timetrialTimer)
+				player.message("Aborted time trial")
 			}
-			p.keyPrompt = null
+			player.keyPrompt = null
 		}
 	} else {
-		p.centerPrint('Press "E" or "SLASH" to play time trial', 1)
-		p.keyPrompt = function () {
-			p.keyPrompt = null
-			if (Game.pointDistance3D(p.position, obj.startPosition) > 10) return
-			p.checkPointFruit = reuseHandler.reuseBrick()
-			if (p.checkPointFruit == -1) return
+		player.centerPrint('Press "E" or "SLASH" to play time trial', 1)
+		player.keyPrompt = function () {
+			player.keyPrompt = null
+			if (Game.pointDistance3D(player.position, timeTrialObject.startPosition) > 10) return
+			player.checkPointFruit = reuseHandler.reuseBrick()
+			if (player.checkPointFruit == -1) return
 
 			let startTime = new Date()
-			let lastPosition = obj.startPosition
-			p.checkpoint = 0
-			p.timetrial = obj
-			p.setPosition(obj.startPosition)
-			p.message("Time trial started!")
+			let lastPosition = timeTrialObject.startPosition
+			player.checkpoint = 0
+			player.timetrial = timeTrialObject
+			player.setPosition(timeTrialObject.startPosition)
+			player.message("Time trial started!")
 
-			p.checkPointFruit.setScale(new Vector3(1, 1, 1))
-			p.checkPointFruit.setOutline(true)
-			p.checkPointFruit.setColor(`#e6e600`)
-			if (obj.checkpoints[p.checkpoint]) {
+			player.checkPointFruit.setScale(new Vector3(1, 1, 1))
+			player.checkPointFruit.setOutline(true)
+			player.checkPointFruit.setColor(`#e6e600`)
+			if (timeTrialObject.checkpoints[player.checkpoint]) {
 				// Checkpoint fruit
-				p.checkPointFruit.setPosition(obj.checkpoints[p.checkpoint])
+				player.checkPointFruit.setPosition(timeTrialObject.checkpoints[player.checkpoint])
 			} else {
-				p.checkPointFruit.setPosition(obj.endPosition)
+				player.checkPointFruit.setPosition(timeTrialObject.endPosition)
 			}
 			soundbrick(
 				{
 					url: `/sounds/random/plink.flac`,
 					isGlobal: true,
 				},
-				p
+				player
 			)
 			//p.message("Press SLASH to exit time trial")
-			p.timetrialTimer = setInterval(() => {
+			player.timetrialTimer = setInterval(() => {
 				let timeColor = ""
-				if (obj.checkpoints[p.checkpoint]) {
-					timeColor = `[${lerpColor("#00FF00", "#FF0000", Game.pointDistance3D(p.position, p.checkPointFruit.position) / Game.pointDistance3D(lastPosition, p.checkPointFruit.position))}]`
+				if (timeTrialObject.checkpoints[player.checkpoint]) {
+					timeColor = `[${interpolateColor("#00FF00", "#FF0000", Game.pointDistance3D(player.position, player.checkPointFruit.position) / Game.pointDistance3D(lastPosition, player.checkPointFruit.position))}]`
 					//p.message(`${Game.pointDistance3D(p.position, obj.checkpoints[p.checkpoint])}`)
 				} else {
-					timeColor = `[${lerpColor("#00FF00", "#FF0000", Game.pointDistance3D(p.position, p.checkPointFruit.position) / Game.pointDistance3D(lastPosition, p.checkPointFruit.position))}]`
+					timeColor = `[${interpolateColor("#00FF00", "#FF0000", Game.pointDistance3D(player.position, player.checkPointFruit.position) / Game.pointDistance3D(lastPosition, player.checkPointFruit.position))}]`
 					//p.message(`${Game.pointDistance3D(p.position, obj.endPosition)}`)
 				}
-				p.bottomPrint(timeColor + (-(startTime - new Date()) / 1000).toFixed(2))
-				if (!p.alive || p.destroyed) {
-					p.message("\\c6Time trial aborted because of death")
-					p.timetrial = null
-					p.keyPrompt = null
-					reuseHandler.deleteBrick(p.checkPointFruit)
-					clearInterval(p.timetrialTimer)
+				player.bottomPrint(timeColor + (-(startTime - new Date()) / 1000).toFixed(2))
+				if (!player.alive || player.destroyed) {
+					player.message("\\c6Time trial aborted because of death")
+					player.timetrial = null
+					player.keyPrompt = null
+					reuseHandler.deleteBrick(player.checkPointFruit)
+					clearInterval(player.timetrialTimer)
 					return
 				}
-				if (Game.pointDistance3D(p.position, obj.startPosition) > obj.loseRadius) {
-					p.message("\\c6Time trial aborted")
-					p.timetrial = null
-					p.keyPrompt = null
-					reuseHandler.deleteBrick(p.checkPointFruit)
-					clearInterval(p.timetrialTimer)
+				if (Game.pointDistance3D(player.position, timeTrialObject.startPosition) > timeTrialObject.loseRadius) {
+					player.message("\\c6Time trial aborted")
+					player.timetrial = null
+					player.keyPrompt = null
+					reuseHandler.deleteBrick(player.checkPointFruit)
+					clearInterval(player.timetrialTimer)
 					return
 				}
-				if (obj.checkpoints[p.checkpoint]) {
+				if (timeTrialObject.checkpoints[player.checkpoint]) {
 					// Checkpoint fruit
-					if (Game.pointDistance3D(p.position, obj.checkpoints[p.checkpoint]) < 10) {
+					if (Game.pointDistance3D(player.position, timeTrialObject.checkpoints[player.checkpoint]) < 10) {
 						soundbrick({
 							url: `/sounds/eat/${randomIntFromInterval(1, 4)}.flac`,
 							isGlobal: false,
-							position: p.position,
+							position: player.position,
 						})
 						soundbrick(
 							{
 								url: `/sounds/random/minebeep.flac`,
 								isGlobal: true,
 							},
-							p
+							player
 						)
 						const color = "#FFFF00"
 						for (let index = 0; index < 5; index++) {
 							setTimeout(() => {
 								drippyPosition = new Vector3()
-								drippyPosition.x = p.position.x + p.currentCreature.charmodel.mouth.x * Math.sin(p.rotation.z / debug)
-								drippyPosition.y = p.position.y - +p.currentCreature.charmodel.mouth.x * Math.cos(p.rotation.z / debug)
-								drippyPosition.z = p.position.z + p.currentCreature.charmodel.mouth.y - 0.8
+								drippyPosition.x = player.position.x + player.currentCreature.characterModelOffsets.mouth.x * Math.sin(player.rotation.z / debug)
+								drippyPosition.y = player.position.y - +player.currentCreature.characterModelOffsets.mouth.x * Math.cos(player.rotation.z / debug)
+								drippyPosition.z = player.position.z + player.currentCreature.characterModelOffsets.mouth.y - 0.8
 								particleManager.emitParticle("drippy", {
 									position: drippyPosition,
 									color: color,
@@ -128,36 +128,36 @@ module.exports = function evaluateObject(obj, p) {
 								})
 							}, 800 * index)
 						}
-						p.sprintTime += 2
-						particleManager.emitParticle("slash", new Vector3(p.position.x + randomIntFromInterval(-3, 3), p.position.y + randomIntFromInterval(-3, 3), p.position.z + randomIntFromInterval(-3, 3)))
-						p.checkpoint++
-						lastPosition = p.checkPointFruit.position
-						if (obj.checkpoints[p.checkpoint]) {
-							p.checkPointFruit.forceSetPosition(obj.checkpoints[p.checkpoint])
+						player.sprintTime += 2
+						particleManager.emitParticle("slash", new Vector3(player.position.x + randomIntFromInterval(-3, 3), player.position.y + randomIntFromInterval(-3, 3), player.position.z + randomIntFromInterval(-3, 3)))
+						player.checkpoint++
+						lastPosition = player.checkPointFruit.position
+						if (timeTrialObject.checkpoints[player.checkpoint]) {
+							player.checkPointFruit.forceSetPosition(timeTrialObject.checkpoints[player.checkpoint])
 						} else {
-							p.checkPointFruit.forceSetPosition(obj.endPosition)
+							player.checkPointFruit.forceSetPosition(timeTrialObject.endPosition)
 						}
 						return
 					}
 				} else {
 					// Goal
-					if (Game.pointDistance3D(p.position, obj.endPosition) < 10) {
+					if (Game.pointDistance3D(player.position, timeTrialObject.endPosition) < 10) {
 						let score = -(startTime - new Date()) / 1000
 						soundbrick(
 							{
 								url: `/sounds/time-trial-goal.ogg`,
 								isGlobal: true,
 							},
-							p
+							player
 						)
-						p.message("\\c6TIME TRIAL COMPLETE")
-						p.message(`Seconds: ${score}`)
-						Game.messageAll(`${p.username} completed \"${obj.name}\" in ${score} seconds`)
-						if (constants.discordEnabled) bot.channels.get(channel).send(`${p.username} ${p.currentCreature.discordEmoji} completed \"${obj.name}\" in ${score} seconds`)
-						p.timetrial = null
-						reuseHandler.deleteBrick(p.checkPointFruit)
-						p.keyPrompt = null
-						clearInterval(p.timetrialTimer)
+						player.message("\\c6TIME TRIAL COMPLETE")
+						player.message(`Seconds: ${score}`)
+						Game.messageAll(`${player.username} completed \"${timeTrialObject.name}\" in ${score} seconds`)
+						if (constants.discordEnabled) bot.channels.get(channel).send(`${player.username} ${player.currentCreature.discordEmoji} completed \"${timeTrialObject.name}\" in ${score} seconds`)
+						player.timetrial = null
+						reuseHandler.deleteBrick(player.checkPointFruit)
+						player.keyPrompt = null
+						clearInterval(player.timetrialTimer)
 						return
 					}
 				}

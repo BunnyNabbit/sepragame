@@ -1,7 +1,7 @@
 var morphData = {
 	creatureName: "Nothing existing", // Name of the creature
 	discordEmoji: ":grey_question:",
-	saveID: "none", // Used internally for saves and lookup
+	saveId: "none", // Used internally for saves and lookup
 	attacks: {
 		atk1: { use: noop, attackDescription: {} }, // or its undefined and thats no good!
 	},
@@ -12,7 +12,7 @@ var morphData = {
 	energyRegen: 3, // per 0.1
 	respawnEnergy: 100,
 	description: "",
-	charmodel: {
+	characterModelOffsets: {
 		cameraHeight: 1.2,
 		mouth: {
 			x: 4,

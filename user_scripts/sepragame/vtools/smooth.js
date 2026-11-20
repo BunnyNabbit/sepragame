@@ -44,7 +44,7 @@ async function tool(player) {
 	})
 
 	blockbuff.forEach(async (p) => {
-		voxelWorld.placeblock(new Vector3(p.x, p.y, p.z), 0, player, true)
+		voxelWorld.placeBlock(new Vector3(p.x, p.y, p.z), 0, player, true)
 	})
 }
 

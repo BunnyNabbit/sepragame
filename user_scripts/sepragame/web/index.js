@@ -193,7 +193,7 @@ async function init(io) {
 				// position from clinet
 
 				if (typeof position.x === "number" && typeof position.y === "number" && typeof position.z === "number" && typeof position.r === "number") {
-					// Vaildate
+					// Validate
 					if (playerImpostor.alive == false) return
 					if (!characters[socket.netId]) {
 						return console.log(`undefined??`)
@@ -212,7 +212,7 @@ async function init(io) {
 				// Same as position but also click
 
 				if (typeof position.x === "number" && typeof position.y === "number" && typeof position.z === "number" && typeof position.r === "number") {
-					// Vaildate
+					// Validate
 					if (playerImpostor.alive == false) return
 					if (!characters[socket.netId]) {
 						return console.log(`undefined??`)
@@ -231,7 +231,7 @@ async function init(io) {
 			socket.on("keypress", function (key) {
 				// Keypresses from the client
 				if (typeof key === "string") {
-					// Vaildate
+					// Validate
 					if (key == " ") key = "space"
 					if (key == "£") key = "#" // UK (?) to shift + 3
 					if (key == '"') key = "@" // UK (?) to shift + 2
@@ -247,7 +247,7 @@ async function init(io) {
 			socket.on("chat", function (message) {
 				// The player chats
 				if (typeof message === "string") {
-					// Vaildate
+					// Validate
 					message = message.trim()
 					if (message.length > 85) message = message.substring(0, 85) + "..."
 

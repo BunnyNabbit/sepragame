@@ -37,26 +37,26 @@ function smallBlood(emitposition) {
 	brick.setScale(new Vector3(0.5, 0.5, 0.5))
 	brick.setPosition(new Vector3(emitposition.x, emitposition.y, emitposition.z + 3))
 	brick.gracefulRemovalMode = 2
-	let gracefulID = brick.gracefulID
-	let grav = 0.78
+	let gracefulId = brick.gracefulId
+	let gravity = 0.78
 	let time = 0
 	let speed = 0.8
 	let spin = 0
 	let splatter = false
-	let prot = randomIntFromInterval(0, 1000)
-	let randomrot = randomIntFromInterval(0, 9)
+	let projectileRotation = randomIntFromInterval(0, 1000)
+	let randomRotation = randomIntFromInterval(0, 9)
 	let canStep = true
 	var loop = setInterval(async () => {
 		if (canStep === false) return
-		if (brick.gracefulID !== gracefulID) return clearInterval(loop) // The brick got gracefully removed
+		if (brick.gracefulId !== gracefulId) return clearInterval(loop) // The brick got gracefully removed
 		time++
-		grav += -0.06
+		gravity += -0.06
 		speed += -0.03
 		if (speed < 0) speed = 0
 		if (splatter === false) {
-			brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
-			brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
-			brick.position.z = brick.position.z += grav
+			brick.position.x = brick.position.x += speed * Math.sin(projectileRotation / debug)
+			brick.position.y = brick.position.y - +speed * Math.cos(projectileRotation / debug)
+			brick.position.z = brick.position.z += gravity
 
 			if ((await inBlock(brick.position)) === true) {
 				// Check if blood can splatter on the ground
@@ -70,7 +70,7 @@ function smallBlood(emitposition) {
 			brick.setPosition(brick.position)
 
 			if (time > 3) {
-				spin += randomrot
+				spin += randomRotation
 				brick.setRotation(spin)
 			}
 		}

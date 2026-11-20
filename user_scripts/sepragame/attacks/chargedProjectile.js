@@ -5,7 +5,7 @@ function chargedProjectile(player, attack) {
 	if (brick == -1) return
 
 	player.energy -= attack.energyCost
-	player[`atk${player.selectedattack}Cooldown`] = attack.cooldown
+	player[`atk${player.selectedAttack}Cooldown`] = attack.cooldown
 
 	attack.attackCreate(player)
 
@@ -15,7 +15,7 @@ function chargedProjectile(player, attack) {
 	player.atk4Cooldown = attack.cooldown // TODO: Aware of what slot is being used
 	player.atk5Cooldown = player.atk5Cooldown + 25
 
-	let prot = player.rotation.z
+	let projectileRotation = player.rotation.z
 
 	brick.setColor(attack.color)
 	brick.setOutline(true)
@@ -40,7 +40,7 @@ function chargedProjectile(player, attack) {
 				minDistance: 250,
 				maxDistance: 30,
 			})
-			prot = player.rotation.z
+			projectileRotation = player.rotation.z
 			time = 0
 			brick.setScale(new Vector3(2.5, 2.5, 2.5))
 			ready = true
@@ -50,32 +50,32 @@ function chargedProjectile(player, attack) {
 
 	brick.position = new Vector3(player.position.x, player.position.y, player.position.z + 5)
 
-	let grav = 0
+	let gravity = 0
 	let speed = attack.speed
 
 	var loop = setInterval(() => {
 		if (!ready) return
 		time++
-		brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
-		brick.position.z = brick.position.z += grav
+		brick.position.x = brick.position.x += speed * Math.sin(projectileRotation / debug)
+		brick.position.y = brick.position.y - +speed * Math.cos(projectileRotation / debug)
+		brick.position.z = brick.position.z += gravity
 		brick.setPosition(brick.position)
 
-		var testfor = testforHit(player, brick, 8)
-		if (testfor !== -1) {
+		var testedHit = testForHit(player, brick, 8)
+		if (testedHit !== -1) {
 			soundbrick({
 				url: `/sounds/projectile-hit.mp3`,
-				position: testfor.position,
+				position: testedHit.position,
 				isGlobal: true,
 				minDistance: 30,
 				maxDistance: 3,
 			})
-			damageHandler(testfor, player, attack.attackDescription, attack.damage)
+			damageHandler(testedHit, player, attack.attackDescription, attack.damage)
 			reuseHandler.deleteBrick(brick)
 			clearInterval(loop)
 		}
 		if (time > attack.decay) {
-			grav += -0.02
+			gravity += -0.02
 			speed += -0.01
 			if (time > attack.lifespan) {
 				reuseHandler.deleteBrick(brick)

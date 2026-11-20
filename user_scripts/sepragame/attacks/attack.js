@@ -30,7 +30,7 @@ class Attack {
 				this.attackHeightOffset = 5
 				this.energyCost = 20
 				this.particle = "slash"
-				this.attackDescription = { name: "Claws", description: "", killmessage: "(killer) slashed (victim)", discordEmoji: ":swords:" }
+				this.attackDescription = { name: "Claws", description: "", killMessage: "(killer) slashed (victim)", discordEmoji: ":swords:" }
 
 				this.attackCreate = function (player) {
 					soundbrick({
@@ -63,7 +63,7 @@ class Attack {
 				this.debrisDamage = -4
 				this.cooldown = 150
 				this.energyCost = 20
-				this.attackDescription = { name: "Blast Jump", description: "Uses 20% energy. | Cooldown 15 seconds", killmessage: "(killer) decimated (victim)", discordEmoji: ":boom:" }
+				this.attackDescription = { name: "Blast Jump", description: "Uses 20% energy. | Cooldown 15 seconds", killMessage: "(killer) decimated (victim)", discordEmoji: ":boom:" }
 
 				this.attackCreate = function (player) {
 					soundbrick({
@@ -99,14 +99,14 @@ class Attack {
 				this.decay = 20
 				this.speed = 1
 				this.radius = 5
-				this.reflectable = false
+				this.deflectable = false
 				this.duoBlaster = false // i.e: Guna has 2 blasters, switch between them.
 				this.triShot = false // i.e: Weakling2 will tri-shot.
 				this.color = "#ff0000"
 				this.damage = -8
 				this.cooldown = -1
 				this.energyCost = 5
-				this.attackDescription = { name: "Lame Cannon", description: "Use 5% energy to blast jump onto the heights! | Cooldown 15 seconds", killmessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
+				this.attackDescription = { name: "Lame Cannon", description: "Use 5% energy to blast jump onto the heights! | Cooldown 15 seconds", killMessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
 
 				this.attackCreate = function (player) {
 					soundbrick({
@@ -129,7 +129,7 @@ class Attack {
 				this.cooldown = 50
 				this.energyCost = 60
 				this.radius = 15
-				this.attackDescription = { name: "Blast Jump", description: "Uses 20% energy. | Cooldown 15 seconds", killmessage: "killed", discordEmoji: ":boom:" }
+				this.attackDescription = { name: "Blast Jump", description: "Uses 20% energy. | Cooldown 15 seconds", killMessage: "killed", discordEmoji: ":boom:" }
 
 				this.attackCreate = function (player) {
 					soundbrick({
@@ -143,7 +143,7 @@ class Attack {
 				this.attackHit = function (player) {
 					soundbrick({
 						url: `/sounds/voxel/gems/birdtheft/pain1.flac`,
-						position: testfor.position,
+						position: testedHit.position,
 						isGlobal: true,
 						minDistance: 30,
 						maxDistance: 3,
@@ -160,7 +160,7 @@ class Attack {
 				this.damage = -48
 				this.cooldown = 50
 				this.energyCost = 60
-				this.attackDescription = { name: "Blast Jump", description: "Uses 20% energy. | Cooldown 15 seconds", killmessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
+				this.attackDescription = { name: "Blast Jump", description: "Uses 20% energy. | Cooldown 15 seconds", killMessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
 
 				this.attackCreate = noop
 				this.attackHit = noop
@@ -174,7 +174,7 @@ class Attack {
 				this.damage = -28
 				this.cooldown = 70
 				this.energyCost = 35
-				this.attackDescription = { name: "Blast Jump", description: "Uses 20% energy. | Cooldown 15 seconds", killmessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
+				this.attackDescription = { name: "Blast Jump", description: "Uses 20% energy. | Cooldown 15 seconds", killMessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
 
 				this.attackCreate = function (player) {
 					soundbrick({
@@ -204,7 +204,7 @@ class Attack {
 				this.damage = -3
 				this.cooldown = 70
 				this.energyCost = 35
-				this.attackDescription = { name: "Blast Jump", description: "Uses 20% energy. | Cooldown 15 seconds", killmessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
+				this.attackDescription = { name: "Blast Jump", description: "Uses 20% energy. | Cooldown 15 seconds", killMessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
 
 				this.attackCreate = function (player) {
 					soundbrick({
@@ -227,7 +227,7 @@ class Attack {
 				this.damage = -0.5 // radiation
 				this.cooldown = 50
 				this.energyCost = 0
-				this.attackDescription = { name: "Reflect", description: "Uses 20% energy. | Cooldown 15 seconds", killmessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
+				this.attackDescription = { name: "Reflect", description: "Uses 20% energy. | Cooldown 15 seconds", killMessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
 
 				this.attackCreate = function (player) {
 					soundbrick({
@@ -262,7 +262,7 @@ class Attack {
 				this.damagePerSecond = 5
 				this.cooldown = 50
 				this.energyCost = 5
-				this.attackDescription = { name: "Fluids", description: "Uses 20% energy. | Cooldown 15 seconds", killmessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
+				this.attackDescription = { name: "Fluids", description: "Uses 20% energy. | Cooldown 15 seconds", killMessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
 
 				this.attackCreate = function (player) {
 					soundbrick({
@@ -292,7 +292,7 @@ class Attack {
 				this.damage = -65
 				this.cooldown = 200
 				this.energyCost = 45
-				this.attackDescription = { name: "Lame Cannon", description: "Use 5% energy to blast jump onto the heights! | Cooldown 15 seconds", killmessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
+				this.attackDescription = { name: "Lame Cannon", description: "Use 5% energy to blast jump onto the heights! | Cooldown 15 seconds", killMessage: "(killer) killed (victim)", discordEmoji: ":boom:" }
 
 				this.attackCreate = function (player) {
 					soundbrick({

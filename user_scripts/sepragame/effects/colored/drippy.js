@@ -10,22 +10,22 @@ function particle(settings) {
 	brick.setScale(new Vector3(0.5, 0.5, 0.5))
 	brick.setPosition(new Vector3(settings.position.x, settings.position.y, settings.position.z + 3))
 	brick.gracefulRemovalMode = 2
-	let gracefulID = brick.gracefulID
-	let grav = 0
+	let gracefulId = brick.gracefulId
+	let gravity = 0
 	let time = 0
 	let spin = randomIntFromInterval(1, 360)
 	let splatter = false
-	let randomrot = randomIntFromInterval(0, 9)
+	let randomRotation = randomIntFromInterval(0, 9)
 	let canStep = true
 	var loop = setInterval(async () => {
 		if (canStep === false) return
-		if (brick.gracefulID !== gracefulID) return clearInterval(loop) // The brick got gracefully removed
+		if (brick.gracefulId !== gracefulId) return clearInterval(loop) // The brick got gracefully removed
 		time++
-		grav += -0.06
+		gravity += -0.06
 		if (splatter === false) {
 			brick.position.x = brick.position.x += settings.directionalForce * Math.sin(settings.direction / debug)
 			brick.position.y = brick.position.y - +settings.directionalForce * Math.cos(settings.direction / debug)
-			brick.position.z = brick.position.z += grav
+			brick.position.z = brick.position.z += gravity
 
 			if ((await inBlock(brick.position)) === true) {
 				// Check if blood can splatter on the ground
@@ -46,7 +46,7 @@ function particle(settings) {
 			brick.setPosition(brick.position)
 
 			if (time > 3) {
-				spin += randomrot
+				spin += randomRotation
 				brick.setRotation(spin)
 			}
 		}

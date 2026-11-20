@@ -1,9 +1,9 @@
-function tool(player, mcPos) {
+function tool(player) {
 	if (player.builderPermission == false) return
 	for (let x = -1; x < 2; x++) {
 		for (let y = -1; y < 2; y++) {
 			for (let z = -1; z < 2; z++) {
-				voxelWorld.placeblock(new Vector3(Math.floor(player.selectorBrick.position.x / 4) + x, Math.floor(player.selectorBrick.position.y / 4) + y, Math.floor(player.selectorBrick.position.z / 4) + z), player.selectedColor, player, "noInvaild", true)
+				voxelWorld.placeBlock(new Vector3(Math.floor(player.selectorBrick.position.x / 4) + x, Math.floor(player.selectorBrick.position.y / 4) + y, Math.floor(player.selectorBrick.position.z / 4) + z), player.selectedColor, player, "noInvaild", true)
 			}
 		}
 	}

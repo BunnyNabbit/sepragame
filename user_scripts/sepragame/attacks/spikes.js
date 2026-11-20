@@ -1,29 +1,29 @@
 function spikes(player, attack) {
 	if (player.energy < attack.energyCost) return
 	player.energy -= attack.energyCost
-	player[`atk${player.selectedattack}Cooldown`] = attack.cooldown
+	player[`atk${player.selectedAttack}Cooldown`] = attack.cooldown
 
 	let pos = new Vector3(player.position.x, player.position.y, player.position.z)
-	let prot = player.rotation.z
+	let projectileRotation = player.rotation.z
 
 	setTimeout(() => {
-		pos.x = pos.x += 14 * Math.sin(prot / debug)
-		pos.y = pos.y - +14 * Math.cos(prot / debug)
+		pos.x = pos.x += 14 * Math.sin(projectileRotation / debug)
+		pos.y = pos.y - +14 * Math.cos(projectileRotation / debug)
 		spike(player, new Vector3(pos.x, pos.y, pos.z), attack)
 	}, 100)
 	setTimeout(() => {
-		pos.x = pos.x += 14 * Math.sin(prot / debug)
-		pos.y = pos.y - +14 * Math.cos(prot / debug)
+		pos.x = pos.x += 14 * Math.sin(projectileRotation / debug)
+		pos.y = pos.y - +14 * Math.cos(projectileRotation / debug)
 		spike(player, new Vector3(pos.x, pos.y, pos.z), attack)
 	}, 200)
 	setTimeout(() => {
-		pos.x = pos.x += 14 * Math.sin(prot / debug)
-		pos.y = pos.y - +14 * Math.cos(prot / debug)
+		pos.x = pos.x += 14 * Math.sin(projectileRotation / debug)
+		pos.y = pos.y - +14 * Math.cos(projectileRotation / debug)
 		spike(player, new Vector3(pos.x, pos.y, pos.z), attack)
 	}, 300)
 	setTimeout(() => {
-		pos.x = pos.x += 14 * Math.sin(prot / debug)
-		pos.y = pos.y - +14 * Math.cos(prot / debug)
+		pos.x = pos.x += 14 * Math.sin(projectileRotation / debug)
+		pos.y = pos.y - +14 * Math.cos(projectileRotation / debug)
 		spike(player, new Vector3(pos.x, pos.y, pos.z), attack)
 	}, 400)
 }
@@ -55,16 +55,16 @@ function spike(player, position, attack) {
 			minDistance: 60,
 			maxDistance: 45,
 		})
-		var testfor = testforHit(player, brick, 11)
-		if (testfor !== -1) {
+		var testedHit = testForHit(player, brick, 11)
+		if (testedHit !== -1) {
 			soundbrick({
 				url: `/sounds/projectile-hit.mp3`,
-				position: testfor.position,
+				position: testedHit.position,
 				isGlobal: true,
 				minDistance: 30,
 				maxDistance: 3,
 			})
-			damageHandler(testfor, player, attack.attackDescription, attack.damage)
+			damageHandler(testedHit, player, attack.attackDescription, attack.damage)
 		}
 		setTimeout(() => {
 			soundbrick({

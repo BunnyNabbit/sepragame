@@ -6,14 +6,14 @@ let attack4 = require("../vtools/forceTerrain.js")
 var morphData = {
 	creatureName: "Builder",
 	discordEmoji: ":tools:",
-	saveID: "builderm2", // Used internally for saves and lookup
+	saveId: "builderm2", // Used internally for saves and lookup
 	attacks: {
 		atk1: attack1,
 		atk2: attack2,
 		atk3: attack3,
 		atk4: attack4,
 		//atk5: attack5,
-		bite: { name: "Bite", killmessage: "abused", discordEmoji: "abused" },
+		bite: { name: "Bite", killMessage: "abused", discordEmoji: "abused" },
 	},
 	hp: 10000,
 	speed: 5,
@@ -23,7 +23,7 @@ var morphData = {
 	energyRegen: 3, // per 0.1
 	respawnEnergy: 100,
 	description: "This is a description! Nothing much to see here.",
-	charmodel: {
+	characterModelOffsets: {
 		mouth: {
 			x: 0,
 			y: 0,

@@ -33,7 +33,7 @@ async function tool(player) {
 	}
 
 	positions.forEach((p) => {
-		voxelWorld.placeblock(new Vector3(p.x, p.y, p.z), 0, player, true)
+		voxelWorld.placeBlock(new Vector3(p.x, p.y, p.z), 0, player, true)
 	})
 }
 

@@ -1,4 +1,4 @@
-async function tool(player, mcPos) {
+async function tool(player) {
 	return player.message("This tool has been discontinued. Use \\c1/selection noise \\c0sub commands instead.")
 	if (player.builderPermission == false) return
 

@@ -1,29 +1,29 @@
-module.exports = function evaluateObject(obj, p) {
-	if (Game.pointDistance3D(p.position, obj.position) > obj.activationRadius) return
-	if (p.hovering) return
+module.exports = function evaluateObject(portalObject, player) {
+	if (Game.pointDistance3D(player.position, portalObject.position) > portalObject.activationRadius) return
+	if (player.hovering) return
 
-	particleManager.emitParticle("ghost", p.position)
-	particleManager.emitParticle("ghost", p.position)
-	particleManager.emitParticle("ghost", p.position)
-	particleManager.emitParticle("ghost", p.position)
-	particleManager.emitParticle("ghost", p.position)
-	particleManager.emitParticle("ghost", p.position)
+	particleManager.emitParticle("ghost", player.position)
+	particleManager.emitParticle("ghost", player.position)
+	particleManager.emitParticle("ghost", player.position)
+	particleManager.emitParticle("ghost", player.position)
+	particleManager.emitParticle("ghost", player.position)
+	particleManager.emitParticle("ghost", player.position)
 
-	p.setPosition(new Vector3(obj.toPosition.x, obj.toPosition.y, obj.toPosition.z))
+	player.setPosition(new Vector3(portalObject.toPosition.x, portalObject.toPosition.y, portalObject.toPosition.z))
 
-	particleManager.emitParticle("ghost", p.position)
-	particleManager.emitParticle("ghost", p.position)
-	particleManager.emitParticle("ghost", p.position)
-	particleManager.emitParticle("ghost", p.position)
-	particleManager.emitParticle("ghost", p.position)
-	particleManager.emitParticle("ghost", p.position)
+	particleManager.emitParticle("ghost", player.position)
+	particleManager.emitParticle("ghost", player.position)
+	particleManager.emitParticle("ghost", player.position)
+	particleManager.emitParticle("ghost", player.position)
+	particleManager.emitParticle("ghost", player.position)
+	particleManager.emitParticle("ghost", player.position)
 
-	p.lastVaildPosition = new Vector3(p.position.x, p.position.y, p.position.z)
+	player.lastValidPosition = new Vector3(player.position.x, player.position.y, player.position.z)
 	soundbrick(
 		{
 			url: `/sounds/port.ogg`,
 			isGlobal: true,
 		},
-		p
+		player
 	)
 }

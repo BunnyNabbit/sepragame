@@ -1,3 +1,3 @@
-module.exports = function evaluateObject(obj, p) {
-	if (Game.pointDistance3D(p.position, obj.position) > 50) return
+module.exports = function evaluateObject(musicTriggerObject, player) {
+	if (Game.pointDistance3D(player.position, musicTriggerObject.position) > 50) return
 }

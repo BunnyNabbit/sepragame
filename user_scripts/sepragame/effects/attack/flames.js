@@ -20,21 +20,21 @@ function flame(emitposition) {
 	let offset = new Vector3(randomIntFromInterval(-4, 4), randomIntFromInterval(-4, 4), randomIntFromInterval(2, 5))
 	brick.setPosition(new Vector3(emitposition.x + offset.x, emitposition.y + offset.y, emitposition.z + offset.z))
 	brick.gracefulRemovalMode = 2
-	let gracefulID = brick.gracefulID
-	let grav = 0.1
+	let gracefulId = brick.gracefulId
+	let gravity = 0.1
 	let time = 0
 	let spin = 0
-	let animColor = 0
+	let animationColor = 0
 	var loop = setInterval(() => {
-		if (brick.gracefulID !== gracefulID) return clearInterval(loop) // The brick got gracefully removed
+		if (brick.gracefulId !== gracefulId) return clearInterval(loop) // The brick got gracefully removed
 		time++
-		offset.z += grav
+		offset.z += gravity
 
 		brick.setPosition(new Vector3(emitposition.x + offset.x, emitposition.y + offset.y, emitposition.z + offset.z))
 
 		if (time % 3 == 1) {
-			animColor++
-			brick.setColor(colors[animColor % 5])
+			animationColor++
+			brick.setColor(colors[animationColor % 5])
 		}
 
 		if (time > 1) {

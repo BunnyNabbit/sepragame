@@ -8,9 +8,9 @@ attack1.attackCreate = function (player) {
 		maxDistance: 3,
 	})
 }
-attack1.attackDescription = { name: "Water Shots", description: "Use 12% energy to fire a fast moving low range low damage shot | Has a chance to tri-shot | 3 HP", killmessage: "(killer) splashed (victim)", discordEmoji: "<:bluecube:596827012962713611>" }
+attack1.attackDescription = { name: "Water Shots", description: "Use 12% energy to fire a fast moving low range low damage shot | Has a chance to tri-shot | 3 HP", killMessage: "(killer) splashed (victim)", discordEmoji: "<:bluecube:596827012962713611>" }
 attack1.triShot = true
-attack1.reflectable = true
+attack1.deflectable = true
 attack1.color = "#0000ff"
 attack1.damage = -3
 attack1.energyCost = 12
@@ -19,27 +19,27 @@ attack1.decay = 30
 attack1.speed = 1
 attack1.cooldown = 12
 let attack2 = new Attack("crystal")
-attack2.attackDescription = { name: "Water Crystal", description: "Summon a turret to shoot at nearby creatures | Cooldown 40 seconds", killmessage: "(killer) killed (victim)", discordEmoji: "<:bluecube:596827012962713611>" }
+attack2.attackDescription = { name: "Water Crystal", description: "Summon a turret to shoot at nearby creatures | Cooldown 40 seconds", killMessage: "(killer) killed (victim)", discordEmoji: "<:bluecube:596827012962713611>" }
 attack2.weight = 0
 attack2.cooldown *= 2
 var data = {
 	creatureName: "Scared Weakling (Variant 2)", // Name of the creature | Used internally for lookup but thats bad bro
 	discordEmoji: "<:weakling2icon:699338274367471636>",
-	saveID: "weakling2", // Used internally for saves
+	saveId: "weakling2", // Used internally for saves
 	hp: 45,
 	speed: 5,
 	description: "define",
 	bloodColor: "#ff0000",
-	canBeEatten: true,
+	canBeEaten: true,
 	totalBites: 2,
-	biteRegenHP: 10,
-	biteRegenStam: 75,
+	biteRegenerateHp: 10,
+	biteRegenerateStamina: 75,
 	attacks: {
 		atk1: attack1,
 		atk2: attack2,
-		bite: { name: "Bite", killmessage: "killed", discordEmoji: ":crossed_swords:" },
+		bite: { name: "Bite", killMessage: "killed", discordEmoji: ":crossed_swords:" },
 	},
-	charmodel: {
+	characterModelOffsets: {
 		cameraHeight: 0.9,
 		mouth: {
 			x: 4,
@@ -60,11 +60,11 @@ var data = {
 
 	// AI Behavior
 	behavior: "cowardly",
-	wonderIdleTimeMin: 4,
-	wonderIdleTimeMax: 9,
+	wanderIdleTimeMin: 4,
+	wanderIdleTimeMax: 9,
 
-	wonderMoveTimeMin: 3,
-	wonderMoveTimeMax: 18,
+	wanderMoveTimeMin: 3,
+	wanderMoveTimeMax: 18,
 }
 
 module.exports = data

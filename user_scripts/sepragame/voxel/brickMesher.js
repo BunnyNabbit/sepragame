@@ -26,11 +26,11 @@ async function mesh(voxObject) {
 				while (endX < voxObject.w - 1) {
 					const newX = endX + 1
 
-					const mctype = await voxObject.getBlockType(new Vector3(newX, y, z))
+					const blockType = await voxObject.getBlockType(new Vector3(newX, y, z))
 
-					if (mctype == 0) break
+					if (blockType == 0) break
 
-					if (mctype !== startType) break
+					if (blockType !== startType) break
 
 					const mcmeta = await voxObject.getBlockData(new Vector3(newX, y, z))
 
@@ -46,14 +46,14 @@ async function mesh(voxObject) {
 					var isRowUseable = true
 
 					for (var dx = startX; dx < endX + 1; dx++) {
-						const mctype = await voxObject.getBlockType(new Vector3(dx, y, newZ))
+						const blockType = await voxObject.getBlockType(new Vector3(dx, y, newZ))
 
-						if (mctype == 0) {
+						if (blockType == 0) {
 							isRowUseable = false
 							break
 						}
 
-						if (mctype !== startType) {
+						if (blockType !== startType) {
 							isRowUseable = false
 							break
 						}
@@ -81,14 +81,14 @@ async function mesh(voxObject) {
 
 					for (let dz = startZ; dz < endZ + 1; dz++) {
 						for (let dx = startX; dx < endX + 1; dx++) {
-							const mctype = await voxObject.getBlockType(new Vector3(dx, newY, dz))
+							const blockType = await voxObject.getBlockType(new Vector3(dx, newY, dz))
 
-							if (mctype == 0) {
+							if (blockType == 0) {
 								isRowUseable = false
 								break
 							}
 
-							if (mctype !== startType) {
+							if (blockType !== startType) {
 								isRowUseable = false
 								break
 							}

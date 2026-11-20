@@ -23,26 +23,26 @@ function heat(position) {
 	brick.setScale(new Vector3(size, size, size))
 	brick.setPosition(new Vector3(position.x + randomIntFromInterval(-5, 5) / 2, position.y + randomIntFromInterval(-5, 5) / 2, position.z + randomIntFromInterval(-5, 5) / 2))
 	brick.gracefulRemovalMode = 1
-	let gracefulID = brick.gracefulID
+	let gracefulId = brick.gracefulId
 	let speed = randomIntFromInterval(1, 5) / 8
-	let grav = randomIntFromInterval(-1, 1) / 2 + 0.3
+	let gravity = randomIntFromInterval(-1, 1) / 2 + 0.3
 	let time = 0
 	let lifespan = randomIntFromInterval(10, 24)
 	let spin = randomIntFromInterval(0, 360)
-	let prot = randomIntFromInterval(0, 999)
-	let randomrot = randomIntFromInterval(0, 9)
+	let projectileRotation = randomIntFromInterval(0, 999)
+	let randomRotation = randomIntFromInterval(0, 9)
 	var loop = setInterval(async () => {
-		if (brick.gracefulID !== gracefulID) return clearInterval(loop) // The brick got gracefully removed
+		if (brick.gracefulId !== gracefulId) return clearInterval(loop) // The brick got gracefully removed
 		time++
 
-		brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
-		brick.position.z = brick.position.z += grav
+		brick.position.x = brick.position.x += speed * Math.sin(projectileRotation / debug)
+		brick.position.y = brick.position.y - +speed * Math.cos(projectileRotation / debug)
+		brick.position.z = brick.position.z += gravity
 
 		brick.setPosition(brick.position)
 
 		if (time > 3) {
-			spin += randomrot
+			spin += randomRotation
 			brick.setRotation(spin)
 		}
 
@@ -62,26 +62,26 @@ function sm(position) {
 	brick.setScale(new Vector3(size, size, size))
 	brick.setPosition(new Vector3(position.x + randomIntFromInterval(-5, 5) / 2, position.y + randomIntFromInterval(-5, 5) / 2, position.z + randomIntFromInterval(-5, 5) / 2))
 	brick.gracefulRemovalMode = 1
-	let gracefulID = brick.gracefulID
+	let gracefulId = brick.gracefulId
 	let speed = randomIntFromInterval(1, 5) / 2
-	let grav = randomIntFromInterval(1, 5) / 2 + 0.3
+	let gravity = randomIntFromInterval(1, 5) / 2 + 0.3
 	let time = 0
 	let lifespan = randomIntFromInterval(70, 180)
 	let spin = randomIntFromInterval(0, 360)
-	let randomrot = randomIntFromInterval(0, 9)
-	let prot = randomIntFromInterval(0, 999)
+	let randomRotation = randomIntFromInterval(0, 9)
+	let projectileRotation = randomIntFromInterval(0, 999)
 	var loop = setInterval(async () => {
-		if (brick.gracefulID !== gracefulID) return clearInterval(loop) // The brick got gracefully removed
+		if (brick.gracefulId !== gracefulId) return clearInterval(loop) // The brick got gracefully removed
 		time++
 
-		brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
-		brick.position.z = brick.position.z += grav
+		brick.position.x = brick.position.x += speed * Math.sin(projectileRotation / debug)
+		brick.position.y = brick.position.y - +speed * Math.cos(projectileRotation / debug)
+		brick.position.z = brick.position.z += gravity
 
 		brick.setPosition(brick.position)
 
 		if (time > 3) {
-			spin += randomrot
+			spin += randomRotation
 			brick.setRotation(spin)
 		}
 

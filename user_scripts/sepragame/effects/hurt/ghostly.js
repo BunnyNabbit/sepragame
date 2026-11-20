@@ -9,14 +9,14 @@ function ghost(emitposition) {
 	brick.setScale(new Vector3(0.5, 0.5, 0.5))
 	brick.setPosition(new Vector3(emitposition.x + randomIntFromInterval(-4, 4), emitposition.y + randomIntFromInterval(-4, 4), emitposition.z + randomIntFromInterval(2, 5)))
 	brick.gracefulRemovalMode = 2
-	let gracefulID = brick.gracefulID
-	let grav = 0.1
+	let gracefulId = brick.gracefulId
+	let gravity = 0.1
 	let time = 0
 	let spin = 0
 	var loop = setInterval(() => {
-		if (brick.gracefulID !== gracefulID) return clearInterval(loop) // The brick got gracefully removed
+		if (brick.gracefulId !== gracefulId) return clearInterval(loop) // The brick got gracefully removed
 		time++
-		brick.position.z = brick.position.z += grav
+		brick.position.z = brick.position.z += gravity
 		brick.setPosition(brick.position)
 		if (time > 1) {
 			spin += 5

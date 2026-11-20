@@ -1,5 +1,5 @@
 async function attack(player, attack) {
-	let selectedAttack = player.selectedattack
+	let selectedAttack = player.selectedAttack
 
 	player[`atk${selectedAttack}Cooldown`] = 3
 
@@ -34,86 +34,86 @@ async function attack(player, attack) {
 
 		particleManager.emitParticle("debris", {
 			position: new Vector3(player.position.x, player.position.y, player.position.z + 4),
-			color: voxelWorld.colorbyid[blockType].hexString,
+			color: voxelWorld.blockColor[blockType].hexString,
 		})
 		particleManager.emitParticle("debris", {
 			position: new Vector3(player.position.x, player.position.y, player.position.z + 4),
-			color: voxelWorld.colorbyid[blockType].hexString,
+			color: voxelWorld.blockColor[blockType].hexString,
 		})
 		particleManager.emitParticle("debris", {
 			position: new Vector3(player.position.x, player.position.y, player.position.z + 4),
-			color: voxelWorld.colorbyid[blockType].hexString,
+			color: voxelWorld.blockColor[blockType].hexString,
 		})
 		particleManager.emitParticle("debris", {
 			position: new Vector3(player.position.x, player.position.y, player.position.z + 4),
-			color: voxelWorld.colorbyid[blockType].hexString,
+			color: voxelWorld.blockColor[blockType].hexString,
 		})
 		particleManager.emitParticle("debris", {
 			position: new Vector3(player.position.x, player.position.y, player.position.z + 4),
-			color: voxelWorld.colorbyid[blockType].hexString,
+			color: voxelWorld.blockColor[blockType].hexString,
 		})
 
-		brick.setColor(voxelWorld.colorbyid[blockType].hexString)
+		brick.setColor(voxelWorld.blockColor[blockType].hexString)
 		brick.setScale(new Vector3(4, 4, 4))
 		brick.setPosition(new Vector3(player.position.x, player.position.y, player.position.z))
-		let grav = 0
+		let gravity = 0
 		let time = 0
 		let speed = 1.8
-		let prot = player.rotation.z
+		let projectileRotation = player.rotation.z
 		var loop = setInterval(() => {
 			time++
 			if (time < 10) {
 				brick.position.x = player.position.x + 4 * Math.sin(player.rotation.z / debug) - 2
 				brick.position.y = player.position.y - +4 * Math.cos(player.rotation.z / debug) - 2
-				brick.position.z = player.position.z + 4 + grav
-				prot = player.rotation.z
+				brick.position.z = player.position.z + 4 + gravity
+				projectileRotation = player.rotation.z
 				brick.setPosition(brick.position)
 			} else {
-				brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
-				brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
-				brick.position.z = brick.position.z += grav
+				brick.position.x = brick.position.x += speed * Math.sin(projectileRotation / debug)
+				brick.position.y = brick.position.y - +speed * Math.cos(projectileRotation / debug)
+				brick.position.z = brick.position.z += gravity
 				brick.setPosition(brick.position)
 				if (world.reflectors.some((reflector) => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player)) {
 					// Reflectors
 					player = world.reflectors.find((reflector) => Game.pointDistance3D(reflector.position, brick.position) < reflector.size && reflector.player !== player).player // Change the attacker
-					prot += 180 // Change direction
+					projectileRotation += 180 // Change direction
 				}
 
-				var testfor = testforHit(player, brick, 10)
-				if (testfor !== -1) {
+				var testedHit = testForHit(player, brick, 10)
+				if (testedHit !== -1) {
 					soundbrick({
 						url: `/sounds/coal_blasted.ogg`,
-						position: testfor.position,
+						position: testedHit.position,
 						isGlobal: true,
 						minDistance: 100,
 						maxDistance: 30,
 					})
 					particleManager.emitParticle("debris", {
-						position: new Vector3(testfor.position.x, testfor.position.y, testfor.position.z),
-						color: voxelWorld.colorbyid[blockType].hexString,
+						position: new Vector3(testedHit.position.x, testedHit.position.y, testedHit.position.z),
+						color: voxelWorld.blockColor[blockType].hexString,
 					})
 					particleManager.emitParticle("debris", {
-						position: new Vector3(testfor.position.x, testfor.position.y, testfor.position.z),
-						color: voxelWorld.colorbyid[blockType].hexString,
+						position: new Vector3(testedHit.position.x, testedHit.position.y, testedHit.position.z),
+						color: voxelWorld.blockColor[blockType].hexString,
 					})
 					particleManager.emitParticle("debris", {
-						position: new Vector3(testfor.position.x, testfor.position.y, testfor.position.z),
-						color: voxelWorld.colorbyid[blockType].hexString,
+						position: new Vector3(testedHit.position.x, testedHit.position.y, testedHit.position.z),
+						color: voxelWorld.blockColor[blockType].hexString,
 					})
 					particleManager.emitParticle("debris", {
-						position: new Vector3(testfor.position.x, testfor.position.y, testfor.position.z),
-						color: voxelWorld.colorbyid[blockType].hexString,
+						position: new Vector3(testedHit.position.x, testedHit.position.y, testedHit.position.z),
+						color: voxelWorld.blockColor[blockType].hexString,
 					})
 					particleManager.emitParticle("debris", {
-						position: new Vector3(testfor.position.x, testfor.position.y, testfor.position.z),
-						color: voxelWorld.colorbyid[blockType].hexString,
+						position: new Vector3(testedHit.position.x, testedHit.position.y, testedHit.position.z),
+						color: voxelWorld.blockColor[blockType].hexString,
 					})
-					damageHandler(testfor, player, attack.attackDescription, attack.damage)
+					damageHandler(testedHit, player, attack.attackDescription, attack.damage)
 					reuseHandler.deleteBrick(brick)
 					clearInterval(loop)
 				}
 				if (time > 50) {
-					grav += -0.02
+					gravity += -0.02
 					speed += -0.01
 					if (time > 80) {
 						reuseHandler.deleteBrick(brick)

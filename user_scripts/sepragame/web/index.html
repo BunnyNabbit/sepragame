@@ -867,7 +867,7 @@
 					if (detectMobile()) waitTime = 6000
 					setTimeout(() => {
 						BABYLON.SceneLoader.LoadAssetContainer("/scenes/", "guna.glb?v4", scene, function (container) {
-							addModel(container, "guna") // The model name has to be the same as the server's saveID
+							addModel(container, "guna") // The model name has to be the same as the server's saveId
 							countAssetsAndPossiblyStartTheGame()
 						})
 

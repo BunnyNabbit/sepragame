@@ -35,7 +35,7 @@ async function tool(player) {
 						})
 					}
 
-					//voxelWorld.placeblock(new Vector3(pickX + x, y, pickY + z), 0, player, true)
+					//voxelWorld.placeBlock(new Vector3(pickX + x, y, pickY + z), 0, player, true)
 					break
 				}
 			}
@@ -43,7 +43,7 @@ async function tool(player) {
 	}
 
 	positions.forEach(async (p) => {
-		voxelWorld.placeblock(new Vector3(p.x, p.y, p.z), 0, player, true)
+		voxelWorld.placeBlock(new Vector3(p.x, p.y, p.z), 0, player, true)
 	})
 
 	//player.setPosition(new Vector3(player.position.x, player.position.y, player.position.z + 8))

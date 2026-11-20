@@ -65,8 +65,8 @@ function bite(bot, player) {
 	particleManager.emitParticle("bloodsmall", bot.position)
 	particleManager.emitParticle("bloodsmall", bot.position)
 	bot.totalBites++
-	player.stamina += bot.currentCreature.biteRegenStam
-	player.health += bot.currentCreature.biteRegenHP
+	player.stamina += bot.currentCreature.biteRegenerateStamina
+	player.health += bot.currentCreature.biteRegenerateHp
 	if (player.stamina > 300) player.stamina = 300
 	player.socketio.emit("gui", [{ type: "stamina", value: player.stamina }])
 	if (player.health > player.maxhealth) player.health = player.maxhealth
@@ -112,13 +112,13 @@ function init(position, meta) {
 	webClient.nextNetId.id++
 
 	bot.webNetId = `${webClient.nextNetId.id}`
-	charAnimate(bot)
+	characterAnimate(bot)
 
 	webClient.characters[bot.webNetId] = {
 		netId: `${bot.webNetId}`,
 		name: "",
 		position: { x: position.x, y: position.y, z: position.z, r: 0 },
-		morph: bot.currentCreature.saveID,
+		morph: bot.currentCreature.saveId,
 		modelRotationOffset: bot.currentCreature.webModelRotationOffset,
 		logicRotationOffset: bot.currentCreature.webLogicRotationOffset,
 		networkRotationOffset: bot.currentCreature.webNetworkRotationOffset,
@@ -126,7 +126,7 @@ function init(position, meta) {
 	webClient.socketio.emit("createplayer", {
 		// Create player
 		netId: `${bot.webNetId}`,
-		model: bot.currentCreature.saveID,
+		model: bot.currentCreature.saveId,
 		name: "",
 		modelRotationOffset: bot.currentCreature.webModelRotationOffset,
 		logicRotationOffset: bot.currentCreature.webLogicRotationOffset,

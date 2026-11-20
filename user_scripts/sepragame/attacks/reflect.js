@@ -5,7 +5,7 @@ function pulse(player, attack) {
 	if (brick == -1) return
 
 	player.energy -= attack.energyCost
-	player[`atk${player.selectedattack}Cooldown`] = attack.cooldown
+	player[`atk${player.selectedAttack}Cooldown`] = attack.cooldown
 
 	attack.attackCreate(player)
 
@@ -23,16 +23,16 @@ function pulse(player, attack) {
 	var loop = setInterval(() => {
 		time++
 
-		var testfor = testforHit(player, brick, 10)
-		if (testfor !== -1) {
+		var testedHit = testForHit(player, brick, 10)
+		if (testedHit !== -1) {
 			soundbrick({
 				url: `/sounds/projectile-hit.mp3`,
-				position: testfor.position,
+				position: testedHit.position,
 				isGlobal: true,
 				minDistance: 30,
 				maxDistance: 3,
 			})
-			damageHandler(testfor, player, attack.attackDescription, attack.damage)
+			damageHandler(testedHit, player, attack.attackDescription, attack.damage)
 			//reuseHandler.deleteBrick(brick)
 			//clearInterval(loop)
 		}
@@ -47,8 +47,8 @@ function pulse(player, attack) {
 
 //clearInterval(loop);
 /*
-killmessage: killed
-discordimage: :crimsonbullet:
+killMessage: killed
+discordEmoji: :crimsonbullet:
 */
 
 module.exports = pulse

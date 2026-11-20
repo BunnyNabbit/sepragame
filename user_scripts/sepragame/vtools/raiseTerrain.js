@@ -33,7 +33,7 @@ async function tool(player) {
 	positions.forEach(async (p) => {
 		const blockType = await voxelWorld.world.getBlockType(new Vector3(p.x, p.y, p.z))
 
-		voxelWorld.placeblock(new Vector3(p.x, p.y, p.z + 1), blockType, player, true)
+		voxelWorld.placeBlock(new Vector3(p.x, p.y, p.z + 1), blockType, player, true)
 	})
 }
 

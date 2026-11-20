@@ -7,7 +7,7 @@ function blastJump(player, attack) {
 
 	if (player.energy < attack.energyCost) return
 	player.energy -= attack.energyCost
-	player[`atk${player.selectedattack}Cooldown`] = attack.cooldown
+	player[`atk${player.selectedAttack}Cooldown`] = attack.cooldown
 
 	attack.attackCreate(player)
 
@@ -66,12 +66,12 @@ async function blastBrick(player, attack) {
 
 	brick.setColor(attack.color)
 	brick.setScale(new Vector3(4, 4, 4))
-	brick.position = new Vector3(player.position.x, player.position.y, player.position.z + 3) // false position for testforHit()
+	brick.position = new Vector3(player.position.x, player.position.y, player.position.z + 3) // false position for testForHit()
 
-	var testfor = testforHit(player, brick, 8)
-	if (testfor !== -1) {
-		attack.attackHit(testfor, player)
-		damageHandler(testfor, player, attack.attackDescription, attack.blastDamage)
+	var testedHit = testForHit(player, brick, 8)
+	if (testedHit !== -1) {
+		attack.attackHit(testedHit, player)
+		damageHandler(testedHit, player, attack.attackDescription, attack.blastDamage)
 	}
 
 	brick.setPosition(new Vector3(player.position.x - 2, player.position.y - 2, player.position.z - 2))
@@ -96,29 +96,29 @@ function debris(player, attack) {
 
 	brick.position = new Vector3(player.position.x, player.position.y, player.position.z + 5)
 
-	let grav = 0.78
+	let gravity = 0.78
 	let time = 0
 	let speed = 0.8
 	let spin = 0
-	let prot = randomIntFromInterval(0, 1000)
-	let randomrot = randomIntFromInterval(0, 9)
+	let projectileRotation = randomIntFromInterval(0, 1000)
+	let randomRotation = randomIntFromInterval(0, 9)
 	var loop = setInterval(() => {
 		time++
-		grav += -0.06
+		gravity += -0.06
 		speed += -0.03
 		if (speed < 0) speed = 0
-		brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
-		brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
-		brick.position.z = brick.position.z += grav
+		brick.position.x = brick.position.x += speed * Math.sin(projectileRotation / debug)
+		brick.position.y = brick.position.y - +speed * Math.cos(projectileRotation / debug)
+		brick.position.z = brick.position.z += gravity
 		brick.setPosition(brick.position)
 
 		if (time > 5) {
-			spin += randomrot
+			spin += randomRotation
 			brick.setRotation(spin)
 
-			var testfor = testforHit(player, brick, 3)
-			if (testfor !== -1) {
-				damageHandler(testfor, player, attack.attackDescription, attack.debrisDamage)
+			var testedHit = testForHit(player, brick, 3)
+			if (testedHit !== -1) {
+				damageHandler(testedHit, player, attack.attackDescription, attack.debrisDamage)
 				reuseHandler.deleteBrick(brick)
 				clearInterval(loop)
 			}

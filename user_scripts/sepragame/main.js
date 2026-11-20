@@ -89,7 +89,7 @@ function init(VM_GLOBALS) {
 	webClient.init(io)
 
 	// Patching
-	patcher = require("./funct/patcher.js")
+	patcher = require("./functions/patcher.js")
 
 	// Get bricks from brk
 	SELbrick1 = world.bricks.find((br) => br.name == "sgs1")
@@ -106,18 +106,18 @@ function init(VM_GLOBALS) {
 	voxelWorld = require("./voxel/voxelWorld.js")
 
 	reuseHandler = require("./reuse/reuseHandler.js")
-	collisionOutTerrain = require("./funct/collisionOutTerrain.js") // For bot Ai
-	inBlock = require("./funct/inBlock.js") // Check if position is inside non-air block
-	getBlockType = require("./funct/getBlockType.js") // Get block type on position
+	collisionOutTerrain = require("./functions/collisionOutTerrain.js") // For bot Ai
+	inBlock = require("./functions/inBlock.js") // Check if position is inside non-air block
+	getBlockType = require("./functions/getBlockType.js") // Get block type on position
 	errorHandler = noop
-	testforHit = require("./funct/testforHit.js")
-	damageHandler = require("./funct/damageHandler.js")
-	charAnimate = require("./funct/charAnimate.js")
+	testForHit = require("./functions/testForHit.js")
+	damageHandler = require("./functions/damageHandler.js")
+	characterAnimate = require("./functions/characterAnimate.js")
 	botManager = require("./bot/botManager.js")
 
 	stepSoundSets = require("./sound/index.js")
 
-	reuseHandler.initqueue()
+	reuseHandler.initializeQueue()
 
 	creatureData = require("./creature/creatureData.js")
 
@@ -125,14 +125,14 @@ function init(VM_GLOBALS) {
 
 	particleManager = require("./effects/particleManager.js")
 
-	initalSelectionTree = require("./selectorTree.js")
+	initialSelectionTree = require("./selectorTree.js")
 
 	selectorData = [
 		{
 			creatureName: "Back",
-			saveID: "ico-back",
+			saveId: "ico-back",
 			description: "",
-			charmodel: {
+			characterModelOffsets: {
 			},
 			webModelRotationOffset: 1.565, // For the visual model
 			webLogicRotationOffset: 0, // For converting BH rotation
@@ -144,7 +144,7 @@ function init(VM_GLOBALS) {
 	]
 
 	function triggerBackToMain(p) {
-		p.selectorData = initalSelectionTree
+		p.selectorData = initialSelectionTree
 		p.updateSelector()
 	}
 
@@ -155,7 +155,7 @@ function init(VM_GLOBALS) {
 		}
 	})
 
-	particleData = particleManager.getpar()
+	particleData = particleManager.getParticleData()
 
 	Game.command("morph", (p, msg) => {
 		if (p.currentCreature.class === "builder") p.setPosition(new Vector3(randomIntFromInterval(-500, 500), randomIntFromInterval(-500, 500), 500))
@@ -171,7 +171,7 @@ function init(VM_GLOBALS) {
 	})
 
 	Game.command("settings", (p, msg) => {
-		//p.message("\\c7Brick Quailty: /brk [performance-quailty]")
+		//p.message("\\c7Brick Quality: /brk [performance-quality]")
 		p.message("\\c7Terrain View Distance: /viewdistance [1-8]")
 		//p.message("\\c7Post Processing: /pp [on-off]")
 		p.message("\\c7Glow: /glow [on-off]") // \\c2(Requires post processing)
@@ -214,7 +214,7 @@ function init(VM_GLOBALS) {
 
 	Game.command("spawnbot", (caller, creatureid) => {
 		// Spawns in a bot
-		var botData = botManager.bots.find((x) => x.saveID == creatureid)
+		var botData = botManager.bots.find((x) => x.saveId == creatureid)
 		if (botData == undefined || botData == -1) return
 		botManager.spawnBot(botData, caller.position)
 	})
@@ -319,9 +319,9 @@ function init(VM_GLOBALS) {
 									let color = fruit.color
 									setTimeout(() => {
 										const drippyPosition = new Vector3()
-										drippyPosition.x = creature.position.x + creature.currentCreature.charmodel.mouth.x * Math.sin(creature.rotation.z / debug)
-										drippyPosition.y = creature.position.y - +creature.currentCreature.charmodel.mouth.x * Math.cos(creature.rotation.z / debug)
-										drippyPosition.z = creature.position.z + creature.currentCreature.charmodel.mouth.y - 0.8
+										drippyPosition.x = creature.position.x + creature.currentCreature.characterModelOffsets.mouth.x * Math.sin(creature.rotation.z / debug)
+										drippyPosition.y = creature.position.y - +creature.currentCreature.characterModelOffsets.mouth.x * Math.cos(creature.rotation.z / debug)
+										drippyPosition.z = creature.position.z + creature.currentCreature.characterModelOffsets.mouth.y - 0.8
 										particleManager.emitParticle("drippy", {
 											position: drippyPosition,
 											color: color,
@@ -360,7 +360,7 @@ function init(VM_GLOBALS) {
 			})
 		}
 	}, 1000)
-	const notWeakling = ["guna", "magmeer"] // saveID
+	const notWeakling = ["guna", "magmeer"] // saveId
 	const botLoop = setInterval(() => {
 		// Wild bot spawner
 		if (botManager.ingameBots.length < 10) {
@@ -375,7 +375,7 @@ function init(VM_GLOBALS) {
 						// Chance to spawn in a non weakling creature
 						const numb = randomIntFromInterval(0, notWeakling.length - 1)
 						try {
-							const botData = botManager.bots.find((element) => element.saveID === notWeakling[numb]) // Get AI
+							const botData = botManager.bots.find((element) => element.saveId === notWeakling[numb]) // Get AI
 							botManager.spawnBot(botData, new Vector3(x, y, 1024))
 						} catch (error) {
 							console.log(error)
@@ -383,7 +383,7 @@ function init(VM_GLOBALS) {
 						}
 					} else {
 						const n = randomIntFromInterval(1, 2)
-						const botData = botManager.bots.find((element) => element.saveID === `weakling${n}`) // Get AI
+						const botData = botManager.bots.find((element) => element.saveId === `weakling${n}`) // Get AI
 						botManager.spawnBot(botData, new Vector3(x, y, 1024))
 					}
 				}

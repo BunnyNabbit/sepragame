@@ -2,7 +2,7 @@ function attack(player, attack) {
 	if (player.energy < attack.energyCost) return
 
 	player.energy -= attack.energyCost
-	player[`atk${player.selectedattack}Cooldown`] = attack.cooldown
+	player[`atk${player.selectedAttack}Cooldown`] = attack.cooldown
 
 	attack.attackCreate(player)
 
@@ -20,24 +20,24 @@ async function spit(player, y, attack) {
 		brick.setOutline(true)
 		brick.setScale(new Vector3(0.9, 0.9, 0.7))
 		brick.setPosition(new Vector3(player.position.x, player.position.y, player.position.z + 5))
-		let grav = 0.78 + randomIntFromInterval(-10, 10) / 35
+		let gravity = 0.78 + randomIntFromInterval(-10, 10) / 35
 		let time = 0
 		let speed = 0.8 + randomIntFromInterval(-10, 10) / 37
 		let spin = 0
 		let splatter = false
-		let prot = player.rotation.z + randomIntFromInterval(-15, 15)
-		let randomrot = randomIntFromInterval(0, 9)
-		let animColor = 0
+		let projectileRotation = player.rotation.z + randomIntFromInterval(-15, 15)
+		let randomRotation = randomIntFromInterval(0, 9)
+		let animationColor = 0
 		let falseBrick = { position: brick.position }
 		var loop = setInterval(async () => {
 			time++
-			grav += -0.06
+			gravity += -0.06
 			speed += -0.03
 			if (speed < 0) speed = 0
 			if (splatter == false) {
-				brick.position.x = brick.position.x += speed * Math.sin(prot / debug)
-				brick.position.y = brick.position.y - +speed * Math.cos(prot / debug)
-				brick.position.z = brick.position.z += grav
+				brick.position.x = brick.position.x += speed * Math.sin(projectileRotation / debug)
+				brick.position.y = brick.position.y - +speed * Math.cos(projectileRotation / debug)
+				brick.position.z = brick.position.z += gravity
 
 				if (inBlock(brick.position) === true) {
 					// Check if spit can splatter on the ground
@@ -51,7 +51,7 @@ async function spit(player, y, attack) {
 				brick.setPosition(brick.position)
 
 				if (time > 3) {
-					spin += randomrot
+					spin += randomRotation
 					brick.setRotation(spin)
 				}
 			}
@@ -61,16 +61,16 @@ async function spit(player, y, attack) {
 				clearInterval(loop)
 			}
 			if (time % 3 == 1) {
-				animColor++
-				brick.setColor(attack.colors[animColor % attack.colors.length])
+				animationColor++
+				brick.setColor(attack.colors[animationColor % attack.colors.length])
 				falseBrick.position = new Vector3(brick.position.x, brick.position.y, brick.position.z + 3)
-				var testfor = testforHit(player, falseBrick, 5)
-				if (testfor !== -1) {
-					testfor.debuffDamageLeft = attack.totalDamage
-					testfor.debuffDamageAmount = attack.damagePerSecond
-					testfor.debuffAttacker = player
-					testfor.debuffAttackRef = attack.attackDescription
-					testfor.debuffParticles = "flames" // Any regisitered particle
+				var testedHit = testForHit(player, falseBrick, 5)
+				if (testedHit !== -1) {
+					testedHit.debuffDamageLeft = attack.totalDamage
+					testedHit.debuffDamageAmount = attack.damagePerSecond
+					testedHit.debuffAttacker = player
+					testedHit.debuffAttackRef = attack.attackDescription
+					testedHit.debuffParticles = "flames" // Any regisitered particle
 				}
 			}
 		}, 25)

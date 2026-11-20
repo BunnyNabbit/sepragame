@@ -18,7 +18,7 @@ Game.on("playerJoin", async (p) => {
 	p.atk5OldCooldownState = false
 
 	p.on("initialSpawn", () => {
-		p.setScale(new Vector3(0, 0, p.currentCreature.charmodel.cameraHeight))
+		p.setScale(new Vector3(0, 0, p.currentCreature.characterModelOffsets.cameraHeight))
 	})
 
 	p.on("mouseclick", () => {
@@ -34,23 +34,23 @@ Game.on("playerJoin", async (p) => {
 
 		if (p.currentCreature.class === "builder") p.updateBlockCursors()
 
-		if (p.selectedattack == 1 && p.atk1Cooldown < 0 && typeof p.currentCreature.attacks.atk1 !== "undefined") {
+		if (p.selectedAttack == 1 && p.atk1Cooldown < 0 && typeof p.currentCreature.attacks.atk1 !== "undefined") {
 			p.currentCreature.attacks.atk1.use(p)
 		}
 
-		if (p.selectedattack == 2 && p.atk2Cooldown < 0 && typeof p.currentCreature.attacks.atk2 !== "undefined") {
+		if (p.selectedAttack == 2 && p.atk2Cooldown < 0 && typeof p.currentCreature.attacks.atk2 !== "undefined") {
 			p.currentCreature.attacks.atk2.use(p)
 		}
 
-		if (p.selectedattack == 3 && p.atk3Cooldown < 0 && typeof p.currentCreature.attacks.atk3 !== "undefined") {
+		if (p.selectedAttack == 3 && p.atk3Cooldown < 0 && typeof p.currentCreature.attacks.atk3 !== "undefined") {
 			p.currentCreature.attacks.atk3.use(p)
 		}
 
-		if (p.selectedattack == 4 && p.atk4Cooldown < 0 && typeof p.currentCreature.attacks.atk4 !== "undefined") {
+		if (p.selectedAttack == 4 && p.atk4Cooldown < 0 && typeof p.currentCreature.attacks.atk4 !== "undefined") {
 			p.currentCreature.attacks.atk4.use(p)
 		}
 
-		if (p.selectedattack == 5 && p.atk5Cooldown < 0 && typeof p.currentCreature.attacks.atk5 !== "undefined") {
+		if (p.selectedAttack == 5 && p.atk5Cooldown < 0 && typeof p.currentCreature.attacks.atk5 !== "undefined") {
 			p.currentCreature.attacks.atk5.use(p)
 		}
 	})
@@ -72,9 +72,9 @@ Game.on("playerJoin", async (p) => {
 
 	p.on("moved", () => {
 		if (p.holdingObject) {
-			p.holdingObject.position.x = p.position.x + p.currentCreature.charmodel.mouth.x * Math.sin(p.rotation.z / debug)
-			p.holdingObject.position.y = p.position.y - +p.currentCreature.charmodel.mouth.x * Math.cos(p.rotation.z / debug)
-			p.holdingObject.position.z = p.position.z + p.currentCreature.charmodel.mouth.y
+			p.holdingObject.position.x = p.position.x + p.currentCreature.characterModelOffsets.mouth.x * Math.sin(p.rotation.z / debug)
+			p.holdingObject.position.y = p.position.y - +p.currentCreature.characterModelOffsets.mouth.x * Math.cos(p.rotation.z / debug)
+			p.holdingObject.position.z = p.position.z + p.currentCreature.characterModelOffsets.mouth.y
 
 			p.holdingObject.position.x += -0.5
 			p.holdingObject.position.y += -0.5
@@ -147,7 +147,7 @@ Game.on("playerJoin", async (p) => {
 		if (key == "a") {
 			// Selector left
 			if (p.inSelector == true) {
-				p.currentindex--
+				p.currentSelectorIndex--
 				p.updateSelector()
 			}
 		}
@@ -155,14 +155,14 @@ Game.on("playerJoin", async (p) => {
 		if (key == "d") {
 			// Selector right
 			if (p.inSelector == true) {
-				p.currentindex++
+				p.currentSelectorIndex++
 				p.updateSelector()
 			}
 		}
 
 		if (key == "space") {
 			if (p.inSelector == true) {
-				if (p.selectorData[p.currentindex].trigger) {
+				if (p.selectorData[p.currentSelectorIndex].trigger) {
 					soundbrick(
 						{
 							url: `7cFaAjBrC8sW3L3ijcpkgZqEsqYFY2JQzjZepXLe41QSjfJw8UoWjvuqT6WBPUhVubSkFYRK8iFpQBMzTRxjJfTnwpp2cpcyxV47VtzbWdE23MW2cQTZN9yGj`,
@@ -171,17 +171,17 @@ Game.on("playerJoin", async (p) => {
 						},
 						p
 					)
-					p.selectorData[p.currentindex].trigger(p)
+					p.selectorData[p.currentSelectorIndex].trigger(p)
 				} else {
 					// It's a creature
 					p.inSelector = false
-					p.switchCreature(p.selectorData[p.currentindex].saveID)
+					p.switchCreature(p.selectorData[p.currentSelectorIndex].saveId)
 					p.setPosition(new Vector3(randomIntFromInterval(-500, 500), randomIntFromInterval(-500, 500), 500))
 					p.bottomPrint("", 1)
 					p.socketio.emit("changecamera", "player")
 				}
 			} else {
-				switch (p.currentCreature.saveID) {
+				switch (p.currentCreature.saveId) {
 					case "builder":
 						p.switchCreature("builderm2")
 						p.centerPrint("Mode 2 / 3", 3)
@@ -221,7 +221,7 @@ Game.on("playerJoin", async (p) => {
 		}
 		if (key == "1") {
 			if (typeof p.currentCreature.attacks.atk1 === "undefined") return
-			p.selectedattack = 1
+			p.selectedAttack = 1
 			p.centerPrint(p.currentCreature.attacks.atk1.attackDescription.description, 3)
 			p.currentAttackName = p.currentCreature.attacks.atk1.attackDescription.name
 			p.guiSelectSlot(1)
@@ -231,7 +231,7 @@ Game.on("playerJoin", async (p) => {
 		}
 		if (key == "2") {
 			if (typeof p.currentCreature.attacks.atk2 === "undefined") return
-			p.selectedattack = 2
+			p.selectedAttack = 2
 			p.centerPrint(p.currentCreature.attacks.atk2.attackDescription.description, 3)
 			p.currentAttackName = p.currentCreature.attacks.atk2.attackDescription.name
 			p.guiSelectSlot(2)
@@ -241,7 +241,7 @@ Game.on("playerJoin", async (p) => {
 		}
 		if (key == "3") {
 			if (typeof p.currentCreature.attacks.atk3 === "undefined") return
-			p.selectedattack = 3
+			p.selectedAttack = 3
 			p.centerPrint(p.currentCreature.attacks.atk3.attackDescription.description, 3)
 			p.currentAttackName = p.currentCreature.attacks.atk3.attackDescription.name
 			p.guiSelectSlot(3)
@@ -251,7 +251,7 @@ Game.on("playerJoin", async (p) => {
 		}
 		if (key == "4") {
 			if (typeof p.currentCreature.attacks.atk4 === "undefined") return
-			p.selectedattack = 4
+			p.selectedAttack = 4
 			p.centerPrint(p.currentCreature.attacks.atk4.attackDescription.description, 3)
 			p.currentAttackName = p.currentCreature.attacks.atk4.attackDescription.name
 			p.guiSelectSlot(4)
@@ -261,7 +261,7 @@ Game.on("playerJoin", async (p) => {
 		}
 		if (key == "5") {
 			if (typeof p.currentCreature.attacks.atk5 === "undefined") return
-			p.selectedattack = 5
+			p.selectedAttack = 5
 			p.centerPrint(p.currentCreature.attacks.atk5.attackDescription.description, 3)
 			p.currentAttackName = p.currentCreature.attacks.atk5.attackDescription.name
 			p.guiSelectSlot(5)
@@ -279,7 +279,7 @@ Game.on("playerJoin", async (p) => {
 			if (p.bitecooldown > 0 || p.alive === false || p.currentCreature.class === "builder") return
 			if (p.keyPrompt) return p.keyPrompt()
 			p.bitecooldown = 7
-			let biteobject = testforHit(p, p, 10)
+			let biteobject = testForHit(p, p, 10)
 
 			if (biteobject !== -1) {
 				particleManager.emitParticle("slash", new Vector3(biteobject.position.x + randomIntFromInterval(-3, 3), biteobject.position.y + randomIntFromInterval(-3, 3), biteobject.position.z + 4 + randomIntFromInterval(-3, 1)))
@@ -294,7 +294,7 @@ Game.on("playerJoin", async (p) => {
 						})
 						damageHandler(biteobject, p, p.currentCreature.attacks.bite, -3)
 					} else {
-						if (biteobject.currentCreature.canBeEatten) {
+						if (biteobject.currentCreature.canBeEaten) {
 							botManager.botController.bite(biteobject, p)
 						}
 					}
@@ -351,31 +351,31 @@ Game.on("playerJoin", async (p) => {
 
 		switch (p.musicBiome) {
 			case 195: // Snow
-				p.skyColor = lerpColor(p.skyColor, "#00e6e6", 0.025)
+				p.skyColor = interpolateColor(p.skyColor, "#00e6e6", 0.025)
 				break
 			case 16: // Void
-				p.skyColor = lerpColor(p.skyColor, "#000000", 0.025)
+				p.skyColor = interpolateColor(p.skyColor, "#000000", 0.025)
 				break
 			case 2: // Grass Lands
-				p.skyColor = lerpColor(p.skyColor, "#66ccff", 0.025)
+				p.skyColor = interpolateColor(p.skyColor, "#66ccff", 0.025)
 				break
 			case 3: // Desert
-				p.skyColor = lerpColor(p.skyColor, "#FFDB8E", 0.025)
+				p.skyColor = interpolateColor(p.skyColor, "#FFDB8E", 0.025)
 				break
 			case 55: // Weak Lands
-				p.skyColor = lerpColor(p.skyColor, "#cc66ff", 0.025)
+				p.skyColor = interpolateColor(p.skyColor, "#cc66ff", 0.025)
 				break
 			case 1: // Crimson
-				p.skyColor = lerpColor(p.skyColor, "#b30000", 0.025)
+				p.skyColor = interpolateColor(p.skyColor, "#b30000", 0.025)
 				break
 			case 238: // Stones
-				p.skyColor = lerpColor(p.skyColor, "#800000", 0.025)
+				p.skyColor = interpolateColor(p.skyColor, "#800000", 0.025)
 				break
 			case 44: // Mushrooms
-				p.skyColor = lerpColor(p.skyColor, "#66ffe0", 0.025)
+				p.skyColor = interpolateColor(p.skyColor, "#66ffe0", 0.025)
 				break
 			case -3: // Caves
-				p.skyColor = lerpColor(p.skyColor, "#000000", 0.025)
+				p.skyColor = interpolateColor(p.skyColor, "#000000", 0.025)
 				break
 		}
 		if (p.lastSkyColor !== p.skyColor) p.setEnvironment({ skyColor: p.skyColor })
@@ -399,7 +399,7 @@ Game.on("playerJoin", async (p) => {
 			particleManager.emitParticle("ghost", p.position)
 			particleManager.emitParticle("ghost", p.position)
 
-			p.lastVaildPosition = new Vector3(p.position.x, p.position.y, p.position.z)
+			p.lastValidPosition = new Vector3(p.position.x, p.position.y, p.position.z)
 			soundbrick(
 				{
 					url: `/sounds/port.ogg`,
@@ -424,7 +424,7 @@ Game.on("playerJoin", async (p) => {
 		if (p.atk1OldCooldownState !== p.atk1Cooldown > 0) {
 			if (p.atk1OldCooldownState === true) {
 				// New state is false
-				if (p.selectedattack === 1) {
+				if (p.selectedAttack === 1) {
 					guiChanges.push({ type: "slot", number: 1, inner: "selection", value: "selected" })
 				} else {
 					guiChanges.push({ type: "slot", number: 1, inner: "selection", value: "unselected" })
@@ -438,7 +438,7 @@ Game.on("playerJoin", async (p) => {
 		if (p.atk2OldCooldownState !== p.atk2Cooldown > 0) {
 			if (p.atk2OldCooldownState === true) {
 				// New state is false
-				if (p.selectedattack === 2) {
+				if (p.selectedAttack === 2) {
 					guiChanges.push({ type: "slot", number: 2, inner: "selection", value: "selected" })
 				} else {
 					guiChanges.push({ type: "slot", number: 2, inner: "selection", value: "unselected" })
@@ -452,7 +452,7 @@ Game.on("playerJoin", async (p) => {
 		if (p.atk3OldCooldownState !== p.atk3Cooldown > 0) {
 			if (p.atk3OldCooldownState === true) {
 				// New state is false
-				if (p.selectedattack === 3) {
+				if (p.selectedAttack === 3) {
 					guiChanges.push({ type: "slot", number: 3, inner: "selection", value: "selected" })
 				} else {
 					guiChanges.push({ type: "slot", number: 3, inner: "selection", value: "unselected" })
@@ -466,7 +466,7 @@ Game.on("playerJoin", async (p) => {
 		if (p.atk4OldCooldownState !== p.atk4Cooldown > 0) {
 			if (p.atk4OldCooldownState === true) {
 				// New state is false
-				if (p.selectedattack === 4) {
+				if (p.selectedAttack === 4) {
 					guiChanges.push({ type: "slot", number: 4, inner: "selection", value: "selected" })
 				} else {
 					guiChanges.push({ type: "slot", number: 4, inner: "selection", value: "unselected" })
@@ -480,7 +480,7 @@ Game.on("playerJoin", async (p) => {
 		if (p.atk5OldCooldownState !== p.atk5Cooldown > 0) {
 			if (p.atk5OldCooldownState === true) {
 				// New state is false
-				if (p.selectedattack === 5) {
+				if (p.selectedAttack === 5) {
 					guiChanges.push({ type: "slot", number: 5, inner: "selection", value: "selected" })
 				} else {
 					guiChanges.push({ type: "slot", number: 5, inner: "selection", value: "unselected" })
@@ -785,14 +785,14 @@ bot.on("message", async (message) => {
 
 /**A linear interpolator for hexadecimal colors
  *
- * @example // returns #7F7F7F lerpColor('#000000', '#ffffff', 0.5)
+ * @example // returns #7F7F7F interpolateColor('#000000', '#ffffff', 0.5)
  *
  * @param {String} a
  * @param {String} b
  * @param {Number} amount
  * @returns {String}
  */
-function lerpColor(a, b, amount) {
+function interpolateColor(a, b, amount) {
 	var ah = parseInt(a.replace(/#/g, ""), 16),
 		ar = ah >> 16,
 		ag = (ah >> 8) & 0xff,

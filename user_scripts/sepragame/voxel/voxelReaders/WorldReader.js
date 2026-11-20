@@ -1,4 +1,4 @@
-class PrismarineReader {
+class WorldReader {
 	/**/
 	constructor(x, y, z, w, h, d, pWorld) {
 		// MC Coords
@@ -22,4 +22,4 @@ class PrismarineReader {
 	}
 }
 
-module.exports = PrismarineReader
+module.exports = WorldReader

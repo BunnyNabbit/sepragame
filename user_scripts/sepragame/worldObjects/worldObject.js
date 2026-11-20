@@ -1,3 +1,4 @@
+// FIXME: This ain't a class! I don't know what is!
 class WorldObject {
 	/**/
 	constructor(type, humanName) {

@@ -2,14 +2,14 @@ function randomIntFromInterval(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function initCharModel(p) {
+function characterAnimate(p) {
 	p.playerSize = 1
 	p.idleTime = 0
-	let movestate = 1
+	let moveState = 1
 	let walking = false
-	let lastposition = new Vector3(0, 0, 0)
-	let walktimeout = 0
-	let AnimationState = "none"
+	let lastPosition = new Vector3(0, 0, 0)
+	let walkTimeout = 0
+	let animationState = "none"
 
 
 	let webClientState = "idle"
@@ -29,7 +29,7 @@ function initCharModel(p) {
 		if (forced || standingstill < 10) {
 			if (p.animateReady) {
 
-				switch (AnimationState) {
+				switch (animationState) {
 					case "none":
 						if (webClientState !== "idle") {
 							webClientState = "idle"
@@ -78,10 +78,10 @@ function initCharModel(p) {
 	var Animations = setInterval(async () => {
 		if (p.alive == true) {
 			if (walking == true) {
-				if (movestate == 2 || movestate == 4) {
+				if (moveState == 2 || moveState == 4) {
 					p.idleTime = 0
-					if (movestate == 2) {
-						AnimationState = "run1"
+					if (moveState == 2) {
+						animationState = "run1"
 						if (prevAnimStateSimple !== "run") webClient.socketio.emit("pstate", { netId: p.webNetId, state: "run" })
 						prevAnimStateSimple = "run"
 						if (p.onGround === true) {
@@ -93,7 +93,7 @@ function initCharModel(p) {
 						}
 					}
 
-					if (movestate == 4) {
+					if (moveState == 4) {
 						if (prevAnimStateSimple !== "run") webClient.socketio.emit("pstate", { netId: p.webNetId, state: "run" })
 						prevAnimStateSimple = "run"
 						if (p.onGround === true) {
@@ -104,10 +104,10 @@ function initCharModel(p) {
 							})
 						}
 
-						AnimationState = "run2"
-						movestate = 1
+						animationState = "run2"
+						moveState = 1
 					} else {
-						movestate++
+						moveState++
 					}
 				} else {
 					if (p.onGround === true) {
@@ -117,19 +117,19 @@ function initCharModel(p) {
 							position: p.position,
 						})
 					}
-					AnimationState = "none"
-					movestate++
+					animationState = "none"
+					moveState++
 				}
 			} else {
 				if (prevAnimStateSimple !== "idle") webClient.socketio.emit("pstate", { netId: p.webNetId, state: "idle" })
 				prevAnimStateSimple = "idle"
 
-				AnimationState = "none"
+				animationState = "none"
 				p.idleTime++
 			}
 
 			if (p.idleTime > 150) {
-				AnimationState = "idle"
+				animationState = "idle"
 				if (p.idleTime == 151 && p.currentCreature.class === "creature")
 					soundbrick({
 						url: `/sounds/pain/alienlike/murr${randomIntFromInterval(1, 4)}.flac`,
@@ -140,18 +140,18 @@ function initCharModel(p) {
 					})
 			}
 		} else {
-			AnimationState = "dead"
+			animationState = "dead"
 		}
 
 		if (p.stunned == true) {
-			AnimationState = "dead"
+			animationState = "dead"
 		}
 
 		if (p.destroyed == true) clearInterval(Animations)
 	}, 200)
 
 	p.setInterval(() => {
-		if (walktimeout !== 0) {
+		if (walkTimeout !== 0) {
 			walking = true
 			standingstill = 0
 		} else {
@@ -159,15 +159,15 @@ function initCharModel(p) {
 			standingstill++
 		}
 
-		if (lastposition.x !== p.position.x || lastposition.y !== p.position.y) {
-			if (walktimeout !== 2) walktimeout++
+		if (lastPosition.x !== p.position.x || lastPosition.y !== p.position.y) {
+			if (walkTimeout !== 2) walkTimeout++
 		} else {
-			if (walktimeout !== 0) walktimeout--
+			if (walkTimeout !== 0) walkTimeout--
 		}
 
-		lastposition.x = p.position.x
-		lastposition.y = p.position.y
+		lastPosition.x = p.position.x
+		lastPosition.y = p.position.y
 	}, 100)
 }
 
-module.exports = initCharModel
+module.exports = characterAnimate
