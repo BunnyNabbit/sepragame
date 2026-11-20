@@ -1,5 +1,4 @@
 const clickTypes = {
-	//resourceful: require("./resourceful.js")
 	once: require("./attackUse/once.js"),
 	blastful: require("./attackUse/blastful.js"),
 }
