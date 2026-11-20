@@ -494,19 +494,17 @@ Game.on("playerJoin", async (p) => {
 
 		if (guiChanges.length > 0) p.socketio.emit("gui", guiChanges) // Send all the GUI changes to the client
 
-		if (p.stunned == false) {
-			if (p.sprintTime > 0) {
-				if (p.sprinting == false) {
-					p.sprinting = true
-					p.setSpeed(p.currentCreature.sprintSpeed)
-				}
-				p.setCameraFOV(60 + p.sprintTime)
-			} else {
-				if (p.sprinting == true) {
-					p.sprinting = false
-					p.setCameraFOV(60)
-					p.setSpeed(p.currentCreature.speed)
-				}
+		if (p.sprintTime > 0) {
+			if (p.sprinting == false) {
+				p.sprinting = true
+				p.setSpeed(p.currentCreature.sprintSpeed)
+			}
+			p.setCameraFOV(60 + p.sprintTime)
+		} else {
+			if (p.sprinting == true) {
+				p.sprinting = false
+				p.setCameraFOV(60)
+				p.setSpeed(p.currentCreature.speed)
 			}
 		}
 

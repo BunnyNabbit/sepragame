@@ -143,10 +143,6 @@ function characterAnimate(p) {
 			animationState = "dead"
 		}
 
-		if (p.stunned == true) {
-			animationState = "dead"
-		}
-
 		if (p.destroyed == true) clearInterval(Animations)
 	}, 200)
 

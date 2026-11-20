@@ -75,8 +75,6 @@ module.exports = function (p) {
 	p.blastJumpActive = false
 	//energy related
 	p.energy = 100
-	p.stunned = false
-	p.energyRegen = true
 	p.canMark = true
 	p.juice = 0
 	// Damage debuffs (1000ms per "tick")

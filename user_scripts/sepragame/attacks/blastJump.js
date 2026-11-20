@@ -18,48 +18,6 @@ function blastJump(player, attack) {
 	return
 }
 
-async function overheat(player) {
-	soundbrick({
-		url: `/sounds/creature/guna/attacks/blastjumpoverheat.mp3`,
-		position: player.position,
-		isGlobal: false,
-		minDistance: 300,
-		maxDistance: 15,
-	})
-	player.centerPrint("\\c1Stunned!", 5)
-	player.stunned = true
-	player.energy = 0
-	player.setJumpPower(0)
-	player.setSpeed(0)
-
-	particleManager.emitParticle("ghost", player.position)
-	particleManager.emitParticle("ghost", player.position)
-	particleManager.emitParticle("ghost", player.position)
-
-	await sleep(1000)
-
-	particleManager.emitParticle("ghost", player.position)
-
-	await sleep(1000)
-
-	particleManager.emitParticle("ghost", player.position)
-
-	await sleep(1000)
-
-	particleManager.emitParticle("ghost", player.position)
-
-	await sleep(1000)
-
-	particleManager.emitParticle("ghost", player.position)
-
-	await sleep(1000)
-
-	player.energyRegen = true
-	player.stunned = false
-	player.setJumpPower(player.currentCreature.jump)
-	player.setSpeed(player.currentCreature.speed)
-}
-
 async function blastBrick(player, attack) {
 	let brick = reuseHandler.reuseBrick()
 	if (brick == -1) return console.log("blastjump got no brick")
