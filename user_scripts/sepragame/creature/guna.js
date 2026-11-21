@@ -51,7 +51,6 @@ var morphData = {
 	class: "creature",
 	voice: "alienlike",
 
-	//webFileUrl: "guna.glb",
 	webModelRotationOffset: 1.565, // For the visual model
 	webLogicRotationOffset: 0, // For converting BH rotation
 	webNetworkRotationOffset: 1.565, // for other player's model

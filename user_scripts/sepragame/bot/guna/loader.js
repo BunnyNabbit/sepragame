@@ -49,7 +49,6 @@ var data = {
 	isWeakling: false,
 	voice: "alienlike",
 
-	//webFileUrl: "weakling2.glb",
 	webModelRotationOffset: 1.565, // For the visual model
 	webLogicRotationOffset: 0, // For converting BH rotation
 	webNetworkRotationOffset: 1.565, // for other player's model

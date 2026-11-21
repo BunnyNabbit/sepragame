@@ -198,16 +198,11 @@ function init(playerImpostor) {
 	playerImpostor.newBrick = function (brick) {
 		//TODO: networking
 		let localBrick = brick.clone()
-		//localBrick.socket = this.socket
 		playerImpostor.localBricks.push(localBrick)
-		//scripts.addBrickProperties(packet, localBrick)
-		//yield packet.send(this.socket)
 
 		return localBrick
 	}
 	playerImpostor.deleteBricksWeb = function (bricks) {
-		//playerImpostor.rotation = msg
-		//console.log(bricks.length)
 		let data = []
 		bricks.forEach((b) => {
 			data.push(b.netId)
@@ -216,8 +211,6 @@ function init(playerImpostor) {
 		playerImpostor.socketio.emit("bda", data)
 	}
 	playerImpostor.loadBricks = function (bricks) {
-		//playerImpostor.rotation = msg
-		//console.log(bricks.length)
 		let data = {
 			brk: [],
 			players: [],

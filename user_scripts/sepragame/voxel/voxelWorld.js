@@ -991,8 +991,6 @@ async function placeBlock(blockPos, blockType, player, soundEnabled, showGhostBl
 	const originalBlockData = await voxelworld.getBlockData(blockPos)
 	let placedBlockData = player.blockData
 	if (blockType === 0) placedBlockData = 0
-	//console.log(chunkx,chunkz)
-	//var chunkMeta = await getChunkMeta(chunkx, chunky) // May come handy later
 
 	let playInvaild = true
 	if (soundEnabled === "noInvaild") {
@@ -1012,7 +1010,6 @@ async function placeBlock(blockPos, blockType, player, soundEnabled, showGhostBl
 	}
 	if (originalBlockType == blockType && placedBlockData == originalBlockData) return
 
-	//console.log(chunkx, chunky, chunkz)
 	if (soundEnabled) {
 		if (blockType == 0) {
 			soundbrick(
@@ -1939,12 +1936,6 @@ async function createPlayerData(id) {
 	t.setMilliseconds(0)
 
 	data.dailyRewardDate = t.getTime()
-
-	// await fs.writeFile(`./voxelStorage/${Game.serverSettings.sepraType}/savedata/players/${id}.json`, JSON.stringify(data), function (err) {
-	// 	if (err) throw err;
-	// 	console.log(`Saved ${id}.json meta`);
-	// });
-
 	return data
 }
 

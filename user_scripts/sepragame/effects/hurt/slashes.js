@@ -33,7 +33,6 @@ function smallBlood(emitposition) {
 	socketio.emit("bc", { netId: brick.netId, c: "#FF0000" }) // Web clients always get red blood
 
 	// loop through all players
-	// brickPacket.send(player.socket)
 	brick.setScale(new Vector3(0.5, 0.5, 0.5))
 	brick.setPosition(new Vector3(emitposition.x, emitposition.y, emitposition.z + 3))
 	brick.gracefulRemovalMode = 2

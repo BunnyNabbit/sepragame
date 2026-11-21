@@ -104,7 +104,6 @@ var morphData = {
 	voice: "alienlike",
 
 	// Web client related
-	webFileUrl: "weakling2.glb", // not used
 	webModelRotationOffset: 1.565, // For the visual model
 	webLogicRotationOffset: 0, // For converting BH rotation
 	webNetworkRotationOffset: 1.565, // for other player's model

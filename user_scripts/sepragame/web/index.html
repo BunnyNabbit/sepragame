@@ -815,15 +815,6 @@
 					brickmat = new BABYLON.StandardMaterial("", scene)
 					brickmat.bumpTexture = getStuds()
 					floormat = new BABYLON.StandardMaterial("", scene)
-					// /(BlockBorne DRAFT)
-					//floormat.bumpTexture = floot
-					//floor = (BlockBorne DRAFT)
-					//brickmat.useParallax = true
-					//brickmat.useParallaxOcclusion = true
-					//brickmat.parallaxScaleBias = 0.03
-					//brickmat.diffuseTexture = new BABYLON.Texture("/numps.png", scene)
-					//brickmat.bumpTexture.uScale = 1
-					//brickmat.bumpTexture.vScale = 1
 					if (settings.glow) hl = new BABYLON.HighlightLayer("hl1", scene)
 
 					camera = new BABYLON.ArcRotateCamera("camera", 0, Math.PI / 2, 3, null, scene)
@@ -1938,7 +1929,6 @@
 								//}
 
 								loadedData = true
-								//BABYLON.SceneOptimizer.OptimizeAsync(scene)
 							})
 
 							decode = function (str) {
@@ -3323,19 +3313,6 @@
 
 					parent.isVisible = false
 
-					// PHYSICS
-					if (parent instanceof BABYLON.Mesh) {
-						//if (parent.physicsImpostor === undefined) {
-						//	parent.physicsImpostor = new BABYLON.PhysicsImpostor(
-						//		parent, BABYLON.PhysicsImpostor.BoxImpostor, {
-						//		mass: 10,
-						//	}, scene
-						//	)
-						//}
-					} else {
-						console.error("parent is not a mesh")
-					}
-
 					// Set rotation
 					{
 						let dir = camera.getForwardRay().direction
@@ -3549,11 +3526,7 @@
 						} else {
 							player.xVel = 0
 							player.zVel = 0
-							//let vel = parent.physicsImpostor.getLinearVelocity()
-							//parent.physicsImpostor.setLinearVelocity(vel.multiplyByFloats(0.7, 1.0, 0.7))
-							//if (animationState !== "sit") {
 							beginIdle()
-							//}
 						}
 
 						if (camera.radius < 10) {
