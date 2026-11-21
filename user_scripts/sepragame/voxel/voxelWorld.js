@@ -638,7 +638,6 @@ Game.on("playerJoin", async (player) => {
 			player.boosterTime--
 			if (player.boosterType !== "none") {
 				if (player.boosterTime < 0) {
-					player.setJumpPower(player.currentCreature)
 					player.setSpeed(4)
 					player.boosterType = "none"
 				}

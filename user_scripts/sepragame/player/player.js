@@ -499,11 +499,9 @@ Game.on("playerJoin", async (p) => {
 				p.sprinting = true
 				p.setSpeed(p.currentCreature.sprintSpeed)
 			}
-			p.setCameraFOV(60 + p.sprintTime)
 		} else {
 			if (p.sprinting == true) {
 				p.sprinting = false
-				p.setCameraFOV(60)
 				p.setSpeed(p.currentCreature.speed)
 			}
 		}

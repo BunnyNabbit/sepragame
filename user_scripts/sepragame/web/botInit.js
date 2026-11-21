@@ -106,41 +106,9 @@ function init(playerImpostor) {
 		}
 	}
 
-	playerImpostor.setJumpPower = function (msg) {
-		//TODO
-	}
-
-	playerImpostor.setCameraPosition = function (msg) {
-		//TODO
-	}
-
-	playerImpostor.setCameraRotation = function (msg) {
-		//TODO
-	}
-
 	playerImpostor.kick = function (reason) {
 		playerImpostor.centerPrint(`\\c6${reason}`, 999)
 		playerImpostor.socketio.disconnect(true)
-	}
-
-	playerImpostor.kill = function (msg) {
-		//TODO
-	}
-
-	playerImpostor.respawn = function (msg) {
-		//TODO
-	}
-
-	playerImpostor.setCameraFOV = function (msg) {
-		//TODO
-	}
-
-	playerImpostor.setCameraObject = function (msg) {
-		//TODO
-	}
-
-	playerImpostor.setCameraDistance = function (msg) {
-		//TODO
 	}
 
 	playerImpostor.setEnvironment = function (env) {

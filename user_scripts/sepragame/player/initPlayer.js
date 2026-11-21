@@ -141,7 +141,6 @@ function playerFunctions(p) {
 		p.selectedAttack = 1
 		p.guiSelectSlot(1)
 		p.currentCreature = verify
-		p.setJumpPower(p.currentCreature.jump)
 		p.setSpeed(p.currentCreature.speed)
 		p.setScale(new Vector3(0, 0, p.currentCreature.characterModelOffsets.cameraHeight))
 		p.maxHealth = p.currentCreature.hp
