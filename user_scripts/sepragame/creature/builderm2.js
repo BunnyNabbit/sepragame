@@ -18,8 +18,6 @@ var morphData = {
 	hp: 10000,
 	speed: 5,
 	sprintSpeed: 20,
-	jump: 3,
-	blastJumpPower: 8,
 	respawnEnergy: 100,
 	description: "This is a description! Nothing much to see here.",
 	characterModelOffsets: {

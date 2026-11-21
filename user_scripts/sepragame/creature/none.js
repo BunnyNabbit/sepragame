@@ -7,7 +7,6 @@ var morphData = {
 	},
 	hp: 100,
 	speed: 0,
-	jump: 0,
 	sprintSpeed: 0,
 	respawnEnergy: 100,
 	description: "",

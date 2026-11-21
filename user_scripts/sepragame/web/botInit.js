@@ -44,7 +44,6 @@ function init(playerImpostor) {
 	playerImpostor.score = 0
 	playerImpostor.membershipType = 1
 	playerImpostor.admin = false
-	playerImpostor.jumpPower = 5 // i think?
 	playerImpostor.speed = 4
 	playerImpostor.localBricks = []
 	playerImpostor.blockedUsers = []
