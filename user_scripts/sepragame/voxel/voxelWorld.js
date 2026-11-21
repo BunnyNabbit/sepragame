@@ -3,12 +3,10 @@ var VoxWorld = require("./voxel-world/LegacyMongoWorld.cjs")
 // var canvas = require("canvas")
 
 const dataCache = {
-	playerData: {},
 	chunkData: {},
 	cacheData: {},
 }
 const saveQueue = {
-	playerData: {},
 	chunkData: {},
 	cacheData: {},
 	saveGlobal: false,
@@ -289,13 +287,8 @@ function lightenBricks(bricks) {
 playerchangecolor = function () {}
 
 Game.on("playerJoin", async (player) => {
-	player.userData = await getPlayerData(player.userId)
-	if (player.userData.error == true || player.userData.error == undefined) {
-		player.kick("Orphaned")
-	}
 	player.lastChunk = new Vector3(999, 999, 999) // Performance
 
-	player.userData.lastGlobalBlocks = globalData.globalBlocksAdded
 	player.scafolding = []
 	player.lastValidPosition = new Vector3(0, 0, 500)
 	player.loadTool = false
@@ -929,12 +922,6 @@ async function startRegularIntervals() {
 			saveQueue.chunkData = {}
 		}
 
-		var keys = Object.keys(saveQueue.playerData)
-		if (keys.length > 0) {
-			// This is where player data WOUlD'VE saved, but sepragane doesnt need that for now.
-			saveQueue.playerData = {}
-		}
-
 		var keys = Object.keys(saveQueue.cacheData)
 		if (keys.length > 0) {
 			keys.forEach((element) => {
@@ -1105,23 +1092,13 @@ async function placeBlock(blockPos, blockType, player, soundEnabled, showGhostBl
 	}
 
 	globalData.globalBlocksAdded++
-	var data = await getPlayerData(player.userId)
 	if (blockType !== 0) {
-		data.stats.totalBlocksPlaced++
 		blockLogAdd++
 	} else {
-		data.stats.totalBlocksRemoved++
 		blockLogRemove++
 	}
-	if (data.stats.totalBlocksPlacedByColorID[`${blockType}`] == undefined) {
-		data.stats.totalBlocksPlacedByColorID[`${blockType}`] = 0
-	}
-
-	data.stats.totalBlocksPlacedByColorID[`${blockType}`]++
 
 	saveQueue.saveGlobal = true
-
-	saveQueue.playerData[`${player.userId}`] = true
 
 	globalData.mapRenderQueue[`${chunkX} ${chunkY}`] = { x: chunkX, y: chunkY }
 }
@@ -1192,29 +1169,6 @@ function chunkMetaUpdate(data) {
 	return data
 }
 
-function playerDataUpdate(data) {
-	// Current version: 2
-
-	const oldDataVersion = data.dataVersion
-
-	if (data.dataVersion == 1) {
-		data.dataVersion = 2
-
-		let t = new Date()
-		t.setDate(t.getDate() + 1)
-		t.setHours(0)
-		t.setMinutes(0)
-		t.setSeconds(0)
-		t.setMilliseconds(0)
-
-		data.dailyRewardDate = t.getTime()
-
-		//data.gemSpawnLastChecked = new Date()
-	}
-
-	return data
-}
-
 function getChunkMeta(x, y) {
 	if (dataCache.chunkData[`${Math.floor(x / 32)} ${Math.floor(y / 32)}`] !== undefined) {
 		// Is the region in memory?
@@ -1270,33 +1224,6 @@ function getChunkMeta(x, y) {
 		}
 	}
 	// ...
-}
-
-async function getPlayerData(id) {
-	if (dataCache.playerData[`${id}`] !== undefined) {
-		return dataCache.playerData[`${id}`]
-	} else {
-		try {
-			if (fs.existsSync(`./voxelStorage/${Game.serverSettings.sepraType}/savedata/players/${id}.json`) == true) {
-				var json = fs.readFileSync(`./voxelStorage/${Game.serverSettings.sepraType}/savedata/players/${id}.json`).toString()
-				var data = JSON.parse(json)
-				if (data.dataVersion !== 2) {
-					data = playerDataUpdate(data)
-					console.log(`Player dataversion updated!`)
-				}
-				dataCache.playerData[`${id}`] = data
-				return data
-			} else {
-				var data = await createPlayerData(id)
-				dataCache.playerData[`${id}`] = data
-				return data
-			}
-		} catch (error) {
-			console.log("error while loading player data")
-			console.error(error)
-			return { error: true }
-		}
-	}
 }
 
 Game.command("pos", (p, msg) => {
@@ -1900,42 +1827,6 @@ function createChunkMeta(x, y) {
 		drownType: true,
 	}
 
-	return data
-}
-
-async function createPlayerData(id) {
-	var data = {
-		error: false,
-		username: "Undefined Spaceman",
-		dataVersion: 2,
-		maxClaims: 5,
-		homeEnabled: false,
-		homeSpawn: { x: 0, y: 0, z: 0 }, // BH system
-		claims: [],
-		lastGlobalBlocks: 0,
-		items: {
-			spendablePoints: 0,
-			speedBlocks: 0,
-			jumpBlocks: 0,
-		},
-
-		stats: {
-			totalPointsCollected: 0,
-			totalBlocksPlaced: 0,
-			totalBlocksPlacedByColorID: {},
-			totalBlocksRemoved: 0,
-			totalBlocksGlassifyed: 0,
-		},
-	}
-
-	let t = new Date()
-	t.setDate(t.getDate() + 1)
-	t.setHours(0)
-	t.setMinutes(0)
-	t.setSeconds(0)
-	t.setMilliseconds(0)
-
-	data.dailyRewardDate = t.getTime()
 	return data
 }
 
