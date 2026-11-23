@@ -72,13 +72,13 @@ Game.on("playerJoin", async (p) => {
 
 	p.on("moved", () => {
 		if (p.holdingObject) {
-			p.holdingObject.position.x = p.position.x + p.currentCreature.characterModelOffsets.mouth.x * Math.sin(p.rotation.z / debug)
-			p.holdingObject.position.y = p.position.y - +p.currentCreature.characterModelOffsets.mouth.x * Math.cos(p.rotation.z / debug)
-			p.holdingObject.position.z = p.position.z + p.currentCreature.characterModelOffsets.mouth.y
+			p.holdingObject.brick.position.x = p.position.x + p.currentCreature.characterModelOffsets.mouth.x * Math.sin(p.rotation.z / debug)
+			p.holdingObject.brick.position.y = p.position.y - +p.currentCreature.characterModelOffsets.mouth.x * Math.cos(p.rotation.z / debug)
+			p.holdingObject.brick.position.z = p.position.z + p.currentCreature.characterModelOffsets.mouth.y
 
-			p.holdingObject.position.x += -0.5
-			p.holdingObject.position.y += -0.5
-			p.holdingObject.setPosition(p.holdingObject.position)
+			p.holdingObject.brick.position.x += -0.5
+			p.holdingObject.brick.position.y += -0.5
+			p.holdingObject.brick.setPosition(p.holdingObject.brick.position)
 		}
 	})
 
@@ -116,7 +116,7 @@ Game.on("playerJoin", async (p) => {
 			// Marking
 			if (p.alive === false) return
 			if (p.canMark) {
-				let obj = world.fruit.find((fruit) => Game.pointDistance3D(fruit.position, p.position) < 10 && !fruit.heldBy && !fruit.persistent)
+				let obj = world.fruit.find((fruit) => Game.pointDistance3D(fruit.brick.position, p.position) < 10 && !fruit.heldBy && !fruit.persistent)
 				if (obj) return markPersistent(obj)
 				obj = botManager.ingameBots.find((bot) => Game.pointDistance3D(bot.position, p.position) < 10 && !bot.persistent)
 				if (obj) return markPersistent(obj)
@@ -315,7 +315,7 @@ Game.on("playerJoin", async (p) => {
 					return p.holdingObject.eat(p) // If the creature has a item on it's mouth then eat it
 				} else {
 					// Grab fruit
-					let obj = world.fruit.find((fruit) => Game.pointDistance3D(fruit.position, p.position) < 10 && !fruit.heldBy)
+					let obj = world.fruit.find((fruit) => Game.pointDistance3D(fruit.brick.position, p.position) < 10 && !fruit.heldBy)
 					if (obj) obj.hold(p)
 				}
 				particleManager.emitParticle("slash", p.position)

@@ -1,49 +1,60 @@
-// So close! Zhat is not even a class💞
 const pulsingBlue = ["#3399FF", "#6699ff"]
 
 world.fruit = []
 
-function spawnFruit(pos, pulse) {
-	// Create brick
-	pulse = pulse || pulsingBlue
-	pos = new Vector3(pos.x, pos.y, pos.z)
-	let fruit = reuseHandler.reuseBrick()
-	if (fruit == -1) return
-	world.fruit.push(fruit)
-	fruit.setColor(pulse[0])
-	fruit.setScale(new Vector3(1, 1, 1))
-	fruit.setOutline(true)
-	fruit.forceSetPosition(pos)
+class Fruit {
+	/**/
+	static spawnFruit(position, pulsePattern = pulsingBlue) {
+		let brick = reuseHandler.reuseBrick()
+		if (brick == -1) return
+		brick.setColor(pulsePattern[0])
+		brick.setScale(new Vector3(1, 1, 1))
+		brick.setOutline(true)
+		brick.forceSetPosition(position)
+		return new Fruit(position, pulsePattern, brick)
+	}
+	constructor(position, pulsePattern, brick) {
+		// Create brick
+		pulsePattern = pulsePattern || pulsingBlue
+		position = new Vector3(position.x, position.y, position.z)
+		this.brick = brick
+		world.fruit.push(this)
+		this.brick.setColor(pulsePattern[0])
+		this.brick.setScale(new Vector3(1, 1, 1))
+		this.brick.setOutline(true)
+		this.brick.forceSetPosition(position)
 
-	fruit.heldBy = null
-	fruit.health = 10
-	fruit.energy = 43
-	fruit.stamina = 25
-	fruit.persistent = false
+		this.heldBy = null
+		this.health = 10
+		this.energy = 43
+		this.stamina = 25
+		this.persistent = false
 
-	let time = 0
-	var loop = setInterval(() => {
-		// Pulsing
-		time++
-		fruit.setColor(pulse[time % 2])
-		if (!fruit.heldBy) {
-			let messagePlayer = Game.players.find((player) => Game.pointDistance3D(player.position, fruit.position) < 10)
-			if (messagePlayer) {
-				if (messagePlayer.mobile) {
-					messagePlayer.centerPrint('\\c4Press "SLASH" to grab this Power Fruit', 2)
-				} else messagePlayer.centerPrint('\\c4Press "E" to grab this Power Fruit', 2)
+		let time = 0
+		this.loop = setInterval(() => {
+			// Pulsing
+			time++
+			this.brick.setColor(pulsePattern[time % 2])
+			if (!this.heldBy) {
+				let messagePlayer = Game.players.find((player) => Game.pointDistance3D(player.position, this.brick.position) < 10)
+				if (messagePlayer) {
+					if (messagePlayer.mobile) {
+						messagePlayer.centerPrint('\\c4Press "SLASH" to grab this Power Fruit', 2)
+					} else messagePlayer.centerPrint('\\c4Press "E" to grab this Power Fruit', 2)
+				}
 			}
-		}
-	}, 1000)
+		}, 1000)
 
-	fruit.eat = function (creature) {
+	}
+	/**/
+	eat(creature) {
 		// Player or Bot
 		if (creature.isBot) {
 		} else {
-			creature.centerPrint(`\\c5+ ${fruit.energy}% Energy`, 1)
-			creature.setHealth(fruit.health + creature.health)
-			creature.changeEnergy(fruit.energy)
-			creature.changeStamina(fruit.stamina)
+			creature.centerPrint(`\\c5+ ${this.energy}% Energy`, 1)
+			creature.setHealth(this.health + creature.health)
+			creature.changeEnergy(this.energy)
+			creature.changeStamina(this.stamina)
 		}
 
 		soundbrick({
@@ -53,16 +64,16 @@ function spawnFruit(pos, pulse) {
 		})
 
 		const settings = {
-			color: fruit.color,
+			color: this.brick.color,
 			directionalForce: 0,
 			direction: 0,
 			expire: 200,
 		}
 
 		for (let index = 0; index < 5; index++) {
-			let color = fruit.color
+			let color = this.brick.color
 			setTimeout(() => {
-				drippyPosition = new Vector3()
+				let drippyPosition = new Vector3()
 				drippyPosition.x = creature.position.x + creature.currentCreature.characterModelOffsets.mouth.x * Math.sin(creature.rotation.z / debug)
 				drippyPosition.y = creature.position.y - +creature.currentCreature.characterModelOffsets.mouth.x * Math.cos(creature.rotation.z / debug)
 				drippyPosition.z = creature.position.z + creature.currentCreature.characterModelOffsets.mouth.y - 0.8
@@ -81,11 +92,11 @@ function spawnFruit(pos, pulse) {
 			isGlobal: false,
 			position: creature.position,
 		})
-		fruit.drop(creature, false)
-		fruit.remove()
+		this.drop(creature, false)
+		this.remove()
 	}
 
-	fruit.drop = function (creature, sfx) {
+	drop(creature, sfx) {
 		// Player or Bot
 		if (sfx === undefined) sfx = true
 
@@ -96,13 +107,13 @@ function spawnFruit(pos, pulse) {
 				position: creature.position,
 			})
 
-		fruit.heldBy = null
+		this.heldBy = null
 		creature.holdingObject = null
 	}
 
-	fruit.hold = function (creature, sfx) {
+	hold(creature, sfx) {
 		// Player or Bot
-		if (!creature.holdingObject || !fruit.heldBy) {
+		if (!creature.holdingObject || !this.heldBy) {
 			if (sfx === undefined) sfx = true
 
 			if (sfx)
@@ -117,28 +128,26 @@ function spawnFruit(pos, pulse) {
 					creature.centerPrint('\\c4Press "SLASH" to eat this Power Fruit', 2)
 				} else creature.centerPrint('\\c4Press "E" to eat this Power Fruit or "Q" to drop it', 2)
 			}
-			creature.holdingObject = fruit
-			fruit.heldBy = creature
+			creature.holdingObject = this
+			this.heldBy = creature
 		}
 	}
 
-	fruit.remove = function () {
-		if (fruit.heldBy) fruit.heldBy.holdingObject = null
-		delete fruit.heldBy // Fruit is a brick from reuseHandler so clean it up before returning it back
+	remove() {
+		if (this.heldBy) this.heldBy.holdingObject = null
+		delete this.heldBy // Fruit is a brick from reuseHandler so clean it up before returning it back
 
 		const index = world.fruit.indexOf(this)
 
 		if (index !== -1) world.fruit.splice(index, 1)
 
-		reuseHandler.deleteBrick(fruit)
-		clearInterval(loop)
+		reuseHandler.deleteBrick(this.brick)
+		clearInterval(this.loop)
 	}
-
-	return fruit
 }
 
 function randomIntFromInterval(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-module.exports = spawnFruit
+module.exports = Fruit

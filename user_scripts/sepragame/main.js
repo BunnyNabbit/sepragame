@@ -219,11 +219,11 @@ function init(VM_GLOBALS) {
 		botManager.spawnBot(botData, caller.position)
 	})
 
-	spawnFruit = require("./class/fruit.js")
+	const Fruit = require("./class/fruit.js")
 
 	Game.command("fruit", (caller, creatureid) => {
 		// Spawns in a bot
-		spawnFruit(caller.position)
+		Fruit.spawnFruit(caller.position)
 	})
 
 	randomIntFromInterval = (min, max) => {
@@ -264,14 +264,14 @@ function init(VM_GLOBALS) {
 				if (player.currentCreature.class !== "builder") {
 					let x = Math.floor((randomIntFromInterval(-160, 160) + player.position.x) / 4) * 4 + 1.5
 					let y = Math.floor((randomIntFromInterval(-160, 160) + player.position.y) / 4) * 4 + 1.5
-					let canSpawn = !world.fruit.some((fruit) => Game.pointDistance3D(new Vector3(x, y, player.position.z), fruit.position) < 200)
+					let canSpawn = !world.fruit.some((fruit) => Game.pointDistance3D(new Vector3(x, y, player.position.z), fruit.brick.position) < 200)
 					if (canSpawn === true) {
 						let surface = await findTopSurfaceOfWorld(new Vector3(x, y, 0))
 						if (randomIntFromInterval(0, 1)) {
-							let fruit = spawnFruit(new Vector3(x, y, surface))
+							let fruit = Fruit.spawnFruit(new Vector3(x, y, surface))
 							if (fruit) {
 								let fruitDespawn = setInterval(() => {
-									if (!Game.players.some((player) => Game.pointDistance3D(new Vector3(fruit.position.x, fruit.position.y, fruit.position.z), player.position) < 250)) {
+									if (!Game.players.some((player) => Game.pointDistance3D(fruit.brick.position, player.position) < 250)) {
 										if (fruit.persistent) return
 										fruit.remove()
 										clearInterval(fruitDespawn)
@@ -279,7 +279,7 @@ function init(VM_GLOBALS) {
 								}, 3000)
 							}
 						} else {
-							let fruit = spawnFruit(new Vector3(x, y, surface), ["#ff4dff", "#ffb3ff"])
+							let fruit = Fruit.spawnFruit(new Vector3(x, y, surface), ["#ff4dff", "#ffb3ff"])
 							fruit.eat = function (creature) {
 								if (creature.isBot) {
 								} else {
@@ -316,7 +316,7 @@ function init(VM_GLOBALS) {
 								})
 
 								for (let index = 0; index < 5; index++) {
-									let color = fruit.color
+									let color = fruit.brick.color
 									setTimeout(() => {
 										const drippyPosition = new Vector3()
 										drippyPosition.x = creature.position.x + creature.currentCreature.characterModelOffsets.mouth.x * Math.sin(creature.rotation.z / debug)
@@ -347,7 +347,7 @@ function init(VM_GLOBALS) {
 							}
 							if (fruit) {
 								let fruitDespawn = setInterval(() => {
-									if (!Game.players.some((player) => Game.pointDistance3D(new Vector3(fruit.position.x, fruit.position.y, fruit.position.z), player.position) < 250)) {
+									if (!Game.players.some((player) => Game.pointDistance3D(fruit.brick.position, player.position) < 250)) {
 										if (fruit.persistent) return
 										fruit.remove()
 										clearInterval(fruitDespawn)
