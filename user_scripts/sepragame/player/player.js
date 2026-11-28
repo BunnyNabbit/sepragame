@@ -381,34 +381,6 @@ Game.on("playerJoin", async (p) => {
 		if (p.lastSkyColor !== p.skyColor) p.setEnvironment({ skyColor: p.skyColor })
 		p.lastSkyColor = p.skyColor
 
-		if (world.portals.some((portal) => Game.pointDistance3D(portal.position, p.position) < portal.size)) {
-			// Portals
-			particleManager.emitParticle("ghost", p.position)
-			particleManager.emitParticle("ghost", p.position)
-			particleManager.emitParticle("ghost", p.position)
-			particleManager.emitParticle("ghost", p.position)
-			particleManager.emitParticle("ghost", p.position)
-			particleManager.emitParticle("ghost", p.position)
-
-			p.setPosition(world.portals.find((portal) => Game.pointDistance3D(portal.position, p.position) < portal.size).teleportPosition)
-
-			particleManager.emitParticle("ghost", p.position)
-			particleManager.emitParticle("ghost", p.position)
-			particleManager.emitParticle("ghost", p.position)
-			particleManager.emitParticle("ghost", p.position)
-			particleManager.emitParticle("ghost", p.position)
-			particleManager.emitParticle("ghost", p.position)
-
-			p.lastValidPosition = new Vector3(p.position.x, p.position.y, p.position.z)
-			soundbrick(
-				{
-					url: `/sounds/port.ogg`,
-					isGlobal: true,
-				},
-				p
-			)
-		}
-
 		var guiChanges = [] // Optimize sending gui changes like energy and stamina
 
 		if (p.energy < 100 && p.energyRegen == true) {

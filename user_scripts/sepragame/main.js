@@ -71,15 +71,7 @@ function init(VM_GLOBALS) {
 	addReflector = function (obj) {
 		world.reflectors.push(obj)
 	}
-	Portal = require("./class/portal.js")
-	addPortal = function (obj) {
-		world.portals.push(obj)
-	}
 
-	// Add portals
-	//addPortal(new Portal(new Vector3(-123, 277, 264), new Vector3(-214, 425, 288), 8))
-	// addPortal(new Portal(new Vector3(-152, -374, 338), new Vector3(314, 520, 88), 8))
-	// addPortal(new Portal(new Vector3(229, 564, 89), new Vector3(159, 765, 314), 15))
 	// Attacks
 	Attack = require("./attacks/attack.js")
 
