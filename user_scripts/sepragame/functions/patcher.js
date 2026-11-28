@@ -7,8 +7,6 @@ function patchBrick(brick) {
 
 	brick.forceSetPosition = brick.setPosition
 	brick.setPosition = function (position) {
-		//TODO newbrick colors scales
-
 		brick.position = position
 
 		let radiusPlayers = Game.players.filter((player) => Game.pointDistance3D(player.position, brick.position) < 200)
@@ -18,23 +16,6 @@ function patchBrick(brick) {
 		})
 
 		return
-		//return Game.brickFunction(brick)
-
-		brick.b = brick.setColor
-		brick.setColor = function (color) {
-			socketio.emit("bc", { netId: brick.netId, c: color })
-			brick.b(color)
-		}
-		brick.c = brick.setScale
-		brick.setScale = function (scale) {
-			socketio.emit("bs", { netId: brick.netId, x: scale.x, y: scale.y, z: scale.z })
-			brick.c(scale)
-		}
-		brick.setOutline = function (bo) {
-			// set outline true or falee
-			socketio.emit("boutline", { netId: brick.netId, outline: bo })
-			brick.outline = bo
-		}
 	}
 
 	brick.disable = function () {
